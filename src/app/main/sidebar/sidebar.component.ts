@@ -257,18 +257,6 @@ export class SidebarComponent implements OnInit {
       permission: 'Pricemaster.List',
     },
     {
-      path: '/group',
-      title: 'Item Group Master',
-      icon: faSitemap,
-      permission: 'Groupmaster.List',
-    },
-    {
-      path: '/fg_master',
-      title: 'FG Master',
-      icon: faIndustry,
-      permission: 'FGmaster.List',
-    },
-    {
       path: '/pack',
       icon: faArchive,
       title: 'Pack Master',
