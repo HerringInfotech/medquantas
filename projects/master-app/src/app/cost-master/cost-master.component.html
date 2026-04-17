@@ -1,0 +1,116 @@
+<app-loader [isLoader]="!page_loading"></app-loader>
+<div class="container-fluid custom-page">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="mt-3">
+                <div class="bg-white p-3 border-top border-start border-end rounded shadow-sm mb-3">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0 font-weight-bold">Cost Sheet Master</h5>
+                        <div class="d-flex">
+                            <button type="button" class="custom-button mx-2" (click)="downloadAllSheetsAsExcel()"
+                                tooltip="Export" [disabled]="btn_loading">
+                                <fa-icon *ngIf="!btn_loading" [icon]="faFileExcel" class="me-1"></fa-icon>
+                                <fa-icon *ngIf="btn_loading" [icon]="faSpinner" class="me-1" [spin]="true"></fa-icon>
+                                <span *ngIf="!btn_loading">Export</span>
+                                <span *ngIf="btn_loading">Exporting...</span>
+                            </button>
+                            <button type="button" class="custom-button" routerLink="form">
+                                <fa-icon [icon]="faPlus"></fa-icon> ADD
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-6px p-3 shadow-sm">
+                    <div class="row g-3 pb-3">
+                        <div class="col-lg-3 col-xl-3 col-12">
+                            <label class="form-label">Search by Name</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" (keyup)="get_sheet(1)"
+                                    placeholder="Search Sheet" [(ngModel)]="search">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><fa-icon class="text-secondary"
+                                            [icon]="faSearch"></fa-icon></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-xl-3 col-12">
+                            <label class="form-label">Search by Code</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" (keyup)="get_sheet(1)" placeholder="Search Code"
+                                    [(ngModel)]="searchcode">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><fa-icon class="text-secondary"
+                                            [icon]="faSearch"></fa-icon></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-xl-3 col-12">
+                            <label class="form-label">Search by BOM Code</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" (keyup)="get_sheet(1)"
+                                    placeholder="Search BOM Code" [(ngModel)]="searchbomcode">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><fa-icon class="text-secondary"
+                                            [icon]="faSearch"></fa-icon></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-xl-3 col-12">
+                            <label class="form-label">Filter by Location</label>
+                            <select class="form-select" (change)="get_sheet(1)" [(ngModel)]="searchloc">
+                                <option value="">All Locations</option>
+                                <option *ngFor="let loc of locations" [value]="loc">{{ loc }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <app-not-data *ngIf="!bom_list?.length && page_loading" [message]="'No Cost Sheet found'"
+                        [route]="'form'" [button]="'Add new Cost Sheet'"></app-not-data>
+
+                    <div *ngIf="bom_list?.length">
+                        <table class="table table-hover table-striped table-bordered rounded-top text-center">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th class="text-center">S.No</th>
+                                    <th class="text-center">Location</th>
+                                    <th class="text-center">Product Name</th>
+                                    <th class="text-center">Product Code</th>
+                                    <th class="text-center">Batch</th>
+                                    <th class="text-center">Rate INR</th>
+                                    <th class="text-center">Rate in USD</th>
+                                    <th class="text-center">Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of bom_list; let index = index" class="align-middle details-row">
+                                    <td class="text-center">{{ index + pagination_data?.pagingCounter }}</td>
+                                    <td class="text-center">{{ data?.locCd }}</td>
+                                    <td class="text-start">{{ data?.productname }}</td>
+                                    <td class="text-start">{{ data?.productcode }}</td>
+                                    <td class="text-end">{{ data?.detailValues?.batch }}</td>
+                                    <td class="text-end">₹{{ data?.medopharm?.rupee }}</td>
+                                    <td class="text-end">${{ data?.medopharm?.doller }}</td>
+                                    <!-- <td class="text-center">{{ data?.revision }}</td> -->
+                                    <td class="text-center">{{ data?.status }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm"
+                                            routerLink="form/{{data._id}}">
+                                            <fa-icon [icon]="faEdit"></fa-icon>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm"
+                                            routerLink="view/{{data._id}}">
+                                            <fa-icon [icon]="faEye"></fa-icon>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <app-pagination [data]="pagination_data"></app-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

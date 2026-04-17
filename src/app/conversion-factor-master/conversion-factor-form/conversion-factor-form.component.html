@@ -1,0 +1,76 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="rounded custom-height">
+        <div class="mx-auto col-lg-12">
+          <div class="mb-2 p-2 px-0">
+            <div class="d-flex align-items-center justify-content-between">
+              <h5 class="mb-0">
+                <span *ngIf="!conversionFactorId">ADD Conversion Factor</span>
+                <span *ngIf="conversionFactorId">Edit Conversion Factor</span>
+              </h5>
+              <button class="btn custom-button" (click)="goBack()">Back</button>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-6px table-responsive-sm p-3 shadow-sm">
+            <form #formData="ngForm" (ngSubmit)="formSubmit(formData)" class="p-3">
+              <div class="row">
+                <!-- Factor Name -->
+                <div class="col-md-4 mb-3">
+                  <label for="nameInput">
+                    Factor Name <span class="text-danger">*</span>
+                  </label>
+                  <input id="nameInput" name="name" class="form-control text-uppercase" placeholder="Factor Name"
+                    required [(ngModel)]="formValues.name"
+                    (ngModelChange)="formValues.name = formValues.name?.toUpperCase()" #name="ngModel" [ngClass]="{
+                      'is-invalid': name.invalid && (name.dirty || name.touched || formData.submitted)
+                    }" />
+                  <div *ngIf="name.invalid && (name.dirty || name.touched || formData.submitted)"
+                    class="invalid-feedback">
+                    <span *ngIf="name.errors?.required">Factor Name is required.</span>
+                  </div>
+                </div>
+
+                <!-- INR to USD -->
+                <div class="col-md-4 mb-3">
+                  <label for="inrToUsdInput">
+                    Conversion Factor per Rupee <span class="text-danger">*</span>
+                  </label>
+                  <input id="inrToUsdInput" name="inrToUsd" type="number" step="0.0001" min="0" class="form-control"
+                    required [(ngModel)]="formValues.inrToUsd" #inrToUsd="ngModel" [ngClass]="{
+                      'is-invalid': inrToUsd.invalid && (inrToUsd.dirty || inrToUsd.touched || formData.submitted)
+                    }" />
+                  <div *ngIf="inrToUsd.invalid && (inrToUsd.dirty || inrToUsd.touched || formData.submitted)"
+                    class="invalid-feedback">
+                    <span *ngIf="inrToUsd.errors?.required">Conversion factor is required.</span>
+                    <span *ngIf="inrToUsd.errors?.min">Must be positive value.</span>
+                  </div>
+                </div>
+
+                <!-- Updated Date & Time (Read-only) -->
+                <div class="col-md-4 mb-3" *ngIf="formValues.updatedAt">
+                  <label>Updated Date & Time</label>
+                  <input class="form-control bg-light" [value]="formValues.updatedAt | date: 'dd-MMM-yyyy HH:mm:ss'" disabled />
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="d-flex justify-content-start mt-3 gap-2">
+                <button type="submit" class="btn custom-button px-4" [disabled]="btn_loading || formData.invalid">
+                  <span *ngIf="!btn_loading">
+                    {{ conversionFactorId ? 'Update' : 'Save' }}
+                  </span>
+                  <span *ngIf="btn_loading">
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    Processing...
+                  </span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

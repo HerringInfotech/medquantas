@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"medopharam.dosages"}],"uuid":"e5c7d2e5ad574352b2e011e06fa70a01"}

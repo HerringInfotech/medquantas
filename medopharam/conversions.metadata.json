@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"medopharam.conversions"}],"uuid":"569c84e5dd6042f9a614e51ec2091c1f"}

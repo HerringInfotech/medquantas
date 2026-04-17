@@ -1,0 +1,49 @@
+th {
+  text-align: center;
+}
+
+.bom-container {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+}
+
+
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 0.5rem;
+}
+
+.card {
+  border-radius: 0.5rem;
+}
+
+.table th,
+.table td {
+  vertical-align: middle !important;
+}
+
+.btn-outline-primary {
+  font-weight: 500;
+}
+
+
+.excel-button:hover {
+  background-color: #1D6F42; /* or use #217346, the classic Excel green */
+  color: white;
+}
+
+/* PDF red */
+.pdf-button:hover {
+  background-color: #D9534F; /* or Adobe red: #FF0000 */
+  color: white;
+}

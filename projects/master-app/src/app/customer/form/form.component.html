@@ -1,0 +1,137 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="my-3  custom-height">
+                <div class="mx-auto col-lg-12 pt-4">
+                    <div class="mb-2 p-2 px-0">
+                        <div class="d-flex align-items-center justify-content-between ">
+                            <h5 class="mb-0">
+                                <span *ngIf="!customerId">Add Customer</span>
+                                <span *ngIf="customerId">Edit Customer</span>
+                            </h5>
+                            <button class="btn btn-primary" (click)="goBack()">Back</button>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-6px table-responsive-sm p-3 shadow-sm">
+                        <form class="row p-3" #formData="ngForm" (ngSubmit)="formSubmit(formData)">
+                            <div class="col-12 col-md-12">
+                                <div class="row mt-2">
+                                    <div class="form-group col-lg-6 col-md-6">
+                                        <label for="custcodeInput">Code<span
+                                                style="color:red;font-family: sans-serif;">*</span></label>
+                                        <input id="custcodeInput" name="comyname" class="form-control"
+                                            placeholder="Customer Code" autocomplete="off" required
+                                            [(ngModel)]="formValues['customer_code']" (input)="customer_code()"
+                                            #customercode="ngModel"
+                                            [ngClass]="{ 'is-invalid': customercode.invalid && (customercode.dirty || customercode.touched || formData.submitted) }">
+                                        <div *ngIf="customercode.invalid && (customercode.dirty || customercode.touched  || formData.submitted)"
+                                            class="invalid-feedback">
+                                            <span *ngIf="customercode.errors.required">Customer Code is
+                                                required.</span>
+                                        </div>
+                                        <span *ngIf="codeError" style="color:red;">{{codeError}}</span>
+                                    </div>
+
+                                    <div class="form-group  col-lg-6 col-md-6">
+                                        <label for="nameInput">Name<span
+                                                style="color:red;font-family: sans-serif;">*</span></label>
+                                        <input id="nameInput" name="name" class="form-control"
+                                            placeholder="Customer Name" autocomplete="off" required
+                                            [(ngModel)]="formValues['name']" #name="ngModel"
+                                            [ngClass]="{ 'is-invalid': name.invalid && (name.dirty || name.touched || formData.submitted) }">
+                                        <div *ngIf="name.invalid && (name.dirty || name.touched  || formData.submitted)"
+                                            class="invalid-feedback">
+                                            <span *ngIf="name.errors.required">Customer Name is required.</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row mt-2">
+                                    <div class="form-group  col-lg-6 col-md-6">
+                                        <label for="nameInput">Email<span
+                                                style="color:red;font-family: sans-serif;">*</span></label>
+                                        <input id="emailInput" name="email" class="form-control" placeholder="Email"
+                                            autocomplete="off" required [(ngModel)]="formValues['email']"
+                                            #email="ngModel"
+                                            [ngClass]="{ 'is-invalid': email.invalid && (email.dirty || email.touched || formData.submitted) }">
+                                        <div *ngIf="email.invalid && (email.dirty || email.touched  || formData.submitted)"
+                                            class="invalid-feedback">
+                                            <span *ngIf="email.errors.required">Email is required.</span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group col-lg-6 col-md-6">
+                                        <label for="gstInput">Gst No<span
+                                                style="color:red;font-family: sans-serif;">*</span></label>
+                                        <input id="gstInput" name="gst" class="form-control" placeholder="Gst No"
+                                            autocomplete="off" required [(ngModel)]="formValues['gst']" #gst="ngModel"
+                                            [ngClass]="{ 'is-invalid': gst.invalid && (gst.dirty || gst.touched || formData.submitted) }">
+                                        <div *ngIf="gst.invalid && (gst.dirty || gst.touched  || formData.submitted)"
+                                            class="invalid-feedback">
+                                            <span *ngIf="gst.errors.required">Gst No is required.</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="row mt-2">
+                                    <div class="form-group col-lg-6 col-md-6">
+                                        <label for="addressInput">Address<span
+                                                style="color:red;font-family: sans-serif;">*</span></label>
+                                        <input id="addressInput" name="address" class="form-control"
+                                            placeholder="Address" autocomplete="off" required
+                                            [(ngModel)]="formValues['address']" #address="ngModel"
+                                            [ngClass]="{ 'is-invalid': address.invalid && (address.dirty || address.touched || formData.submitted) }">
+                                        <div *ngIf="address.invalid && (address.dirty || address.touched  || formData.submitted)"
+                                            class="invalid-feedback">
+                                            <span *ngIf="address.errors.required">Address is required.</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-lg-6 col-md-6">
+                                        <label for="cityInput">City<span
+                                                style="color:red;font-family: sans-serif;">*</span></label>
+                                        <input id="cityInput" name="city" class="form-control" placeholder="City"
+                                            autocomplete="off" required [(ngModel)]="formValues['city']" #city="ngModel"
+                                            [ngClass]="{ 'is-invalid': city.invalid && (city.dirty || city.touched || formData.submitted) }">
+                                        <div *ngIf="city.invalid && (city.dirty || city.touched  || formData.submitted)"
+                                            class="invalid-feedback">
+                                            <span *ngIf="city.errors.required">City is required.</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="form-group col-lg-6 col-md-6">
+                                        <label for="stateInput">State<span
+                                                style="color:red;font-family: sans-serif;">*</span></label>
+                                        <input id="stateInput" name="state" class="form-control" placeholder="State"
+                                            autocomplete="off" required [(ngModel)]="formValues['state']"
+                                            #state="ngModel"
+                                            [ngClass]="{ 'is-invalid': state.invalid && (state.dirty || state.touched || formData.submitted) }">
+                                        <div *ngIf="state.invalid && (state.dirty || state.touched  || formData.submitted)"
+                                            class="invalid-feedback">
+                                            <span *ngIf="state.errors.required">State is required.</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-success bg-primary-blue border-0 mt-3" type="submit"
+                                    [disabled]="btn_loading ? 'disabled': null">
+                                    <span class="spinner-border" *ngIf="btn_loading" role="status"
+                                        aria-hidden="true"></span>
+                                    <span *ngIf="!btn_loading">{{ customerId ? 'Update' : 'Create' }}</span>
+                                </button>
+                                <button class="btn btn-danger mt-3 ms-2" type="button" *ngIf="!customerId"
+                                    (click)="resetForm(formData)">Reset</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

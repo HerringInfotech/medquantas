@@ -1,0 +1,182 @@
+<div class="container-fluid py-4">
+    <div class="row animate__animated animate__fadeIn justify-content-center">
+        <div class="col-lg-10 col-xl-8">
+            <!-- Form Header -->
+            <div class="mb-4 d-flex align-items-center justify-content-between">
+                <div>
+                    <h2 class="mb-1 fw-bold text-blue-dark">
+                        <i class="fa fa-user-circle-o me-2 text-primary opacity-50"></i>
+                        <span *ngIf="isProfilePage">My Profile</span>
+                        <span *ngIf="!isProfilePage">
+                            <span *ngIf="!user_data">New User Account</span>
+                            <span *ngIf="user_data">Edit User Profile</span>
+                        </span>
+                    </h2>
+                    <p class="text-muted small mb-0">Manage account information and security settings</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <button *ngIf="user_data && isAdmin"
+                        class="btn btn-outline-danger rounded-pill px-4 transition-all fw-600"
+                        (click)="openModal(template3)" type="button">
+                        <i class="fa fa-key me-2"></i> Change Password
+                    </button>
+                    <button class="btn btn-light-hover rounded-pill px-4 py-2 border shadow-sm transition-all"
+                        (click)="goBack()">
+                        <i class="fa fa-arrow-left me-2"></i> Back
+                    </button>
+                </div>
+            </div>
+
+            <div class="main-card shadow-sm border-0 bg-white">
+                <form #formData="ngForm" (ngSubmit)="formSubmit(formData)">
+                    <div class="p-5">
+                        <div class="d-flex align-items-center mb-4 pb-2 border-bottom border-light">
+                            <div class="icon-box me-3 bg-light-subtle rounded-circle p-3">
+                                <i class="fa fa-id-card-o text-blue-dark fs-4"></i>
+                            </div>
+                            <h6 class="text-uppercase tracking-wider fw-bold text-muted small mb-0">Account Information
+                            </h6>
+                        </div>
+
+                        <div class="row g-4 pt-2">
+                            <div class="col-md-6">
+                                <div class="form-group custom-field">
+                                    <label class="form-label fw-600 small text-blue-dark mb-2">Role <span
+                                            class="text-danger">*</span></label>
+                                    <div class="input-wrapper">
+                                        <select name="role" class="form-select modern-input" [disabled]="isReadOnly"
+                                            (change)="onRoleChange()" [(ngModel)]="formValues['role']" #role="ngModel">
+                                            <option disabled value="">Select Role</option>
+                                            <option *ngFor="let data of role_data" [value]="data.id">
+                                                {{data.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="text-danger smaller mt-1 animate__animated animate__fadeIn"
+                                        *ngIf="isRole">Role is required.</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group custom-field">
+                                    <label class="form-label fw-600 small text-blue-dark mb-2">Full Name <span
+                                            class="text-danger">*</span></label>
+                                    <div class="input-wrapper">
+                                        <input name="name" class="form-control modern-input" required
+                                            [readonly]="isReadOnly" minlength="4" autocomplete="off"
+                                            [(ngModel)]="formValues['name']" #name="ngModel"
+                                            placeholder="Enter full name"
+                                            [ngClass]="{ 'is-invalid': name.invalid && (name.dirty || name.touched || formData.submitted) }">
+                                    </div>
+                                    <div *ngIf="name.invalid && (name.dirty || name.touched  || formData.submitted)"
+                                        class="invalid-feedback animate__animated animate__shakeX">
+                                        <span *ngIf="name.errors.required">Name is required.</span>
+                                        <span *ngIf="name.errors.minlength">Min 4 characters.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group custom-field">
+                                    <label class="form-label fw-600 small text-blue-dark mb-2">Email Address <span
+                                            class="text-danger">*</span></label>
+                                    <div class="input-wrapper">
+                                        <input type="email" name="email" class="form-control modern-input" required
+                                            [readonly]="isReadOnly" email="true" [(ngModel)]="formValues['email']"
+                                            autocomplete="off" placeholder="name@example.com" #email="ngModel"
+                                            pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+                                            [ngClass]="{ 'is-invalid': email.invalid && (email.dirty || email.touched  || formData.submitted) }">
+                                    </div>
+                                    <div *ngIf="email.invalid && (email.dirty || email.touched  || formData.submitted)"
+                                        class="invalid-feedback animate__animated animate__shakeX">
+                                        <span *ngIf="email.errors.required">Email is required.</span>
+                                        <span *ngIf="email.errors.pattern">Invalid email format.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group custom-field">
+                                    <label class="form-label fw-600 small text-blue-dark mb-2">Mobile Number <span
+                                            class="text-danger">*</span></label>
+                                    <div class="input-wrapper">
+                                        <input type="text" name="phone" class="form-control modern-input" required
+                                            [readonly]="isReadOnly" minlength="10" maxlength="10"
+                                            [(ngModel)]="formValues['mobile']" autocomplete="off"
+                                            placeholder="10-digit number" #phone="ngModel" pattern="^\d{10}$"
+                                            [ngClass]="{ 'is-invalid': phone.invalid && (phone.dirty || phone.touched  || formData.submitted) }">
+                                    </div>
+                                    <div *ngIf="phone.invalid && (phone.dirty || phone.touched  || formData.submitted)"
+                                        class="invalid-feedback animate__animated animate__shakeX">
+                                        <span *ngIf="phone.errors.required">Required.</span>
+                                        <span *ngIf="phone.errors.pattern">Must be 10 digits.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12" *ngIf="!userId">
+                                <div class="form-group custom-field">
+                                    <label class="form-label fw-600 small text-blue-dark mb-2">Password <span
+                                            class="text-danger">*</span></label>
+                                    <div class="input-wrapper password-group">
+                                        <input [type]="password_type" class="form-control modern-input" name="password"
+                                            required [(ngModel)]="formValues['password']"
+                                            placeholder="Set a secure password" #password="ngModel"
+                                            [ngClass]="{ 'is-invalid': password.invalid && (password.dirty || password.touched  || formData.submitted) }">
+                                        <span class="password-toggle pointer transition-all"
+                                            (click)="password_type = password_type === 'password' ? 'text' : 'password'">
+                                            <fa-icon [icon]="password_type === 'password' ? faEyeSlash : faEye"
+                                                class="text-muted"></fa-icon>
+                                        </span>
+                                    </div>
+                                    <div *ngIf="password.invalid && (password.dirty || password.touched  || formData.submitted)"
+                                        class="invalid-feedback animate__animated animate__shakeX">
+                                        Password is required.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-5 pt-3 d-flex justify-content-end" *ngIf="!isReadOnly">
+                            <button
+                                class="btn btn-primary-royal rounded-pill px-5 py-2-5 shadow-lg transition-all d-flex align-items-center"
+                                type="submit" [disabled]="btn_loading">
+                                <span class="spinner-border spinner-border-sm me-2" *ngIf="btn_loading"></span>
+                                <span class="fw-bold tracking-wider">{{ user_data ? 'Update Profile' : 'Create User'
+                                    }}</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #template3>
+    <div class="modal-content border-0 shadow-lg animate__animated animate__zoomIn">
+        <div class="modal-header bg-light-subtle border-0 py-3">
+            <h5 class="modal-title text-blue-dark fw-bold m-0"><i class="fa fa-lock me-2 text-primary"></i> Change
+                Password</h5>
+            <button type="button" class="btn-close shadow-none" aria-label="Close" (click)="modalRef.hide()"></button>
+        </div>
+        <div class="modal-body p-4">
+            <div class="form-group custom-field mb-4">
+                <label for="newpassInput" class="form-label fw-600 small text-blue-dark mb-2">New Password <span
+                        class="text-danger">*</span></label>
+                <div class="input-wrapper">
+                    <input type="password" class="form-control modern-input" name="newpass" required
+                        [(ngModel)]="new_password" autocomplete="off" (input)="change_pass()" id="newpassInput"
+                        placeholder="Enter new password">
+                </div>
+                <div class="text-danger smaller mt-1" *ngIf="isPass">Password is required.</div>
+            </div>
+            <div class="text-end">
+                <button class="btn btn-primary-royal w-100 rounded-pill py-2-5 shadow transition-all fw-bold"
+                    (click)="ChangePassword()" type="button">
+                    Update Password
+                </button>
+            </div>
+        </div>
+    </div>
+</ng-template>

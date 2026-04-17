@@ -1,0 +1,54 @@
+<div class="sidebar" [ngClass]="{ 'expanded': isExpanded }" style="z-index: 999;">
+  <div class="header" (click)="goHome()" style="cursor:pointer">
+    <div class="logo-full">
+      <div class="logo-icon">MQ</div>
+      <span class="logo-text">MedQuantas</span>
+    </div>
+    <div class="logo-mini">MQ</div>
+  </div>
+
+  <div class="content">
+    <ng-container *ngFor="let item of menuItem">
+      <div class="link">
+        <div class="content" *ngIf="hasPermissionMenu(item)" (click)="toggleSubMenu(item)"
+          [routerLink]="item.path ? [item.path] : null" [ngClass]="{ 'activeMenu': isActiveMenu(item) }">
+          <div class="icon">
+            <fa-icon [icon]="item.icon"></fa-icon>
+          </div>
+          <div class="title">
+            <div class="d-flex justify-content-between">
+              {{ item.title }}
+              <span class="me-2"><fa-icon [icon]="faAngleUp" class="ms-1 -mt-2"
+                  *ngIf="item.submenu && item.submenu.length && item.isSubMenuOpen"></fa-icon>
+                <fa-icon [icon]="faAngleDown" class="ms-1 pt-1 -mt-2"
+                  *ngIf="item.submenu && item.submenu.length && !item.isSubMenuOpen"></fa-icon>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submenu items -->
+        <div class="children" *ngIf="item.submenu && item.submenu.length && item.isSubMenuOpen">
+          <ng-container *ngFor="let subItem of item.submenu">
+            <div class="link" [ngClass]="{ 'active': isActiveMenuItem(subItem) }" *ngIf="hasPermission(subItem)">
+              <div class="content" [routerLink]="[subItem.path]">
+                <div class="icon">
+                  <fa-icon [icon]="subItem.icon"></fa-icon>
+                </div>
+                <div class="title">{{ subItem.title }}</div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </ng-container>
+    <div class="link">
+      <div class="content" (click)="logout()">
+        <div class="icon ps-1">
+          <fa-icon [icon]="faDoorOpen"></fa-icon>
+        </div>
+        <div class="title">Logout</div>
+      </div>
+    </div>
+  </div>
+</div>

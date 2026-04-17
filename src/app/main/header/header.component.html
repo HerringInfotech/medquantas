@@ -1,0 +1,134 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-white">
+    <div class="container-fluid">
+        <div class="navbar-brand custom-select" (click)="triggerSidebar()">
+            <fa-icon [icon]="faBars" class="ms-3 icon-black"></fa-icon>
+        </div>
+        <div class="container">
+            <div class="d-flex justify-content-end">
+                <div class="dropdown">
+                    <div ngbDropdown placement="bottom-right">
+                        <button type="button" class="btn rounded-0 outline-0 border-0" id="profile" ngbDropdownToggle>
+                            <div class="top-container text-start">
+                                <div class="border-0" *ngIf="user && user?.image ">
+                                    <img class="profile-image rounded-circle  p-1" [src]="user.original_image" alt="">
+                                </div>
+                                <div *ngIf="!user?.image">
+                                    <img class="profile-image rounded-circle  p-1" src="/assets/images/profile.png"
+                                        alt="">
+                                </div>
+                                <div class="ms-1">
+                                    <h5 class="name ">{{ user?.name}}</h5>
+                                    <span class="mail text-start">{{ role?.name}}</span>
+                                </div>
+                            </div>
+                        </button>
+                        <div ngbDropdownMenu="profile" class="border-0 shadow-sm">
+                            <button ngbDropdownItem (click)="goToProfile()">Profile</button>
+                            <button ngbDropdownItem (click)="changepass()">Change Password</button>
+                            <button ngbDropdownItem (click)="logout()">Logout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<ng-template #change_pass>
+    <div class="d-lg-inline m-3 modal-body">
+        <form #formData="ngForm" (ngSubmit)="resetPassword(formData)">
+            <h4 class="text-center mb-3">Reset Password</h4>
+            <div class="form-group text-left">
+                <label for="currentPassword">Current Password</label>
+                <div class="input-group">
+                    <input id="currentPassInput" name="currentPass" type="{{oldpass_type}}" class="form-control"
+                        placeholder="Enter your current Password" autocomplete="off" required
+                        [(ngModel)]="formValues['currentPassword']" #currentPass="ngModel"
+                        [ngClass]="{ 'is-invalid': currentPass.invalid && (currentPass.dirty || currentPass.touched || formData.submitted) }">
+                    <div class="input-group-append">
+                        <span class="input-group-text pointer" id="visibility">
+                            <fa-icon class="text-secondary" (click)="oldpass_type='password'"
+                                *ngIf="oldpass_type=='text'" [icon]="faEye"></fa-icon>
+                            <fa-icon class="text-secondary" (click)="oldpass_type='text'"
+                                *ngIf="oldpass_type=='password'" [icon]="faEyeSlash"></fa-icon>
+                        </span>
+                    </div>
+                    <div *ngIf="currentPass.invalid && (currentPass.dirty || currentPass.touched  || formData.submitted)"
+                        class="invalid-feedback">
+                        <span *ngIf="currentPass.errors.required">Enter your current password</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group text-left">
+                <label for="newPassword">New Password</label>
+                <div class="input-group">
+                    <input id="newPassInput" type="{{newpass_type}}" name="newPass" class="form-control"
+                        placeholder="Enter your new Password" autocomplete="off" required
+                        [(ngModel)]="formValues['newPassword']" #newPass="ngModel"
+                        [ngClass]="{ 'is-invalid': newPass.invalid && (newPass.dirty || newPass.touched || formData.submitted) }">
+                    <div class="input-group-append">
+                        <span class="input-group-text pointer" id="visibility">
+                            <fa-icon class="text-secondary" (click)="newpass_type='password'"
+                                *ngIf="newpass_type=='text'" [icon]="faEye"></fa-icon>
+                            <fa-icon class="text-secondary" (click)="newpass_type='text'"
+                                *ngIf="newpass_type=='password'" [icon]="faEyeSlash"></fa-icon>
+                        </span>
+                    </div>
+                    <div *ngIf="newPass.invalid && (newPass.dirty || newPass.touched  || formData.submitted)"
+                        class="invalid-feedback">
+                        <span *ngIf="newPass.errors.required">Enter your new password</span>
+                    </div>
+                </div>
+                <div class="small mt-1 text-muted">
+                    <fa-icon [icon]="['fas', 'info-circle']" class="me-1"></fa-icon> 
+                    Must contain: Uppercase, Lowercase, Number & Symbol (Min 8 chars).
+                </div>
+            </div>
+
+            <div class="form-group text-left mb-3">
+                <label for="confirmPassword">Confirm Password</label>
+                <div class="input-group">
+                    <input id="confirmPassInput" type="{{confirmpass_type}}" name="confirmPass" class="form-control"
+                        placeholder="Enter your confirm Password" autocomplete="off" required
+                        [(ngModel)]="formValues['confirmPassword']" #confirmPass="ngModel"
+                        [ngClass]="{ 'is-invalid': confirmPass.invalid && (confirmPass.dirty || confirmPass.touched || formData.submitted)}"
+                        pattern="{{ newPass.value }}">
+                    <div class="input-group-append">
+                        <span class="input-group-text pointer" id="visibility">
+                            <fa-icon class="text-secondary" (click)="confirmpass_type='password'"
+                                *ngIf="confirmpass_type=='text'" [icon]="faEye"></fa-icon>
+                            <fa-icon class="text-secondary" (click)="confirmpass_type='text'"
+                                *ngIf="confirmpass_type=='password'" [icon]="faEyeSlash"></fa-icon>
+                        </span>
+                    </div>
+                    <div *ngIf="confirmPass.invalid && (confirmPass.dirty || confirmPass.touched  || formData.submitted)"
+                        class="invalid-feedback">
+                        <span *ngIf="confirmPass.errors.pattern">Passwords do not match</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn btn-success bg-primary-red btn-block border-0 " type="submit"
+                [disabled]="btn_loading ? 'disabled': null">
+                <span class="spinner-border" *ngIf="btn_loading" role="status" aria-hidden="true"></span>
+                <span *ngIf="!btn_loading">Submit</span>
+            </button>
+        </form>
+    </div>
+</ng-template>
+
+
+<ng-template #notice>
+    <div class="d-lg-inline m-3 modal-body">
+        <div class="d-flex align-items-center justify-content-between border-bottom">
+            <h5 class="mb-1">
+                <span>Notification</span>
+            </h5>
+        </div>
+        <div class="mt-3">
+            <p><span>{{ bomName }}</span> {{type}} has been <span><b>{{ bomStatus }}</b></span>.
+            <p>Please review and update as necessary.</p>
+        </div>
+    </div>
+</ng-template>

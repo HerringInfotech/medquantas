@@ -1,0 +1,77 @@
+<div class="container-fluid custom-page">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="mt-3">
+                <div class="bg-white p-3 border-top border-start border-end rounded shadow-sm mb-3">
+                    <div class="d-flex align-items-center justify-content-between ">
+                        <h5 class="mb-0">Access Right</h5>
+                        <div>
+                            <button type="button" class="custom-button border-0" *ngIf="hasPermission('Access.Create')"
+                                routerLink="form" tooltip="Add a new BOM"><fa-icon [icon]="faPlus" class="me-1"></fa-icon> ADD</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-6px table-responsive-sm p-3 shadow-sm">
+                <app-not-data *ngIf="!module_list?.length" [message]="'No permission found'" [route]="'form'"
+                    [button]="'Add new permission'"></app-not-data>
+                <div class="w-25 p-3" *ngIf="module_list?.length">
+                    <label for="role">Role Name <span style="color:red; font-family: sans-serif;">*</span>
+                    </label>
+                    <select name="role" class="form-control custom-select" [(ngModel)]="role_id"
+                        (change)="select_role()" #role="ngModel">
+                        <option disabled value="" selected>Select Role</option>
+                        <option *ngFor="let data of role_data" [value]="data.id">{{data.name}}</option>
+                    </select>
+                </div>
+
+
+                <table id="scroll-horizontal" class="table  nowrap text-center mt-4" *ngIf="module_list?.length">
+                    <thead class="border-top">
+                        <tr>
+                            <th scope="col" class="bg-white">S.no</th>
+                            <th scope="col" class="bg-white left-align">Module Name</th>
+                            <th scope="col" class="bg-white">List</th>
+                            <th scope="col" class="bg-white">Create</th>
+                            <th scope="col" class="bg-white">Update</th>
+                            <th scope="col" class="bg-white">Delete</th>
+                            <th scope="col" class="bg-white">Select All</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let module of module_list; let index = index">
+                            <td title="ID" class="text-center">{{ index + 1 }}</td>
+                            <td title="Unique ID" class="left-align">{{ module.name }}</td>
+                            <td class="text-center">
+                                <input type="checkbox" [(ngModel)]="module.actions[0].isSelected"
+                                    class="custom-select" />
+                            </td>
+                            <td class="text-center">
+                                <input type="checkbox" [(ngModel)]="module.actions[1].isSelected"
+                                    class="custom-select" />
+                            </td>
+                            <td class="text-center">
+                                <input type="checkbox" [(ngModel)]="module.actions[2].isSelected"
+                                    class="custom-select" />
+                            </td>
+                            <td class="text-center">
+                                <input type="checkbox" [(ngModel)]="module.actions[3].isSelected"
+                                    class="custom-select" />
+                            </td>
+                            <td class="text-center">
+                                <input type="checkbox" [(ngModel)]="module.isSelected" class="custom-select"
+                                    (change)="selectAllRowActions(module)" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button class="custom-button m-3 mt-0" type="submit" (click)="save_data()"
+                    [disabled]="btn_loading ? 'disabled': null">
+                    <fa-icon *ngIf="btn_loading" [icon]="faSpinner" [spin]="true" class="me-1"></fa-icon>
+                    <span *ngIf="!btn_loading">SUBMIT</span>
+                    <span *ngIf="btn_loading">SUBMITTING...</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,157 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "master-app": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/master-app",
+      "sourceRoot": "projects/master-app/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "public/master-app",
+            "index": "projects/master-app/src/index.html",
+            "main": "projects/master-app/src/main.ts",
+            "polyfills": "projects/master-app/src/polyfills.ts",
+            "tsConfig": "projects/master-app/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/master-app/src/favicon.ico",
+              "projects/master-app/src/assets"
+            ],
+            "styles": [
+              "projects/master-app/src/styles.scss",
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "node_modules/@ng-select/ng-select/themes/default.theme.css"
+            ],
+            "scripts": [
+              "./node_modules/jquery/dist/jquery.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/master-app/src/environments/environment.ts",
+                  "with": "projects/master-app/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            },
+            "developer": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/master-app/src/environments/environment.ts",
+                  "with": "projects/master-app/src/environments/environment.developer.ts"
+                }
+              ],
+              "optimization": false,
+              "outputHashing": "none",
+              "sourceMap": true,
+              "extractCss": true,
+              "namedChunks": true,
+              "extractLicenses": true,
+              "vendorChunk": true,
+              "buildOptimizer": false
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "master-app:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "master-app:build:production"
+            },
+            "developer": {
+              "browserTarget": "master-app:build:developer"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "master-app:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/master-app/src/test.ts",
+            "polyfills": "projects/master-app/src/polyfills.ts",
+            "tsConfig": "projects/master-app/tsconfig.spec.json",
+            "karmaConfig": "projects/master-app/karma.conf.js",
+            "assets": [
+              "projects/master-app/src/favicon.ico",
+              "projects/master-app/src/assets",
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+            ],
+            "styles": [
+              "projects/master-app/src/styles.scss",
+              "node_modules/@ng-select/ng-select/themes/default.theme.css"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/master-app/tsconfig.app.json",
+              "projects/master-app/tsconfig.spec.json",
+              "projects/master-app/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/master-app/e2e/protractor.conf.js",
+            "devServerTarget": "master-app:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "master-app:serve:production"
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "master-app",
+  "cli": {
+    "analytics": "cff6129c-1eee-4efa-8ce7-50779229ccf0"
+  }
+}

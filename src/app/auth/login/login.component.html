@@ -1,0 +1,162 @@
+<div class="soft-login-wrapper">
+    <!-- Branding Side (Left) -->
+    <div class="login-branding-side shadow-lg">
+        <div class="branding-content">
+            <div class="branding-logo-container animate-soft-popup">
+                <img src="assets/images/logo.png" alt="Medopharm Logo">
+            </div>
+            <h2 class="branding-title">Medopharm Costing Application</h2>
+            <p class="branding-subtitle">Precision Costing for Pharmaceutical Excellence</p>
+        </div>
+    </div>
+
+    <!-- Form Side (Right) -->
+    <div class="login-form-side">
+        <div class="soft-login-container">
+            <div class="soft-card animate-soft-popup">
+                <div class="card-header-v3">
+                    <h1 class="v3-title">Welcome</h1>
+                    <p class="v3-subtitle">Please enter your credentials to access the system</p>
+                </div>
+
+                <div class="card-body-v3">
+                    <form #formData="ngForm" (ngSubmit)="formSubmit(formData)" *ngIf="current_url[2] !== 'forgot-password'">
+                        <div class="field-v3 mb-4">
+                            <div class="input-container-v3" [ngClass]="{ 'field-invalid': email.invalid && (email.dirty || email.touched || formData.submitted) }">
+                                <span class="input-icon"><fa-icon [icon]="faEnvelope"></fa-icon></span>
+                                <input id="emailInput" name="email" type="email" class="input-v3" 
+                                    placeholder="Email address" autocomplete="off" required 
+                                    [(ngModel)]="formValues['email']" #email="ngModel">
+                            </div>
+                            <div *ngIf="email.invalid && (email.dirty || email.touched || formData.submitted)" class="error-v3">
+                                Email is required
+                            </div>
+                        </div>
+
+                        <div class="field-v3 mb-3">
+                            <div class="input-container-v3" [ngClass]="{ 'field-invalid': password.invalid && (password.dirty || password.touched || formData.submitted) }">
+                                <span class="input-icon"><fa-icon [icon]="faLock"></fa-icon></span>
+                                <input type="{{password_type}}" class="input-v3" name="password" required
+                                    [(ngModel)]="formValues['password']" id="passwordInput" placeholder="Password"
+                                    #password="ngModel">
+                                <button type="button" class="eye-btn-v3" (click)="password_type = (password_type === 'password' ? 'text' : 'password')">
+                                    <fa-icon [icon]="password_type === 'password' ? faEyeSlash : faEye"></fa-icon>
+                                </button>
+                            </div>
+                            <div *ngIf="password.invalid && (password.dirty || password.touched || formData.submitted)" class="error-v3">
+                                Password is required
+                            </div>
+                        </div>
+
+                        <div class="actions-v3 d-flex justify-content-between mb-4 px-2">
+                            <label class="remember-v3">
+                                <input type="checkbox"> <span>Stay signed in</span>
+                            </label>
+                            <a (click)="go_forgot()" class="forgot-v3">Need help?</a>
+                        </div>
+
+                        <button class="submit-v3 w-100" type="submit" [disabled]="btn_loading">
+                            <span class="spinner-border spinner-border-sm me-2" *ngIf="btn_loading"></span>
+                            <span>{{ btn_loading ? 'Signing In...' : 'Sign In' }}</span>
+                        </button>
+                    </form>
+
+                    <!-- Forgot Password Phase -->
+                    <div *ngIf="current_url[2] === 'forgot-password'" class="animate-soft-popup">
+                        <div class="field-v3 mb-4">
+                            <div class="input-container-v3">
+                                <span class="input-icon"><fa-icon [icon]="faEnvelope"></fa-icon></span>
+                                <input id="forgotEmailInput" name="email" type="email" class="input-v3" 
+                                    placeholder="Email address" autocomplete="off" required 
+                                    [(ngModel)]="formValues['email']" #forgotEmail="ngModel">
+                            </div>
+                        </div>
+
+                        <button class="submit-v3 w-100 mb-4" (click)="forgot()" [disabled]="btn_loading">
+                            <span class="spinner-border spinner-border-sm me-2" *ngIf="btn_loading"></span>
+                            <span>Reset Password</span>
+                        </button>
+                        
+                        <div class="text-center">
+                            <a href="auth/login" class="back-link-v3">Back to login</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer-v3 mt-5">
+                    <p>Medopharm Costing Application</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Password Expiry Modal -->
+<ng-template #expiredPassTemplate>
+    <div class="modal-body p-0 border-0 overflow-hidden rounded-12px shadow-lg animate-soft-popup">
+        <div class="p-5 text-center bg-white">
+            <div class="mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center bg-warning-soft rounded-circle" style="width: 70px; height: 70px;">
+                    <fa-icon [icon]="faKey" class="text-warning fs-1"></fa-icon>
+                </div>
+            </div>
+            <h4 class="fw-bold text-dark mb-2">Password Expired</h4>
+            <p class="text-muted mb-4 px-3">Your password has reached the 90-day expiry limit. Please choose a strong new password to continue.</p>
+
+            <form #expForm="ngForm" (ngSubmit)="resetExpiredPassword(expForm)" class="text-start px-2">
+                <div class="field-v3 mb-2">
+                    <label class="small fw-bold text-muted mb-2 ms-1 text-uppercase letter-spacing-1px">New Password</label>
+                    <div class="input-container-v3" [ngClass]="{ 'field-invalid': (nPass.invalid && (nPass.dirty || nPass.touched || expForm.submitted)) || passComplexityError }">
+                        <span class="input-icon"><fa-icon [icon]="faLock"></fa-icon></span>
+                        <input [type]="newPassVisible ? 'text' : 'password'" name="newPassword" class="input-v3" 
+                               [(ngModel)]="newPassValues.newPassword" #nPass="ngModel" required 
+                               (ngModelChange)="passComplexityError = false; passMismatchError = false"
+                               placeholder="Strong new password" minlength="8">
+                        <button type="button" class="eye-btn-v3" (click)="newPassVisible = !newPassVisible">
+                            <fa-icon [icon]="newPassVisible ? faEye : faEyeSlash"></fa-icon>
+                        </button>
+                    </div>
+                    <!-- Inline errors -->
+                    <div *ngIf="nPass.invalid && (nPass.dirty || nPass.touched || expForm.submitted)" class="error-v3 mt-1 px-1">
+                        <span *ngIf="nPass.errors?.required">Password is required.</span>
+                        <span *ngIf="nPass.errors?.minlength">Minimum 8 characters required.</span>
+                    </div>
+                    <div *ngIf="passComplexityError" class="error-v3 mt-1 px-1">
+                        Must contain Uppercase, Lowercase, Number &amp; Special Character.
+                    </div>
+                    <div *ngIf="!passComplexityError && !(nPass.invalid && nPass.touched)" class="small mt-1 px-1 text-muted" style="line-height: 1.4;">
+                        Must contain: Uppercase, Lowercase, Number &amp; Symbol.
+                    </div>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="field-v3 mb-4">
+                    <label class="small fw-bold text-muted mb-2 ms-1 text-uppercase letter-spacing-1px">Confirm Password</label>
+                    <div class="input-container-v3" [ngClass]="{ 'field-invalid': (cPass.invalid && (cPass.dirty || cPass.touched || expForm.submitted)) || passMismatchError }">
+                        <span class="input-icon"><fa-icon [icon]="faCheckCircle"></fa-icon></span>
+                        <input [type]="confirmPassVisible ? 'text' : 'password'" name="confirmPassword" class="input-v3" 
+                               [(ngModel)]="newPassValues.confirmPassword" #cPass="ngModel" required 
+                               (ngModelChange)="passMismatchError = false"
+                               placeholder="Repeat your password">
+                        <button type="button" class="eye-btn-v3" (click)="confirmPassVisible = !confirmPassVisible">
+                            <fa-icon [icon]="confirmPassVisible ? faEye : faEyeSlash"></fa-icon>
+                        </button>
+                    </div>
+                    <div *ngIf="cPass.invalid && (cPass.dirty || cPass.touched || expForm.submitted)" class="error-v3 mt-1 px-1">
+                        <span *ngIf="cPass.errors?.required">Please confirm your password.</span>
+                    </div>
+                    <div *ngIf="passMismatchError" class="error-v3 mt-1 px-1">
+                        Passwords do not match.
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button class="submit-v3 w-100 shadow-sm py-3" type="submit" [disabled]="submitLoading">
+                        <span class="spinner-border spinner-border-sm me-2" *ngIf="submitLoading"></span>
+                        <span class="fw-bold letter-spacing-1px">{{ submitLoading ? 'Updating...' : 'Update Password' }}</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</ng-template>

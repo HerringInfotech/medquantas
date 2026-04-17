@@ -1,0 +1,212 @@
+<div class="settings-container">
+    <div class="row g-4">
+        <!-- Daily Alert Settings -->
+        <div class="col-xl-6">
+            <div class="setting-card">
+                <div class="card-header-main">
+                    <h5>
+                        <fa-icon [icon]="faEnvelope"></fa-icon>
+                        <span>Daily Alert Settings</span>
+                    </h5>
+                    <div class="d-flex gap-2">
+                        <button class="logs-btn border-0" (click)="toggleLogs('DailyAlert')">Logs</button>
+                        <button class="back-btn" (click)="goBack()">Back</button>
+                    </div>
+                </div>
+                <div class="card-body-main">
+                    <form #dailyForm="ngForm">
+                        <div class="mb-4">
+                            <label class="toggle-switch">
+                                <input type="checkbox" [(ngModel)]="daily_report_enabled" name="daily_report_enabled" />
+                                <div class="switch-track"></div>
+                                <span class="switch-label">Enable Daily Email Alerts</span>
+                            </label>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label-custom">Schedule Delivery Time</label>
+                            <div class="input-icon-group">
+                                <fa-icon [icon]="faHistory" class="icon"></fa-icon>
+                                <input type="time" class="form-control custom-input" [(ngModel)]="daily_report_time"
+                                    name="daily_report_time" />
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label-custom">Alert Recipients</label>
+                            <div class="input-group">
+                                <input type="email" class="form-control custom-input" #newAlertEmail
+                                    placeholder="Add email address..."
+                                    (keyup.enter)="addEmail(newAlertEmail.value, 'alert_emails'); newAlertEmail.value=''">
+                                <button class="action-btn-primary px-4 ms-2" type="button"
+                                    (click)="addEmail(newAlertEmail.value, 'alert_emails'); newAlertEmail.value=''">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="email-list-container mb-4">
+                            <div *ngIf="!setting_data?.alert_emails?.length" class="text-center py-4 text-muted small italic">
+                                No recipients configured
+                            </div>
+                            <div *ngFor="let email of setting_data?.alert_emails; let i = index" class="recipient-pill">
+                                <span>{{ email }}</span>
+                                <button type="button" class="btn btn-link p-0" (click)="removeEmail(i, 'alert_emails')">
+                                    <fa-icon [icon]="faTrash" class="small"></fa-icon>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-3 pt-2">
+                            <button class="action-btn-primary flex-grow-1" type="button"
+                                (click)="saveDailyReportSettings()" [disabled]="btn_loading">
+                                Save Settings
+                            </button>
+                            <button class="action-btn-outline flex-grow-1" type="button" (click)="sendDailyReportNow()"
+                                [disabled]="send_report_loading">
+                                <span class="spinner-border spinner-border-sm me-2" *ngIf="send_report_loading"></span>
+                                Send Test Now
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Database Backup Settings -->
+        <div class="col-xl-6">
+            <div class="setting-card">
+                <div class="card-header-main">
+                    <h5>
+                        <fa-icon [icon]="faHistory"></fa-icon>
+                        <span>Database Backup Settings</span>
+                    </h5>
+                    <div class="d-flex gap-2">
+                        <button class="logs-btn border-0" (click)="toggleLogs('DatabaseBackup')">Logs</button>
+                    </div>
+                </div>
+                <div class="card-body-main">
+                    <form #backupForm="ngForm">
+                        <div class="mb-4">
+                            <label class="form-label-custom">Backup Execution Time</label>
+                            <div class="input-icon-group">
+                                <fa-icon [icon]="faHistory" class="icon"></fa-icon>
+                                <input type="time" class="form-control custom-input" [(ngModel)]="backup_time"
+                                    name="backup_time" />
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label-custom">Notification Recipients</label>
+                            <div class="input-group">
+                                <input type="email" class="form-control custom-input" #newBackupEmail
+                                    placeholder="Add email address..."
+                                    (keyup.enter)="addEmail(newBackupEmail.value, 'backup_emails'); newBackupEmail.value=''">
+                                <button class="action-btn-primary px-4 ms-2" type="button"
+                                    (click)="addEmail(newBackupEmail.value, 'backup_emails'); newBackupEmail.value=''">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="email-list-container mb-4">
+                            <div *ngIf="!setting_data?.backup_emails?.length" class="text-center py-4 text-muted small italic">
+                                No recipients configured
+                            </div>
+                            <div *ngFor="let email of setting_data?.backup_emails; let i = index" class="recipient-pill">
+                                <span>{{ email }}</span>
+                                <button type="button" class="btn btn-link p-0" (click)="removeEmail(i, 'backup_emails')">
+                                    <fa-icon [icon]="faTrash" class="small"></fa-icon>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-3 pt-2">
+                            <button class="action-btn-primary flex-grow-1" type="button" (click)="saveBackupSettings()"
+                                [disabled]="backup_loading">
+                                Save Backup Settings
+                            </button>
+                            <button class="action-btn-outline flex-grow-1" type="button" (click)="runBackupNow()"
+                                [disabled]="run_backup_loading">
+                                <span class="spinner-border spinner-border-sm me-2" *ngIf="run_backup_loading"></span>
+                                Manual Backup
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Logs Modal Template (same as before but nicely integrated) -->
+<ng-template #logsModal>
+    <div class="modal-content border-0">
+        <div class="modal-header bg-light py-3">
+            <h6 class="modal-title font-weight-bold d-flex align-items-center">
+                <fa-icon [icon]="faHistory" class="me-2 text-primary"></fa-icon>
+                Email Logs - {{ currentLogType === 'DailyAlert' ? 'Daily Alerts' : 'Database Backups' }}
+            </h6>
+            <button type="button" class="btn-close shadow-none" (click)="modalRef.hide()"></button>
+        </div>
+        <div class="modal-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-3 py-3 small font-weight-600">Time</th>
+                            <th class="py-3 small font-weight-600">Recipient(s)</th>
+                            <th class="text-center py-3 small font-weight-600">Status</th>
+                            <th class="py-3 small font-weight-600">Reason / Error</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let log of emailLogs">
+                            <td class="ps-3 py-3 small text-nowrap">
+                                <div class="font-weight-600 text-dark">{{ log.createdAt | date:'dd MMM yyyy' }}</div>
+                                <div class="text-muted" style="font-size: 0.7rem;">{{ log.createdAt | date:'hh:mm a' }}
+                                </div>
+                            </td>
+                            <td class="small text-truncate" style="max-width: 250px;" [title]="log.to">{{ log.to }}</td>
+                            <td class="text-center">
+                                <span class="badge rounded-pill px-3 py-1"
+                                    [ngClass]="log.status === 'Success' ? 'bg-success-subtle text-success border border-success' : 'bg-danger-subtle text-danger border border-danger'">
+                                    {{ log.status }}
+                                </span>
+                            </td>
+                            <td class="small text-muted italic">
+                                {{ log.reason || '-' }}
+                            </td>
+                        </tr>
+                        <tr *ngIf="!emailLogs?.length">
+                            <td colspan="4" class="text-center py-5">
+                                <div class="text-muted">
+                                    <fa-icon [icon]="faEnvelope" [size]="'2x'" class="opacity-25 mb-2 d-block"></fa-icon>
+                                    No logs found for this type
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer bg-light py-2 px-3 d-flex justify-content-between align-items-center"
+            *ngIf="logs_total > 0">
+            <div class="text-muted small">Total: <strong>{{ logs_total }}</strong> entries</div>
+            <div class="btn-group btn-group-sm rounded-3 overflow-hidden border shadow-sm" *ngIf="logs_total > logs_per_page">
+                <button class="btn btn-white border-end px-3" [disabled]="logs_page === 1"
+                    (click)="getEmailLogs(logs_page - 1)">
+                    Prev
+                </button>
+                <div class="btn btn-white bg-white px-3 fw-bold border-0">{{ logs_page }} / {{ ((logs_total /
+                    logs_per_page) + 0.5) | number:'1.0-0' }}</div>
+                <button class="btn btn-white border-start px-3" [disabled]="logs_page * logs_per_page >= logs_total"
+                    (click)="getEmailLogs(logs_page + 1)">
+                    Next
+                </button>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm px-4 rounded-pill shadow-none"
+                (click)="modalRef.hide()">Close</button>
+        </div>
+    </div>
+</ng-template>

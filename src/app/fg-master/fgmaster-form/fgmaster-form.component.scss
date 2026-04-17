@@ -1,0 +1,4 @@
+.ng-select.custom-dropdown-top .ng-dropdown-panel {
+    top: auto !important;  /* Remove automatic top positioning */
+    bottom: 100% !important;  /* Force dropdown to appear above */
+}

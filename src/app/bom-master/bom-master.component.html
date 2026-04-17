@@ -1,0 +1,145 @@
+<app-loader [isLoader]="!page_loading"></app-loader>
+<div class="container-fluid custom-page">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="mt-3">
+        <div class="bg-white p-3 border-top border-start border-end rounded shadow-sm mb-3">
+          <div class="d-flex align-items-center justify-content-between">
+            <h5 class="mb-0 font-weight-bold">Bill of Material</h5>
+            <div class="d-flex align-items-center gap-2">
+              <a href="assets/xlsx/MPLCostSheet.xlsx" download="MPL Cost Sheet.xlsx"
+                class="custom-button text-decoration-none">
+                <fa-icon [icon]="faFileExcel" class="me-1"></fa-icon> Template
+              </a>
+              <button type="button" class="custom-button" (click)="importFileInput.click()" [disabled]="import_loading">
+                <fa-icon *ngIf="import_loading" [icon]="faSpinner" [spin]="true" class="me-1"></fa-icon>
+                <fa-icon *ngIf="!import_loading" [icon]="faUpload" class="me-1"></fa-icon>
+                <ng-container *ngIf="!import_loading">IMPORT</ng-container>
+                <ng-container *ngIf="import_loading">IMPORTING...</ng-container>
+              </button>
+              <input type="file" #importFileInput accept=".xlsx,.xls" style="display: none"
+                (change)="onFileSelected($event)" />
+              <button type="button" class="custom-button" (click)="downloadAllSheetsAsExcel()" [disabled]="btn_loading">
+                <fa-icon *ngIf="btn_loading" [icon]="faSpinner" [spin]="true" class="me-1"></fa-icon>
+                <fa-icon *ngIf="!btn_loading" [icon]="faFileExcel" class="me-1"></fa-icon>
+                <ng-container *ngIf="!btn_loading">EXPORT</ng-container>
+                <ng-container *ngIf="btn_loading">EXPORTING...</ng-container>
+              </button>
+
+              <button type="button" class="custom-button" routerLink="form">
+                <fa-icon [icon]="faPlus" class="me-1"></fa-icon> ADD
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="bg-white rounded-6px p-3 shadow-sm">
+          <div class="row g-3 pb-3">
+            <!-- BOM Type Filter -->
+
+            <!-- Search by Name/Code -->
+            <div class="col-lg-3 col-xl-3 col-12">
+              <label class="form-label">Search by Name</label>
+              <div class="input-group">
+                <input type="text" class="form-control" (keyup)="get_bom(1)" placeholder="Search BOM"
+                  [(ngModel)]="search" />
+                <div class="input-group-append">
+                  <span class="input-group-text"><fa-icon class="text-secondary" [icon]="faSearch"></fa-icon></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-xl-3 col-12">
+              <label class="form-label">Search by Code</label>
+              <div class="input-group">
+                <input type="text" class="form-control" (keyup)="get_bom(1)" placeholder="Search Code"
+                  [(ngModel)]="searchcode" />
+                <div class="input-group-append">
+                  <span class="input-group-text"><fa-icon class="text-secondary" [icon]="faSearch"></fa-icon></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Filter by Packing FG Code -->
+            <div class="col-lg-3 col-xl-3 col-12">
+              <label class="form-label">Filter by Packing FG Code</label>
+              <div class="input-group">
+                <input type="text" class="form-control" (keyup)="get_bom(1)" placeholder="Search FG Code"
+                  [(ngModel)]="searchFgCode" />
+                <div class="input-group-append">
+                  <span class="input-group-text"><fa-icon class="text-secondary" [icon]="faSearch"></fa-icon></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Filter by Location Code -->
+            <div class="col-lg-3 col-xl-3 col-12">
+              <label class="form-label">Filter by Location</label>
+              <select class="form-select" (change)="get_bom(1)" [(ngModel)]="searchloc">
+                <option value="">All Locations</option>
+                <option *ngFor="let loc of locations" [value]="loc">{{ loc }}</option>
+              </select>
+            </div>
+
+            <!-- Search by Customer -->
+            <!-- <div class="col-lg-3 col-xl-3 col-12">
+                            <label class="form-label">Search by Customer</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" (keyup)="get_bom(1)"
+                                    placeholder="Search customer" [(ngModel)]="search_customer">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><fa-icon class="text-secondary"
+                                            [icon]="faSearch"></fa-icon></span>
+                                </div>
+                            </div>
+                        </div> -->
+          </div>
+
+          <!-- No Data Message -->
+          <app-not-data *ngIf="!bom_list?.length && page_loading" [message]="'No BOM found'" [route]="'form'"
+            [button]="'Add new BOM'"></app-not-data>
+
+          <!-- BOM List Table -->
+          <div *ngIf="bom_list?.length">
+            <table class="table table-hover table-striped table-bordered rounded-top text-center">
+              <thead class="thead-light">
+                <tr>
+                  <th class="text-center">S.No</th>
+                  <th class="text-center">Location</th>
+                  <th class="text-center">Name</th>
+                  <th class="text-center">Code</th>
+                  <th class="text-center">No of Packs</th>
+                  <th class="text-center">Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of bom_list; let index = index" class="align-middle details-row ">
+                  <td class="text-center">
+                    {{ index + pagination_data?.pagingCounter }}
+                  </td>
+                  <td class="text-center">{{ data?.locCd }}</td>
+                  <td class="text-start">{{ data?.name }}</td>
+                  <td class="text-center">{{ data?.code }}</td>
+                  <td class="text-center">{{ data?.packstage?.length }}</td>
+                  <td class="text-center">{{ data?.status }}</td>
+                  <td>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" routerLink="form/{{ data._id }}">
+                      <fa-icon [icon]="faEdit"></fa-icon>
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" routerLink="view/{{ data._id }}">
+                      <fa-icon [icon]="faEye"></fa-icon>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- Pagination -->
+            <app-pagination [data]="pagination_data"></app-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

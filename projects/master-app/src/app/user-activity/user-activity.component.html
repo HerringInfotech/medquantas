@@ -1,0 +1,190 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="mt-3">
+
+        <div class="bg-white p-3 border-top border-start border-end rounded shadow-sm mb-3">
+          <h1 class="ua-title">User Activity</h1>
+          <span class="ua-subtitle">Track all user actions across the system</span>
+        </div>
+        <div class="ua-header-right">
+          <span class="ua-total-badge">{{ totalRecords | number }} records</span>
+          <button class="btn-summary" (click)="fetchSummary()">📊 Summary</button>
+        </div>
+      </div>
+
+      <!-- Summary Cards (toggle) -->
+      <div class="ua-summary" *ngIf="showSummary && summary">
+        <div class="summary-section">
+          <h3>By Module</h3>
+          <div class="summary-tags">
+            <span class="summary-tag" *ngFor="let item of summary.byModule">
+              {{ item._id }} <strong>{{ item.count }}</strong>
+            </span>
+          </div>
+        </div>
+        <div class="summary-section">
+          <h3>By Action</h3>
+          <div class="summary-tags">
+            <span class="summary-tag" *ngFor="let item of summary.byAction">
+              {{ item._id }} <strong>{{ item.count }}</strong>
+            </span>
+          </div>
+        </div>
+        <button class="btn-close-summary" (click)="showSummary = false">✕ Close</button>
+      </div>
+
+      <!-- Filters -->
+      <div class="ua-filters">
+        <!-- Search -->
+        <div class="filter-group search-group">
+          <span class="filter-icon">🔍</span>
+          <input type="text" [(ngModel)]="filters.search" placeholder="Search user, action, description..."
+            class="filter-input" (keyup.enter)="applyFilters()">
+        </div>
+
+        <!-- Module -->
+        <div class="filter-group">
+          <label class="filter-label">Module</label>
+          <select [(ngModel)]="filters.module" class="filter-select">
+            <option *ngFor="let m of modules" [value]="m">{{ m }}</option>
+          </select>
+        </div>
+
+        <!-- Action -->
+        <div class="filter-group">
+          <label class="filter-label">Action</label>
+          <select [(ngModel)]="filters.action" class="filter-select">
+            <option *ngFor="let a of actions" [value]="a">{{ a }}</option>
+          </select>
+        </div>
+
+        <!-- Status -->
+        <div class="filter-group">
+          <label class="filter-label">Status</label>
+          <select [(ngModel)]="filters.status" class="filter-select">
+            <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+          </select>
+        </div>
+
+        <!-- Date Range -->
+        <div class="filter-group">
+          <label class="filter-label">From</label>
+          <input type="date" [(ngModel)]="filters.startDate" class="filter-input date-input">
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">To</label>
+          <input type="date" [(ngModel)]="filters.endDate" class="filter-input date-input">
+        </div>
+
+        <!-- Buttons -->
+        <div class="filter-actions">
+          <button class="btn-search" (click)="applyFilters()">Search</button>
+          <button class="btn-reset" (click)="resetFilters()">Reset</button>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="ua-table-wrapper">
+        <!-- Loading Overlay -->
+        <div class="ua-loading" *ngIf="loading">
+          <div class="spinner"></div>
+          <span>Loading activity logs...</span>
+        </div>
+
+        <table class="ua-table" *ngIf="!loading">
+          <thead>
+            <tr>
+              <th class="col-no">#</th>
+              <th class="col-datetime">Date & Time</th>
+              <th class="col-user">User</th>
+              <th class="col-module">Module</th>
+              <th class="col-action">Action</th>
+              <th class="col-desc">Description</th>
+              <th class="col-ref">Reference</th>
+              <th class="col-status">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let log of logs; let i = index" [class.row-failed]="log.status === 'Failed'">
+              <td class="col-no">{{ startRecord + i }}</td>
+              <td class="col-datetime">
+                <span class="datetime-text">{{ formatDate(log.timestamp) }}</span>
+              </td>
+              <td class="col-user">
+                <div class="user-cell">
+                  <div class="user-avatar">{{ (log.userName || 'U')[0].toUpperCase() }}</div>
+                  <div class="user-info">
+                    <span class="user-name">{{ log.userName || 'Unknown' }}</span>
+                    <span class="user-email">{{ log.userEmail || '' }}</span>
+                  </div>
+                </div>
+              </td>
+              <td class="col-module">
+                <span class="module-chip">
+                  <span class="module-icon">{{ getModuleIcon(log.module) }}</span>
+                  {{ log.module }}
+                </span>
+              </td>
+              <td class="col-action">
+                <span class="action-badge" [ngClass]="getActionBadgeClass(log.action)">
+                  {{ log.action }}
+                </span>
+              </td>
+              <td class="col-desc">
+                <span class="desc-text" [title]="log.description">{{ log.description || '-' }}</span>
+              </td>
+              <td class="col-ref">
+                <span class="ref-text" *ngIf="log.referenceName || log.referenceId">
+                  {{ log.referenceName || log.referenceId }}
+                </span>
+                <span *ngIf="!log.referenceName && !log.referenceId" class="text-muted">—</span>
+              </td>
+              <td class="col-status">
+                <span class="status-dot" [class.dot-success]="log.status === 'Success'"
+                  [class.dot-failed]="log.status === 'Failed'">
+                  {{ log.status }}
+                </span>
+              </td>
+            </tr>
+
+            <!-- Empty State -->
+            <tr *ngIf="logs.length === 0">
+              <td colspan="8" class="empty-state">
+                <div class="empty-content">
+                  <span class="empty-icon">📭</span>
+                  <p>No activity logs found</p>
+                  <small>Try adjusting your filters</small>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="ua-pagination" *ngIf="totalRecords > 0">
+        <span class="page-info">
+          Showing {{ startRecord }} – {{ endRecord }} of {{ totalRecords | number }} records
+        </span>
+        <div class="page-controls">
+          <button class="page-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">‹ Prev</button>
+          <button class="page-btn" *ngFor="let p of pages" [class.active]="p === currentPage" (click)="goToPage(p)">{{ p
+            }}</button>
+          <button class="page-btn" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">Next
+            ›</button>
+        </div>
+
+        <div class="page-size-control">
+          <label>Per page:</label>
+          <select [(ngModel)]="pageSize" (ngModelChange)="applyFilters()" class="filter-select" style="width:80px;">
+            <option [value]="25">25</option>
+            <option [value]="50">50</option>
+            <option [value]="100">100</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

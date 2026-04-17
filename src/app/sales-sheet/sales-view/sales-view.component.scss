@@ -1,0 +1,156 @@
+// th {
+//     text-align: center;
+// }
+
+// .cost-container {
+//     margin-top: 20px;
+//     padding: 15px;
+//     border: 1px solid #dee2e6;
+//     border-radius: 5px;
+// }
+
+
+// .right {
+//     text-align: right;
+// }
+
+// .right {
+//     text-align: left;
+// }
+
+// .bold{
+//     font-weight: bold
+// }
+
+
+.custom-color {
+    background-color: #009688;
+    border-color: #009688;
+    color: white;
+}
+
+.font-weight {
+    font-weight: bold;
+}
+
+
+
+.low-rate {
+    border: 1px solid red;
+}
+
+.high-rate {
+    border: 1px solid green;
+}
+
+.low-rate:focus {
+    border-color: red !important;
+}
+
+.high-rate:focus {
+    border-color: green !important;
+}
+
+
+td[title='name'] {
+    max-width: 100px;
+    overflow-x: scroll;
+    text-wrap: nowrap;
+}
+
+td[title="name"]::-webkit-scrollbar {
+    height: 5px;
+}
+
+td[title="name"]::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+td[title="name"]::-webkit-scrollbar-thumb {
+    background: #ccc;
+}
+
+td[title="name"]::-webkit-scrollbar-thumb:hover {
+    background: #ccc;
+}
+
+.bom-container {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+}
+
+.loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.wider-input {
+    width: 300px;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.popover-scrollable {
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+
+
+.excel-button:hover {
+    background-color: #1D6F42;
+    color: white;
+}
+
+.pdf-button:hover {
+    background-color: #D9534F;
+    color: white;
+}
+
+/* Modal Styles */
+.modal-backdrop-custom {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+    backdrop-filter: blur(4px);
+}
+
+.modal-content-custom {
+    background: #ffffff;
+    padding: 2.5rem;
+    border-radius: 1.5rem;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.letter-spacing-1 {
+    letter-spacing: 0.05em;
+}
+
+.bg-success-subtle {
+    background-color: #d1fae5;
+}
+
+.bg-danger-subtle {
+    background-color: #fee2e2;
+}

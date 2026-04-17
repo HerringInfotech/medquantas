@@ -1,0 +1,359 @@
+// Version 3: Modern Soft Tech
+$v3-primary: #1a2e4f;
+$v3-accent: #d4af37;
+$v3-bg: #f4f7fa;
+$v3-card-bg: rgba(255, 255, 255, 0.9);
+$v3-input-bg: #f0f2f5;
+$v3-text: #2d3436;
+$v3-text-light: #636e72;
+
+// Advanced Animations
+@keyframes slideUpFade {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes floatLogo {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    50% { transform: translateY(-10px) rotate(1deg); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes bgMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.soft-login-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: $v3-bg;
+    padding: 0;
+}
+
+.login-branding-side {
+    flex: 1.2;
+    min-width: 350px;
+    background: linear-gradient(-45deg, $v3-primary, #2c3e50, #1a2e4f, #34495e);
+    background-size: 400% 400%;
+    animation: bgMove 15s ease infinite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    color: white;
+    padding: 3rem;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 70%, rgba($v3-accent, 0.1) 0%, transparent 50%);
+        pointer-events: none;
+    }
+
+    .branding-content {
+        text-align: center;
+        z-index: 1;
+
+        .branding-logo-container {
+            width: 140px;
+            height: 140px;
+            background: white;
+            border-radius: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+                       floatLogo 4s ease-in-out infinite 0.8s;
+            transition: all 0.4s ease;
+
+            &:hover {
+                transform: scale(1.05);
+                box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            }
+
+            img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            }
+        }
+
+        .branding-title {
+            font-size: 2.85rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+            opacity: 0;
+        }
+
+        .branding-subtitle {
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.75);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+            opacity: 0;
+        }
+    }
+
+    @media (max-width: 992px) {
+        flex: none;
+        width: 100%;
+        padding: 4rem 2rem;
+        min-height: 40vh;
+    }
+}
+
+.login-form-side {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $v3-bg;
+    padding: 2rem;
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at top right, rgba($v3-accent, 0.03), transparent),
+                    radial-gradient(circle at bottom left, rgba($v3-primary, 0.03), transparent);
+        pointer-events: none;
+    }
+
+    @media (max-width: 992px) {
+        flex: none;
+        width: 100%;
+        min-height: 60vh;
+    }
+}
+
+.soft-login-container {
+    width: 100%;
+    max-width: 480px;
+    z-index: 1;
+}
+
+.soft-card {
+    background: $v3-card-bg;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 40px;
+    padding: 3.5rem 3rem;
+    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.12);
+    text-align: center;
+    animation: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+    @media (max-width: 576px) {
+        padding: 2.5rem 1.75rem;
+    }
+
+    .card-header-v3 {
+        animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+        opacity: 0;
+    }
+
+    form {
+        .field-v3:nth-child(1) { animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards; opacity: 0; }
+        .field-v3:nth-child(2) { animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards; opacity: 0; }
+        .actions-v3 { animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards; opacity: 0; }
+        .submit-v3 { animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards; opacity: 0; }
+    }
+
+    .card-footer-v3 {
+        animation: fadeIn 1s ease 1s forwards;
+        opacity: 0;
+    }
+}
+
+.card-header-v3 {
+    .v3-title {
+        font-size: 2.25rem;
+        font-weight: 800;
+        color: $v3-primary;
+        margin-bottom: 0.5rem;
+        letter-spacing: -1px;
+    }
+
+    .v3-subtitle {
+        color: $v3-text-light;
+        font-size: 1rem;
+        margin-bottom: 2.5rem;
+    }
+}
+
+.input-container-v3 {
+    display: flex;
+    align-items: center;
+    background: $v3-input-bg;
+    border-radius: 18px;
+    padding: 0 1.25rem;
+    height: 60px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+
+    .input-icon {
+        color: $v3-text-light;
+        margin-right: 12px;
+        font-size: 1.1rem;
+    }
+
+    .input-v3 {
+        flex: 1;
+        background: none;
+        border: none;
+        height: 100%;
+        font-size: 1rem;
+        font-weight: 600;
+        color: $v3-text;
+        
+        &:focus {
+            outline: none;
+        }
+
+        &::placeholder {
+            color: #b2bec3;
+            font-weight: 500;
+        }
+    }
+
+    &:focus-within {
+        background: white;
+        border-color: $v3-primary;
+        box-shadow: 0 10px 25px rgba($v3-primary, 0.08);
+        transform: translateY(-2px);
+
+        .input-icon {
+            color: $v3-primary;
+        }
+    }
+
+    &.field-invalid {
+        border-color: #ff7675;
+        background-color: rgba(#ff7675, 0.02);
+    }
+}
+
+.eye-btn-v3 {
+    background: none;
+    border: none;
+    color: #b2bec3;
+    cursor: pointer;
+    padding: 8px;
+    
+    &:hover {
+        color: $v3-primary;
+    }
+}
+
+.error-v3 {
+    color: #ff7675;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-top: 6px;
+    text-align: left;
+    padding-left: 1rem;
+}
+
+.actions-v3 {
+    .remember-v3 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        color: $v3-text-light;
+        font-weight: 500;
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            border-radius: 6px;
+            accent-color: $v3-primary;
+        }
+    }
+
+    .forgot-v3 {
+        color: $v3-primary;
+        font-size: 0.9rem;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+
+        &:hover {
+            color: $v3-accent;
+        }
+    }
+}
+
+.submit-v3 {
+    height: 60px;
+    background: $v3-primary;
+    color: white;
+    border: none;
+    border-radius: 18px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 15px 30px rgba($v3-primary, 0.2);
+
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 20px 40px rgba($v3-primary, 0.3);
+        background: lighten($v3-primary, 5%);
+    }
+
+    &:active {
+        transform: translateY(-1px);
+    }
+
+    &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+}
+
+.back-link-v3 {
+    color: $v3-text-light;
+    font-weight: 600;
+    text-decoration: none;
+    
+    &:hover {
+        color: $v3-primary;
+    }
+}
+
+.card-footer-v3 {
+    p {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #b2bec3;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+}
+

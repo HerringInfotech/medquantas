@@ -1,0 +1,59 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="my-3 bg-white rounded custom-height">
+                <div class="mx-auto col-lg-6 py-3">
+                    <div class="mb-0 bg-white p-2 px-3 border-top border-start border-end rounded rounded-bottom-0">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h5 class="mb-0">
+                                <span *ngIf="!typeId">ADD UOM</span>
+                                <span *ngIf="typeId">Edit UOM</span>
+                            </h5>
+                            <button class="btn btn-primary" (click)="goBack()">Back</button>
+                        </div>
+                    </div>
+                    <div class="bg-white border rounded rounded-top-0">
+                        <form class="p-3" #formData="ngForm" (ngSubmit)="formSubmit(formData)">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="nameInput">Type <span
+                                            style="color:red;font-family: sans-serif;">*</span></label>
+                                    <input id="nameInput" name="name" class="form-control" placeholder="type" required
+                                        autocomplete="off" [(ngModel)]="formValues['name']" #name="ngModel"
+                                        [ngClass]="{ 'is-invalid': name.invalid && (name.dirty || name.touched || formData.submitted) }">
+                                    <div *ngIf="name.invalid && (name.dirty || name.touched  || formData.submitted)"
+                                        class="invalid-feedback">
+                                        <span *ngIf="name.errors.required">measurement type is required.</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="abbrInput">Abbreviation <span
+                                            style="color:red;font-family: sans-serif;">*</span></label>
+                                    <input id="abbrInput" name="abbreviation" class="form-control"
+                                        placeholder="abbreviation" required autocomplete="off"
+                                        [(ngModel)]="formValues['abbreviation']" #abbreviation="ngModel"
+                                        [ngClass]="{ 'is-invalid': abbreviation.invalid && (abbreviation.dirty || abbreviation.touched || formData.submitted) }">
+                                    <div *ngIf="abbreviation.invalid && (abbreviation.dirty || abbreviation.touched  || formData.submitted)"
+                                        class="invalid-feedback">
+                                        <span *ngIf="abbreviation.errors.required">type abbreviation is
+                                            required.</span>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-success bg-primary-blue border-0 mt-3" type="submit"
+                                    [disabled]="btn_loading ? 'disabled': null">
+                                    <span class="spinner-border" *ngIf="btn_loading" role="status"
+                                        aria-hidden="true"></span>
+                                    <span *ngIf="!btn_loading">{{ typeId ? 'Update' : 'Create'}}</span>
+                                </button>
+                                <button class="btn btn-danger mt-3 ms-2" type="button" *ngIf="!typeId"
+                                    (click)="resetForm(formData)">Reset</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

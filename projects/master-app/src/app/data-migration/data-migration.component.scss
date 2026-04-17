@@ -1,0 +1,47 @@
+.progress {
+    height: 25px;
+    border-radius: 10px;
+    background-color: #f0f0f0;
+
+    .progress-bar {
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.4s ease;
+        font-weight: bold;
+        color: #fff;
+        background: linear-gradient(90deg, #6a0dad, #c71585);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+    }
+}
+
+.progress:hover .progress-bar {
+    background: linear-gradient(90deg, #8a2be2, #db7093);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+.transition-all {
+    transition: all 0.3s ease-in-out;
+}
+
+.hover-shadow:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08) !important;
+    transform: translateY(-2px);
+}
+
+.border-dashed {
+    border-style: dashed !important;
+    border-width: 2px !important;
+}
+
+.cursor__pointer {
+    cursor: pointer !important;
+}
+
+.hover-bg-primary:hover {
+    background-color: var(--bs-primary) !important;
+}
+
+.hover-text-white:hover {
+    color: #fff !important;
+}

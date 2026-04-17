@@ -1,0 +1,159 @@
+.main-card {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(26, 46, 79, 0.05) !important;
+}
+
+.bg-light-subtle {
+    background-color: #f8fafc !important;
+}
+
+.icon-box {
+    width: 54px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #edf2f7;
+}
+
+.modern-input {
+    border: 1.5px solid #edf2f7;
+    background-color: #fdfdfd;
+    border-radius: 12px !important;
+    padding: 0.75rem 1.1rem;
+    font-size: 0.95rem;
+    color: #1a2e4f;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:focus {
+        background-color: #fff;
+        border-color: #1a2e4f;
+        box-shadow: 0 0 0 4px rgba(26, 46, 79, 0.08);
+        transform: translateY(-1px);
+    }
+
+    &.is-invalid {
+        border-color: #ef4444;
+        background-color: #fef2f2;
+        &:focus {
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+        }
+    }
+
+    &:disabled,
+    &[readonly] {
+        background-color: #f8fafc;
+        border-color: #e2e8f0;
+        color: #94a3b8;
+        cursor: not-allowed;
+    }
+}
+
+.password-group {
+    position: relative;
+    .password-toggle {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
+        color: #94a3b8;
+        &:hover {
+            color: #1a2e4f;
+        }
+    }
+    .modern-input {
+        padding-right: 45px;
+    }
+}
+
+.btn-primary-royal {
+    background: linear-gradient(135deg, #1a2e4f 0%, #2a4a7f 100%);
+    color: #ffffff;
+    border: none;
+    font-weight: 600;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 0.5px;
+
+    &:hover:not(:disabled) {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 12px 20px rgba(26, 46, 79, 0.2);
+        background: linear-gradient(135deg, #d4af37 0%, #c5a028 100%);
+        color: #1a2e4f;
+    }
+
+    &:active {
+        transform: translateY(-1px);
+    }
+
+    &:disabled {
+        background: #cbd5e1;
+        opacity: 0.8;
+    }
+}
+
+.btn-light-hover {
+    background: #fff;
+    color: #1a2e4f;
+    border: 1px solid #e2e8f0;
+    &:hover {
+        background: #f8fafc;
+        border-color: #1a2e4f;
+        color: #1a2e4f;
+    }
+}
+
+.rounded-12px {
+    border-radius: 12px !important;
+}
+
+.py-2-5 {
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+}
+
+.tracking-wider {
+    letter-spacing: 0.1em;
+}
+
+.transition-all {
+    transition: all 0.3s ease;
+}
+
+// Entrance Animations
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes zoomIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shakeX {
+    from, to { transform: translate3d(0, 0, 0); }
+    10%, 30%, 50%, 70%, 90% { transform: translate3d(-4px, 0, 0); }
+    20%, 40%, 60%, 80% { transform: translate3d(4px, 0, 0); }
+}
+
+.animate__animated {
+    animation-duration: 0.5s;
+    animation-fill-mode: both;
+}
+
+.animate__fadeIn { animation-name: fadeIn; }
+.animate__zoomIn { animation-name: zoomIn; }
+.animate__shakeX { animation-name: shakeX; }
+
+.text-blue-dark {
+    color: #1a2e4f;
+}
+
+.invalid-feedback {
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-left: 5px;
+}
+

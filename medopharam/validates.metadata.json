@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"medopharam.validates"}],"uuid":"f1a8e58a8fa64a26aa94a6a9e64f73ae"}

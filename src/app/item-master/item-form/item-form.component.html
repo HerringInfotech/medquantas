@@ -1,0 +1,303 @@
+<app-loader [isLoader]="!page_loader"></app-loader>
+<div class="container-fluid" *ngIf="page_loader">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="my-3 border-0">
+        <div class="bg-white p-3 border-top border-start border-end rounded shadow-sm mb-3">
+          <div class="d-flex align-items-center justify-content-between">
+            <h5 class="mb-0">
+              <span *ngIf="!itemID">Add Item Master</span>
+              <span *ngIf="itemID">Edit Item Master</span>
+            </h5>
+            <button type="button" class="custom-button" (click)="goBack()">
+              <fa-icon [icon]="faArrowLeft"></fa-icon> Back
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-6px table-responsive-sm p-3 shadow-sm">
+          <form class="p-3" #formData="ngForm" (ngSubmit)="formSubmit(formData)">
+            <div class="col-12 col-md-12">
+              <div class="row mt-2">
+                <div class="form-group col-lg-6 col-md-6">
+                  <mat-form-field appearance="outline" class="w-100 mt-1">
+                    <mat-label>Select Itemtype Code</mat-label>
+                    <mat-select name="typecode" [(ngModel)]="formValues['typeCode']" [disabled]="itemID"
+                      #typecode="ngModel" required
+                      [ngClass]="{'is-invalid':typecode.invalid && (typecode.dirty || typecode.touched || formData.submitted)}">
+                      <mat-option *ngFor="let item of itemtypeList" [value]="item.code" matTooltip="{{ item?.name }}"
+                        matTooltipPosition="above">
+                        {{ item?.code }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="typecode.invalid && (typecode.dirty || typecode.touched || formData.submitted)">
+                      Itemtype Code is required.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="form-group col-lg-6 col-md-6">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Subtype Code</mat-label>
+                    <input matInput id="subtypeCodeInput" name="subtypeCode" placeholder="Subtype Code"
+                      autocomplete="off" required [(ngModel)]="formValues['subtypeCode']" [disabled]="itemID"
+                      #subtypeCode="ngModel" [ngClass]="{
+                        'is-invalid':
+                          subtypeCode.invalid &&
+                          (subtypeCode.dirty ||
+                            subtypeCode.touched ||
+                            formData.submitted)
+                      }" />
+                    <mat-error *ngIf="
+                        subtypeCode.invalid &&
+                        (subtypeCode.dirty ||
+                          subtypeCode.touched ||
+                          formData.submitted)
+                      ">
+                      Subtype Code is required.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row mt-2">
+                <div class="form-group col-lg-6 col-md-6">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Item Code</mat-label>
+                    <input matInput id="codeInput" name="code" placeholder="Item Code" autocomplete="off" required
+                      [(ngModel)]="formValues['code']" [disabled]="itemID" #code="ngModel" [ngClass]="{
+                        'is-invalid':
+                          code.invalid &&
+                          (code.dirty || code.touched || formData.submitted)
+                      }" />
+                    <mat-error *ngIf="
+                        code.invalid &&
+                        (code.dirty || code.touched || formData.submitted)
+                      ">
+                      Item code is required.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="form-group col-lg-6 col-md-6">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Item Name</mat-label>
+                    <input matInput id="nameInput" name="name" placeholder="Item Name" autocomplete="off" required
+                      [(ngModel)]="formValues['name']" #name="ngModel" [ngClass]="{
+                        'is-invalid':
+                          name.invalid &&
+                          (name.dirty || name.touched || formData.submitted)
+                      }" />
+                    <mat-error *ngIf="
+                        name.invalid &&
+                        (name.dirty || name.touched || formData.submitted)
+                      ">
+                      Item name is required.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row mt-2">
+                <div class="form-group col-lg-6 col-md-6">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>UOM Code</mat-label>
+                    <input matInput id="buyunitInput" name="buyunit" placeholder="UOM Code" autocomplete="off" required
+                      [(ngModel)]="formValues['buyUnit']" #buyunit="ngModel" [ngClass]="{
+                        'is-invalid':
+                          buyunit.invalid &&
+                          (buyunit.dirty ||
+                            buyunit.touched ||
+                            formData.submitted)
+                      }" />
+                    <mat-error *ngIf="
+                        buyunit.invalid &&
+                        (buyunit.dirty || buyunit.touched || formData.submitted)
+                      ">
+                      UOM Code is required.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="form-group col-lg-6 col-md-6">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Issue UOM Code</mat-label>
+                    <input matInput id="issueunitInput" name="issueunit" placeholder="Issue UOM Code" autocomplete="off"
+                      required [(ngModel)]="formValues['convertUnit']" #issueunit="ngModel" [ngClass]="{
+                        'is-invalid':
+                          issueunit.invalid &&
+                          (issueunit.dirty ||
+                            issueunit.touched ||
+                            formData.submitted)
+                      }" />
+                    <mat-error *ngIf="
+                        issueunit.invalid &&
+                        (issueunit.dirty ||
+                          issueunit.touched ||
+                          formData.submitted)
+                      ">
+                      Issue UOM Code is required.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row mt-2">
+                <div class="form-group col-lg-6 col-md-6">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Convert Rate</mat-label>
+                    <input matInput id="convertrateInput" name="convertrate" required placeholder="Convert Rate"
+                      [(ngModel)]="formValues['convertRate']" #convertrate="ngModel" [ngClass]="{
+                        'is-invalid':
+                          convertrate.invalid &&
+                          (convertrate.dirty ||
+                            convertrate.touched ||
+                            formData.submitted)
+                      }" />
+                    <mat-error *ngIf="
+                        convertrate.invalid &&
+                        (convertrate.dirty ||
+                          convertrate.touched ||
+                          formData.submitted)
+                      ">
+                      Convert Rate is required.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="form-group col-lg-6 col-md-6">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Credit Date</mat-label>
+                    <input matInput type="text" placeholder="Select Date" [(ngModel)]="formValues['creditDate']"
+                      name="creditDate" bsDatepicker #dp="bsDatepicker" autocomplete="off" [bsConfig]="{
+                        showWeekNumbers: false,
+                        dateInputFormat: 'DD/MM/YYYY'
+                      }" />
+                    <mat-error *ngIf="
+                        convertrate.invalid &&
+                        (convertrate.dirty ||
+                          convertrate.touched ||
+                          formData.submitted)
+                      ">
+                      Credit Date is required.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="form-group col-lg-6 col-md-6">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>UQCCNVFCT</mat-label>
+                    <input matInput id="uqcConvertRateInput" name="uqcConvertRate" required
+                      placeholder="UQC Convert Rate" [(ngModel)]="formValues['uqcConvertRate']"
+                      #uqcConvertRate="ngModel" [ngClass]="{
+                        'is-invalid':
+                          uqcConvertRate.invalid &&
+                          (uqcConvertRate.dirty ||
+                            uqcConvertRate.touched ||
+                            formData.submitted)
+                      }" />
+                    <mat-error *ngIf="
+                        uqcConvertRate.invalid &&
+                        (uqcConvertRate.dirty ||
+                          uqcConvertRate.touched ||
+                          formData.submitted)
+                      ">
+                      UQC Convert Rate is required.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-lg-6 col-md-6">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>GSIND</mat-label>
+                    <input matInput id="gsindInput" name="gsind" required placeholder="GSIND"
+                      [(ngModel)]="formValues['gsind']" #gsind="ngModel" [ngClass]="{
+                        'is-invalid':
+                          gsind.invalid &&
+                          (gsind.dirty || gsind.touched || formData.submitted)
+                      }" />
+                    <mat-error *ngIf="
+                        gsind.invalid &&
+                        (gsind.dirty || gsind.touched || formData.submitted)
+                      ">
+                      GSIND is required.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="form-group col-lg-6 col-md-6">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>HSNSACCD</mat-label>
+                    <input matInput id="hsncodeInput" name="hsnCode" required placeholder="HSNSACCD"
+                      [(ngModel)]="formValues['hsnCode']" #hsncode="ngModel" [ngClass]="{
+                        'is-invalid':
+                          hsncode.invalid &&
+                          (hsncode.dirty ||
+                            hsncode.touched ||
+                            formData.submitted)
+                      }" />
+                    <mat-error *ngIf="
+                        hsncode.invalid &&
+                        (hsncode.dirty || hsncode.touched || formData.submitted)
+                      ">
+                      HSNSACSD is required.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="form-group col-lg-6 col-md-6">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Percentage %</mat-label>
+                    <input matInput id="percentageInput" name="percentage" placeholder="Percentage" autocomplete="off"
+                      required type="number" min="0" max="100" [(ngModel)]="formValues['percentage']"
+                      (ngModelChange)="enforceBounds($event)" #percentage="ngModel" [ngClass]="{
+                        'is-invalid':
+                          percentage.invalid &&
+                          (percentage.dirty ||
+                            percentage.touched ||
+                            formData.submitted)
+                      }" />
+                    <mat-error *ngIf="
+                        percentage.errors?.required &&
+                        (percentage.dirty ||
+                          percentage.touched ||
+                          formData.submitted)
+                      ">
+                      Percentage is required.
+                    </mat-error>
+                    <mat-error *ngIf="
+                        percentage.errors?.min &&
+                        (percentage.dirty ||
+                          percentage.touched ||
+                          formData.submitted)
+                      ">
+                      Percentage must be at least 0.
+                    </mat-error>
+                    <mat-error *ngIf="
+                        percentage.errors?.max &&
+                        (percentage.dirty ||
+                          percentage.touched ||
+                          formData.submitted)
+                      ">
+                      Percentage cannot exceed 100.
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 12px">
+                <button class="custom-button" type="submit" [disabled]="btn_loading ? true : null">
+                  <span class="spinner-border spinner-border-sm" *ngIf="btn_loading" role="status"
+                    aria-hidden="true"></span>
+                  <span *ngIf="!btn_loading">{{itemID ? "Update" : "Create"}}</span>
+                </button>
+
+                <button class="reset-button" color="warn" type="button" *ngIf="!itemID" (click)="resetForm(formData)">
+                  Reset
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

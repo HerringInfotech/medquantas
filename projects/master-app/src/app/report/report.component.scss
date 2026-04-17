@@ -1,0 +1,28 @@
+.dropdown-list {
+    max-height: 120px;
+}
+td[title='name']{
+    max-width:100px;
+    overflow-x: scroll;
+    text-wrap: nowrap;
+}
+
+td[title="name"]::-webkit-scrollbar {
+    height: 5px;
+}
+
+td[title="name"]::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+td[title="name"]::-webkit-scrollbar-thumb {
+    background: #ccc;
+}
+
+td[title="name"]::-webkit-scrollbar-thumb:hover {
+    background: #ccc;
+}
+
+.highlight-row {
+    background-color: #75e612 !important;
+}

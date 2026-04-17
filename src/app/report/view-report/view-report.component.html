@@ -1,0 +1,1850 @@
+<div class="container-fluid" *ngIf="pageloading">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="mt-3">
+                <div
+                    class="d-flex align-items-center justify-content-between mb-0 bg-white p-2 px-3 border-top border-start border-end rounded rounded-bottom-0">
+                    <h5 class="text-uppercase">
+                        <span>View Cost Sheet details</span>
+                    </h5>
+                    <div>
+                        <button type="button" class="btn btn-outline-light text-dark border ms-1"
+                            [disabled]="btn_loading" (click)="exportToExcel('excel')"
+                            ngbTooltip="Download Excel"><fa-icon class="text-secondary" [icon]="faFileExcel"></fa-icon>
+                            Download Excel</button>
+                        <button type="button" class="btn btn-outline-light text-dark border ms-1"
+                            *ngIf="bomtype != 'Generic'" (click)="exportToExcel('mail')" [disabled]="btn_loading"
+                            ngbTooltip="Send Excel"><fa-icon class="text-secondary" [icon]="faFileExcel"></fa-icon> Send
+                            Excel</button>
+                        <button type="button" class="btn btn-outline-light text-dark border ms-1"
+                            [disabled]="btn_loading" (click)="generatePDF('pdf')" ngbTooltip="Download PDF"><fa-icon
+                                class="text-secondary" [icon]="faFilePdf"></fa-icon> Download Pdf</button>
+                        <button type="button" class="btn btn-outline-light text-dark border ms-1"
+                            *ngIf="bomtype != 'Generic'" (click)="generatePDF('mail')" [disabled]="btn_loading"
+                            ngbTooltip="Send Pdf"><fa-icon class="text-secondary" [icon]="faMail"></fa-icon>
+                            Send Pdf</button>
+                    </div>
+                </div>
+
+                <div id="my-table">
+                    <div class="table-responsive bg-white">
+                        <!-- <input type="checkbox" id="table1Checkbox" class="position-relative ml-2"
+                                    [checked]=table1 [(ngModel)]="table1"> -->
+                        <table id="scroll-horizontal" class="table nowrap align-middle border" style="width:100%">
+                            <thead class="">
+                                <tr>
+                                    <td colspan="3" rowspan="3" class="text-center"><img
+                                            src="{{ setting_data?.original_image }}" width="200px" alt="Company Logo">
+                                    </td>
+                                    <td colspan="2" rowspan="3" class="align-top">Location</td>
+                                    <td rowspan="3" class="align-top border-end">{{
+                                        cost_sheet?.details?.location }}</td>
+                                    <td>Type</td>
+                                    <td>{{ cost_sheet?.details?.license }}</td>
+                                    <td></td>
+                                    <td colspan="2">Cost Sheet Control No. :</td>
+                                    <td colspan="3">{{ cost_sheet?.control_no }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Dosage</td>
+                                    <td>{{ cost_sheet?.details?.dosage }}</td>
+                                    <td></td>
+                                    <td colspan="2">Date :</td>
+                                    <td colspan="3">{{ currentDate }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Sub Type</td>
+                                    <td>{{ cost_sheet?.details?.subtype1 }}</td>
+                                    <td>{{ cost_sheet?.details?.subtype2 }}</td>
+                                    <td colspan="2">Revision No. / Date:</td>
+                                    <td></td>
+                                    <td colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">NAME OF THE CUSTOMER : </td>
+                                    <td colspan="6">{{ cost_sheet?.customer_pop?.name }}</td>
+                                    <td>BATCH SIZE</td>
+                                    <td>{{ cost_sheet?.details?.batch }}</td>
+                                    <td colspan="3">No of Units Pack</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">NAME OF THE PRODUCT:</td>
+                                    <td colspan="8">{{ cost_sheet?.sheet_name }}</td>
+                                    <td>Sales</td>
+                                    <td colspan="2">{{ cost_sheet?.details?.unit_pack }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">GENERIC NAME </td>
+                                    <td colspan="8">{{ cost_sheet?.genericName }}</td>
+                                    <td colspan="2">No. of Ingredients</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">PRODUCT COMPOSITION</td>
+                                    <td colspan="11"><span [innerHTML]="quillContent"></span></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">PACKING PROFILE</td>
+                                    <td colspan="6"></td>
+                                    <!-- <td colspan="6">{{ cost_sheet?.details?.subtype2 }}</td> -->
+                                    <td>YIELD @ </td>
+                                    <td>{{ cost_sheet?.details?.yield }}%</td>
+                                    <td colspan="3" class="text-center">{{
+                                        cost_sheet?.details?.final_unit }} No of Units
+                                        Pack
+                                    </td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                    <div class="border table-responsive bg-white p-3">
+                        <!-- <input type="checkbox" id="table2Checkbox" [checked]=table2 [(ngModel)]="table2"> -->
+                        <h5>Raw Material Details</h5>
+                        <table id="scroll-horizontal" class="table nowrap align-middle border" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" (change)="toggleSelectAll()" class="custom-select"
+                                            [(ngModel)]="isRawmaterial">
+                                    </th>
+                                    <th class="center-align">Srl</th>
+                                    <th class="center-align">Name of the Item</th>
+                                    <th class="center-align">Item Code</th>
+                                    <th class="center-align">UOM</th>
+                                    <th class="center-align">Qty / Batch</th>
+                                    <th class="center-align">LOD / OA</th>
+                                    <th class="center-align">BASIC</th>
+                                    <th class="center-align">Others / Freight</th>
+                                    <th class="center-align">GST %</th>
+                                    <th class="center-align">Basic Value</th>
+                                    <th class="center-align">Net Value / Batch</th>
+                                    <th class="center-align">ITC</th>
+                                    <th class="center-align">Total Value</th>
+                                    <th class="center-align">%</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngIf="cost_sheet?.raw?.length">
+                                    <tr>
+                                        <td><input type="checkbox" class="custom-select" (change)="update_raw()"
+                                                [(ngModel)]="isRaw">
+                                        </td>
+                                        <td colspan="14"><strong>API</strong></td>
+                                    </tr>
+                                    <tr *ngFor="let data of cost_sheet?.raw; let index = index">
+                                        <td><input type="checkbox" [(ngModel)]="data.isSelected" class="custom-select"
+                                                (change)="update_status()"></td>
+                                        <td title="ID" class="center-align">{{ index + 1 }}</td>
+                                        <td title="name" class="left-align">{{ data?.item_pop?.item_name }}</td>
+                                        <td title="code" class="center-align">{{ data?.item_pop?.item_code }}
+                                        </td>
+                                        <td title="uom" class="left-align">{{ data?.item_pop?.abbreviation }}
+                                        </td>
+                                        <td title="qty" class="right-align">{{ data?.qty | number:'1.3-3' }}
+                                        </td>
+                                        <td title="lod" class="right-align">{{ data?.lod | number:'1.2-2' }}
+                                        </td>
+                                        <td title="rate" class="right-align">{{
+                                            convert_to_currency(data?.item_rate | number:'1.3-3') }}</td>
+                                        <td title="freight" class="right-align">{{ data?.item_freight |
+                                            number:'1.2-2' }}</td>
+                                        <td title="gst" class="right-align">{{ data.item_gst }}%</td>
+                                        <td title="basic" class="right-align">{{
+                                            convert_to_currency(data?.basic) }}</td>
+                                        <td title="batch" class="right-align">{{
+                                            convert_to_currency(data?.batch) }}</td>
+                                        <td title="itc" class="right-align">{{ convert_to_currency(data?.Itc)
+                                            }}
+                                        </td>
+                                        <td title="value" class="right-align">{{
+                                            convert_to_currency(data?.total_value) }}</td>
+                                        <td title="perc" class="right-align">{{ data?.percentage }}%</td>
+                                    </tr>
+                                    <!-- <tr>
+                                                <td><input type="checkbox" [(ngModel)]="row_select"></td>
+                                                <td colspan="4"></td>
+                                                <td colspan="5" class="right-align">RAW MATERIAL COST:</td>
+                                                <td class="right-align">{{ cost_sheet?.total_raw?.raw_basic }}</td>
+                                                <td class="right-align">{{ cost_sheet?.total_raw?.raw_net }}</td>
+                                                <td class="right-align">{{ cost_sheet?.total_raw?.raw_itc }}</td>
+                                                <td class="right-align">{{ cost_sheet?.total_raw?.raw_value }}</td>
+                                                <td class="right-align">{{ cost_sheet?.total_raw?.raw_percentage }}%
+                                                </td>
+                                            </tr> -->
+                                </ng-container>
+                                <ng-container *ngIf="cost_sheet?.excipient?.length">
+                                    <tr>
+                                        <td><input type="checkbox" [(ngModel)]="isExcipient" class="custom-select"
+                                                (change)="update_excipient()"></td>
+                                        <td colspan="14"><strong>EXCIPIENT</strong></td>
+                                    </tr>
+                                    <tr *ngFor="let data of cost_sheet?.excipient; let index = index">
+                                        <td><input type="checkbox" [(ngModel)]="data.isSelected" class="custom-select"
+                                                (change)="update_status()"></td>
+                                        <td title="ID">{{ index + 1 }}</td>
+                                        <td title="name" class="text-left-true">{{ data?.item_pop?.item_name }}
+                                        </td>
+                                        <td title="code" class="center-align">{{ data?.item_pop?.item_code }}
+                                        </td>
+                                        <td title="uom" class="left-align">{{ data?.item_pop?.abbreviation }}
+                                        </td>
+                                        <td title="qty" class="right-align">{{ data?.qty | number:'1.3-3' }}
+                                        </td>
+                                        <td title="lod" class="right-align">{{ data?.lod | number:'1.2-2' }}
+                                        </td>
+                                        <td title="rate" class="right-align">{{
+                                            convert_to_currency(data?.item_rate | number:'1.3-3') }}</td>
+                                        <td title="item_freight" class="right-align">{{ data?.item_freight |
+                                            number:'1.2-2' }}
+                                        </td>
+                                        <td title="gst" class="right-align">{{ data.item_gst }}%</td>
+                                        <td title="basic" class="right-align">{{
+                                            convert_to_currency(data?.basic)
+                                            }}</td>
+                                        <td title="batch" class="right-align">{{
+                                            convert_to_currency(data?.batch)
+                                            }}</td>
+                                        <td title="itc" class="right-align">{{ convert_to_currency(data?.Itc)
+                                            }}
+                                        </td>
+                                        <td title="value" class="right-align">{{
+                                            convert_to_currency(data?.total_value) }}</td>
+                                        <td title="perc" class="right-align">{{ data?.percentage }}%</td>
+                                    </tr>
+                                    <!-- <tr>
+                                                <td><input type="checkbox" [(ngModel)]="excipient_select"></td>
+                                                <td colspan="4"></td>
+                                                <td colspan="5" class="right-align">EXCIPIENT MATERIAL COST:</td>
+                                                <td class="right-align">{{ cost_sheet?.total_excipient?.excipient_basic
+                                                    }}</td>
+                                                <td class="right-align">{{ cost_sheet?.total_excipient?.excipient_net }}
+                                                </td>
+                                                <td class="right-align">{{ cost_sheet?.total_excipient?.excipient_itc }}
+                                                </td>
+                                                <td class="right-align">{{ cost_sheet?.total_excipient?.excipient_value
+                                                    }}</td>
+                                                <td class="right-align">{{
+                                                    cost_sheet?.total_excipient?.excipient_percentage }}%</td>
+                                            </tr> -->
+                                </ng-container>
+                                <ng-container *ngIf="cost_sheet?.intermed?.length">
+                                    <tr>
+                                        <td><input type="checkbox" [(ngModel)]="isIntermed" class="custom-select"
+                                                (change)="update_inter()"></td>
+                                        <td colspan="14"><strong>INTERMEDIATE</strong></td>
+                                    </tr>
+                                    <tr *ngFor="let data of cost_sheet?.intermed; let index = index">
+                                        <td><input type="checkbox" [(ngModel)]="data.isSelected" class="custom-select"
+                                                (change)="update_status()"></td>
+                                        <td title="ID">{{ index + 1 }}</td>
+                                        <td title="name" class="text-left-true">{{ data?.item_pop?.item_name }}
+                                        </td>
+                                        <td title="code" class="center-align">{{ data?.item_pop?.item_code }}
+                                        </td>
+                                        <td title="uom" class="left-align">{{ data?.item_pop?.abbreviation }}
+                                        </td>
+                                        <td title="qty" class="right-align">{{ data?.qty | number:'1.3-3' }}
+                                        </td>
+                                        <td title="lod" class="right-align">{{ data?.lod | number:'1.2-2' }}
+                                        </td>
+                                        <td title="rate" class="right-align">{{
+                                            convert_to_currency(data?.item_rate | number:'1.3-3') }}</td>
+                                        <td title="item_freight" class="right-align">{{ data?.item_freight |
+                                            number:'1.2-2' }}
+                                        </td>
+                                        <td title="gst" class="right-align">{{ data.item_gst }}%</td>
+                                        <td title="basic" class="right-align">{{
+                                            convert_to_currency(data?.basic)
+                                            }}</td>
+                                        <td title="batch" class="right-align">{{
+                                            convert_to_currency(data?.batch)
+                                            }}</td>
+                                        <td title="itc" class="right-align">{{ convert_to_currency(data?.Itc)
+                                            }}
+                                        </td>
+                                        <td title="value" class="right-align">{{
+                                            convert_to_currency(data?.total_value) }}</td>
+                                        <td title="percentage" class="right-align">{{ data?.percentage }}%</td>
+                                    </tr>
+                                    <!-- <tr>
+                                                <td><input type="checkbox" [(ngModel)]="intermed_select"></td>
+                                                <td colspan="4"></td>
+                                                <td colspan="5" class="right-align">INTERMEDIATE MATERIAL COST:</td>
+                                                <td class="right-align">{{
+                                                    cost_sheet?.total_intermediate?.intermediate_basic }}</td>
+                                                <td class="right-align">{{
+                                                    cost_sheet?.total_intermediate?.intermediate_net }}</td>
+                                                <td class="right-align">{{
+                                                    cost_sheet?.total_intermediate?.intermediate_itc }}</td>
+                                                <td class="right-align">{{
+                                                    cost_sheet?.total_intermediate?.intermediate_value }}</td>
+                                                <td class="right-align">{{
+                                                    cost_sheet?.total_intermediate?.intermediate_percentage }}%</td>
+                                            </tr> -->
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="border p-3 bg-white mt-3">
+                        <!-- <input type="checkbox" id="table3Checkbox" [checked]=table3 [(ngModel)]="table3"> -->
+                        <h5>Packing Material</h5>
+                        <div class="table-responsive">
+                            <table class="table border text-nowra align-middle mt-2 text-center">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" (change)="update_pack(select_pack)"
+                                                class="custom-select" [(ngModel)]="select_pack.isSelected"></th>
+                                        <th scope="col" class="center-align">Srl</th>
+                                        <th scope="col" class="center-align">Name of the Item</th>
+                                        <th scope="col" class="center-align">Item Code</th>
+                                        <th scope="col" class="center-align">UOM</th>
+                                        <th scope="col" class="center-align">Qty / Batch</th>
+                                        <th scope="col" class="center-align">BASIC</th>
+                                        <th scope="col" class="center-align">Others / Freight</th>
+                                        <th scope="col" class="center-align">GST %</th>
+                                        <th scope="col" class="center-align">Basic Value</th>
+                                        <th scope="col" class="center-align">Net Value / Batch</th>
+                                        <th scope="col" class="center-align">ITC</th>
+                                        <th scope="col" class="center-align">Total Value</th>
+                                        <th scope="col" class="center-align">%</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container>
+                                        <tr>
+                                            <th colspan="4" style="font-size: 16px;" class="text-left-true">
+                                                No of Units: {{ select_pack?.packing_name }}
+                                            </th>
+                                            <th colspan="3" style="font-size: 16px;" class="text-left-true">
+                                                Type: {{ select_pack?.select_type }}
+                                            </th>
+                                            <th colspan="3" style="font-size: 16px;" class="text-left-true">
+                                                DPCO Charges: {{
+                                                select_pack?.packvalue }}
+                                            </th>
+                                            <th colspan="4" style="font-size: 16px;" class="text-left-true">
+                                                DPCO Single: {{
+                                                select_pack?.packcharge
+                                                }}
+                                            </th>
+                                        </tr>
+                                        <tr *ngFor="let data of select_pack?.pack; let index = index">
+                                            <td><input type="checkbox" [(ngModel)]="data.isSelected"
+                                                    class="custom-select" (change)="update_packraw()"></td>
+                                            <td title="ID" class="center-align">{{ index + 1 }}</td>
+                                            <td title="name" class="left-align">{{ data?.item_pop?.item_name }}
+                                            </td>
+                                            <td title="code" class="center-align">{{ data?.item_pop?.item_code
+                                                }}</td>
+                                            <td title="uom" class="left-align">{{ data?.item_pop?.abbreviation
+                                                }}
+                                            </td>
+                                            <td title="qty" class="right-align">{{ data?.qty | number:'1.3-3' }}
+                                            </td>
+                                            <td title="rate" class="right-align">{{
+                                                convert_to_currency(data?.item_rate | number:'1.3-3') }}</td>
+                                            <td title="freight" class="right-align">{{ data?.item_freight |
+                                                number:'1.2-2' }}
+                                            </td>
+                                            <td title="gst" class="right-align">{{ data.item_gst }}%</td>
+                                            <td title="basic" class="right-align">{{
+                                                convert_to_currency(data?.basic) }}</td>
+                                            <td title="batch" class="right-align">{{
+                                                convert_to_currency(data?.batch) }}</td>
+                                            <td title="itc" class="right-align">{{
+                                                convert_to_currency(data?.Itc) }}</td>
+                                            <td title="value" class="right-align">{{
+                                                convert_to_currency(data?.total_value) }}</td>
+                                            <td title="percentage" class="right-align">{{ data?.percentage }}%
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="border p-3 bg-white mt-3">
+                        <span class="d-flex">
+                            <input type="checkbox" class="custom-select" [(ngModel)]="table5">
+                            <h5 class="">Total Material Cost</h5>
+                        </span>
+                        <div class="table-responsive">
+                            <table class="table border text-nowra align-middle mt-2 text-center">
+                                <thead>
+                                    <tr>
+                                        <th colspan="9"></th>
+                                        <th class="right-align">Basic Value</th>
+                                        <th class="right-align">Net Value / Batch</th>
+                                        <th class="right-align">ITC</th>
+                                        <th class="right-align">Total Value</th>
+                                        <th class="right-align">%</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="8"></td>
+                                        <th colspan="1" class="right-align"> TOTAL RM COST:</th>
+                                        <td class="right-align">{{
+                                            convert_to_currency(master_raw?.master_raw_basic) }}</td>
+                                        <td class="right-align">{{
+                                            convert_to_currency(master_raw?.master_raw_net) }}</td>
+                                        <td class="right-align">{{
+                                            convert_to_currency(master_raw?.master_raw_itc) }}</td>
+                                        <td class="right-align">{{
+                                            convert_to_currency(master_raw?.master_raw_value) }}</td>
+                                        <td class="right-align">{{ master_raw?.master_raw_percentage }}%</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="8"></td>
+                                        <th colspan="1" class="right-align"> TOTAL PM COST:</th>
+                                        <td class="right-align">{{
+                                            convert_to_currency(master_pack?.master_pack_basic) }}</td>
+                                        <td class="right-align">{{
+                                            convert_to_currency(master_pack?.master_pack_net) }}</td>
+                                        <td class="right-align">{{
+                                            convert_to_currency(master_pack?.master_pack_itc) }}</td>
+                                        <td class="right-align">{{
+                                            convert_to_currency(master_pack?.master_pack_value) }}</td>
+                                        <td class="right-align">{{ master_pack?.master_pack_percentage }}%</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="8"></td>
+                                        <th colspan="1" class="right-align">Total Material Cost:</th>
+                                        <td class="right-align">{{
+                                            convert_to_currency(total_cost?.total_cost_basic) }}</td>
+                                        <td class="right-align">{{
+                                            convert_to_currency(total_cost?.total_cost_net) }}</td>
+                                        <td class="right-align">{{
+                                            convert_to_currency(total_cost?.total_cost_itc) }}</td>
+                                        <td class="right-align">{{
+                                            convert_to_currency(total_cost?.total_cost_value) }}</td>
+                                        <td class="right-align">{{ total_cost?.total_cost_percentage }}%</td>
+                                    </tr>
+
+                                    <ng-container>
+                                        <tr>
+                                            <td class="left-align">RM Cost </td>
+                                            <td colspan="3" class=""></td>
+                                            <td class="right-align rightalign">{{ total_value?.rmcost }}
+                                            </td>
+                                            <td colspan="9"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left-align">PM Cost </td>
+                                            <td colspan="3"></td>
+                                            <td class="right-align rightalign">{{ total_value?.pmcost }}</td>
+                                            <td colspan="3"></td>
+                                            <td class="left-align" style="white-space: nowrap;">Consumption (TP)
+                                            </td>
+                                            <td class="right-align">{{ cost_sheet?.details?.consumption }}%</td>
+                                            <td colspan="1"></td>
+                                            <td style="white-space: nowrap;"><strong>CCPC as per DPCO</strong>
+                                            </td>
+                                            <td colspan="2"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left-align" style="white-space: nowrap;"><strong>Material
+                                                    Cost </strong></td>
+                                            <td colspan="3"></td>
+                                            <td class="right-align rightalign"><strong>{{
+                                                    total_value?.materialcost
+                                                    }}</strong></td>
+                                            <td colspan="3"></td>
+                                            <td class="left-align" style="white-space: nowrap;">Consumption
+                                                (LSP)</td>
+                                            <td class="right-align">{{ cost_sheet?.cost_Consum }}<span
+                                                    *ngIf="cost_sheet?.cost_Consum">%</span></td>
+                                            <td colspan="1"></td>
+                                            <td class="left-align"><strong>Units in Nos</strong></td>
+                                            <td>{{ select_pack?.packing_name }}'s</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left-align" style="white-space: nowrap;">Yield</td>
+                                            <td colspan="3">{{ cost_sheet?.details?.yield }}%</td>
+                                            <td class="right-align rightalign">{{
+                                                cost_sheet?.details?.yieldvalue
+                                                }}</td>
+                                            <td colspan="3"></td>
+                                            <td class="left-align">Last Selling Price</td>
+                                            <td class="right-align">{{ cost_sheet?.cost_transfer }}</td>
+                                            <td colspan="1"></td>
+                                            <td class="left-align">CC</td>
+                                            <td class="right-align" style="background-color: #d1bce4;">{{
+                                                cost_sheet?.details?.ccsheet }}</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left-align" style="white-space: nowrap;">Analytical
+                                                Charges</td>
+                                            <td colspan="3"></td>
+                                            <td class="right-align rightalign">{{cost_sheet?.details?.acsheet }}
+                                            </td>
+                                            <td colspan="3"></td>
+                                            <td class="left-align">G.C%</td>
+                                            <td class="right-align">{{ total_value?.GCvalue }} %</td>
+                                            <td colspan="1"></td>
+                                            <td class="left-align">PC</td>
+                                            <td class="right-align" style="background-color: #d1bce4;">{{
+                                                cost_sheet?.details?.pcsheet }}</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left-align">CCPC </td>
+                                            <td colspan="3" class="right-align">{{
+                                                cost_sheet?.details?.ccpcharge }}%</td>
+                                            <td class="right-align rightalign">{{ total_value?.ccpcvalue }}</td>
+                                            <td colspan="3"></td>
+                                            <td class="left-align"></td>
+                                            <td class="right-align"></td>
+                                            <td colspan="1"></td>
+                                            <td class="left-align"><strong>100% CCPC</strong></td>
+                                            <td class="right-align"><strong>{{ total_value?.ccpc }}</strong>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left-align"><strong>Production Cost</strong></td>
+                                            <td colspan="3"></td>
+                                            <td class="right-align rightalign"><strong>{{
+                                                    total_value?.Productvalue
+                                                    }}</strong></td>
+                                            <td colspan="3"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td colspan="1"></td>
+                                            <td class="left-align"></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left-align">Profit Margin </td>
+                                            <td>{{ cost_sheet?.details?.margin }}%</td>
+                                            <td colspan="3" class="right-align"><strong>{{
+                                                    cost_sheet?.details?.PTvalue }}</strong>
+                                            </td>
+                                            <td colspan="3"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td colspan="1"></td>
+                                            <td class="left-align"></td>
+                                            <td class="right-align"></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left-align">Less (ITC) </td>
+                                            <td colspan="3" class="right-align"></td>
+                                            <td class="right-align rightalign">{{ cost_sheet?.details?.ITCvalue
+                                                }}</td>
+                                            <td colspan="3"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td colspan="1"></td>
+                                            <td class="left-align"></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left-align" style="background-color: #d1bce4;">
+                                                <strong>Transfer Price Per
+                                                    {{ select_pack?.packing_name }}'s</strong>
+                                            </td>
+                                            <td colspan="3" class="text-left-true" style="background-color: #d1bce4;">
+                                            </td>
+                                            <td class="right-align rightalign" style="background-color: #d1bce4;">
+                                                <strong>{{ total_value?.transfer }}</strong>
+                                            </td>
+                                            <td colspan="6"></td>
+                                            <td></td>
+                                            <td>
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left-align" style="background-color: #d1bce4;">
+                                                <strong>Cost Per Unit</strong>
+                                            </td>
+                                            <td colspan="3" class="text-left-true" style="background-color: #d1bce4;">
+                                            </td>
+                                            <td class="right-align rightalign" style="background-color: #d1bce4;">
+                                                <strong>{{ total_value?.unitprice }}</strong>
+                                            </td>
+                                            <td colspan="9"></td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                            <table class="table border text-nowra align-middle mt-2">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2" scope="col" class="left-align">Prepared By</th>
+                                        <th colspan="2" scope="col" class="left-align">Reported By</th>
+                                        <th colspan="2" scope="col" class="left-align">Verified By</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="2" class="left-align">{{
+                                            convert_user(cost_sheet?.create_user) }}</td>
+                                        <td colspan="2" class="left-align">{{
+                                            convert_user(cost_sheet?.verified_user) }}</td>
+                                        <td colspan="2" class="left-align">{{
+                                            convert_user(cost_sheet?.approve_user) }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- excel -->
+
+
+<div class="pdf-gen w-100" *ngIf="pageloading">
+    <div class="bg-white position-absolute w-100 h-100" style="z-index: 2"></div>
+    <div id="excelcontent">
+        <div class="border bg-white p-3 mt-2" id="table1">
+            <input type="checkbox" id="table1Checkbox" [checked]=table1>
+            <table class="table align-middle border">
+                <thead style="border: 1px solid black;">
+                    <tr>
+                        <td colspan="3" rowspan="3" class="text-center"><img src="{{ setting_data?.original_image }}"
+                                width="200px" alt="Company Logo"> </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td rowspan="3" class="align-top rightalign" style="border: 1px solid black;">Location :</td>
+                        <td rowspan="3" style="background-color: rgb(216 226 239); border: 1px solid black;"
+                            class="align-top border-end">{{
+                            cost_sheet?.details?.location }}</td>
+                        <td class="rightalign">Type :</td>
+                        <td style="background-color: rgb(216 226 239);  border: 1px solid black;">{{
+                            cost_sheet?.details?.license }}</td>
+                        <td></td>
+                        <td></td>
+                        <td>Cost Sheet Control No :</td>
+                        <td style="background-color: rgb(216 226 239);" colspan="3">{{ cost_sheet?.control_no }}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="rightalign">Dosage :</td>
+                        <td style="background-color: rgb(216 226 239);  border: 1px solid black;">{{
+                            cost_sheet?.details?.dosage }}</td>
+                        <td></td>
+                        <td></td>
+                        <td class="rightalign">Date :</td>
+                        <td style="background-color: rgb(216 226 239);  border: 1px solid black;" colspan="3">{{
+                            currentDate
+                            }}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="rightalign">Sub Type :</td>
+                        <td style="background-color: rgb(216 226 239); border: 1px solid black;">{{
+                            cost_sheet?.details?.subtype1 }}</td>
+                        <td style="background-color: rgb(216 226 239); border: 1px solid black;">{{
+                            cost_sheet?.details?.subtype2 }}</td>
+                        <td></td>
+                        <td class="rightalign">Revision No. / Date :</td>
+                        <td style="background-color: rgb(216 226 239); border: 1px solid black;" colspan="3"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td colspan="3" style="border: 1px solid black;"><strong>NAME OF THE CUSTOMER :</strong></td>
+                        <td style="background-color: rgb(216 226 239); border: 1px solid black;" colspan="6"><strong>{{
+                                cost_sheet?.customer_pop?.name }}</strong></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="border: 1px solid black;" class="rightalign"><strong>BATCH SIZE :</strong> </td>
+                        <td style="background-color: rgb(216 226 239); border: 1px solid black;"><strong>{{
+                                convert_only_currency(cost_sheet?.details?.batch) }}</strong></td>
+                        <td></td>
+                        <td></td>
+                        <td colspan="3">No of Units Pack</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td style="border: 1px solid black;"><strong>NAME OF THE PRODUCT :</strong></td>
+                        <td style="background-color: rgb(216 226 239); border: 1px solid black;" colspan="6"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="rightalign"><strong>Sales :</strong></td>
+                        <td></td>
+                        <td style="background-color: rgb(216 226 239); border: 1px solid black;"><strong>{{
+                                convert_only_currency(cost_sheet?.details?.unit_pack)
+                                }}</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td style="border: 1px solid black;"><strong>GENERIC NAME :</strong> </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="background-color: rgb(216 226 239); border: 1px solid black;"><strong>{{
+                                cost_sheet?.sheet_name
+                                }}</strong></td>
+                        <td></td>
+                        <td class="rightalign"><strong>No. of Ingredients</strong></td>
+                        <td style="background-color: rgb(216 226 239); border: 1px solid black;"><strong>1</strong></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td style="border: 1px solid black;"><strong>PRODUCT COMPOSITION :</strong>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="border: 1px solid black;"><strong [innerHTML]="quillContent"></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td style="border: 1px solid black;"><strong>PACKING PROFILE :</strong></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="border: 1px solid black;"><strong></strong></td>
+                        <td><strong>YIELD @ </strong></td>
+                        <td style="background-color: rgb(216 226 239); border: 1px solid black;"><strong>{{
+                                cost_sheet?.details?.yield
+                                }}%</strong></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-center"><strong>{{ cost_sheet?.details?.final_unit
+                                }}</strong> No of Units Pack </td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+
+        <div id="table2">
+            <div class="border bg-white p-3 mt-3" *ngIf="isRawmaterial">
+                <h5>Raw Material Details</h5>
+                <input type="checkbox" id="table2Checkbox" [checked]=table2>
+                <table class="table align-middle border">
+                    <thead>
+                        <tr>
+                            <th style="background-color: rgb(55 95 146); color: white;" class="center-align">Srl</th>
+                            <th style="background-color: rgb(55 95 146); color: white;" class="center-align">Name of the
+                                Item</th>
+                            <th style="background-color: rgb(55 95 146); color: white;" class="center-align">Item Code
+                            </th>
+                            <th style="background-color: rgb(55 95 146); color: white;" class="center-align">UOM</th>
+                            <th style="background-color: rgb(55 95 146); color: white;" class="center-align">Qty / Batch
+                            </th>
+                            <th style="background-color: rgb(55 95 146); color: white;" class="center-align">LOD / OA
+                            </th>
+                            <th style="background-color: rgb(55 95 146); color: white;" class="center-align">BASIC</th>
+                            <th style="background-color: rgb(55 95 146); color: white;" class="center-align">Others /
+                                Freight</th>
+                            <th style="background-color: rgb(55 95 146); color: white;" class="center-align">GST %</th>
+                            <th style="background-color: rgb(55 95 146); color: white;" class="center-align">Basic Value
+                            </th>
+                            <th style="background-color: rgb(55 95 146); color: white;" class="center-align">Net Value /
+                                Batch
+                            </th>
+                            <th style="background-color: rgb(55 95 146); color: white;" class="center-align">ITC</th>
+                            <th style="background-color: rgb(55 95 146); color: white;" class="center-align">Total Value
+                            </th>
+                            <th style="background-color: rgb(55 95 146); color: white;" class="center-align">%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngIf="cost_sheet?.raw?.length && isRaw">
+                            <tr>
+                                <td>A</td>
+                                <td><strong>API</strong></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr *ngFor="let data of cost_sheet?.raw; let index = index">
+                                <ng-container *ngIf="data.isSelected">
+
+                                    <td title="ID" class="center-align">{{ index + 1 }}</td>
+                                    <td title="name" class="">{{ data?.item_pop?.item_name }}</td>
+                                    <td title="code" class="center-align">{{ data?.item_pop?.item_code }}</td>
+                                    <td title="uom" class="left-align rightalign">{{ data?.item_pop?.abbreviation }}
+                                    </td>
+                                    <td title="qty" class="right-align rightalign">{{ data?.qty | number:'1.3-3' }}</td>
+                                    <td title="lod" class="right-align rightalign">{{ data?.lod | number:'1.2-2' }}</td>
+                                    <td title="rate" class="right-align rightalign">{{
+                                        convert_to_currency(data?.item_rate |
+                                        number:'1.3-3')
+                                        }}
+                                    </td>
+                                    <td title="freight" class="center-align rightalign">{{ data?.item_freight |
+                                        number:'1.2-2' }}</td>
+                                    <td title="gst" class="center-align rightalign">{{ data.item_gst }}</td>
+                                    <td title="basic" class="right-align rightalign">{{ convert_to_currency(data?.basic
+                                        |
+                                        number:'1.2-2') }}
+                                    </td>
+                                    <td title="batch" class="right-align rightalign">{{ convert_to_currency(data?.batch
+                                        |
+                                        number:'1.2-2') }}
+                                    </td>
+                                    <td title="itc" class="right-align rightalign">{{ convert_to_currency(data?.Itc |
+                                        number:'1.2-2') }}</td>
+                                    <td title="value" class="right-align rightalign">{{
+                                        convert_to_currency(data?.total_value | number:'1.2-2')
+                                        }}</td>
+                                    <td title="percentage" class="center-align rightalign">{{ data?.percentage }}%</td>
+                                </ng-container>
+                            </tr>
+                            <tr></tr>
+                        </ng-container>
+                        <ng-container *ngIf="cost_sheet?.excipient?.length && isExcipient">
+                            <tr>
+                                <td>B</td>
+                                <td><strong>EXCIPIENT</strong></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr *ngFor="let data of cost_sheet?.excipient; let index = index">
+                                <ng-container *ngIf="data.isSelected">
+                                    <td title="ID" class="center-align">{{ index + 1 }}</td>
+                                    <td title="name" class="">{{ data?.item_pop?.item_name }}</td>
+                                    <td title="code" class="center-align">{{ data?.item_pop?.item_code }}</td>
+                                    <td title="uom" class="left-align rightalign">{{ data?.item_pop?.abbreviation }}
+                                    </td>
+                                    <td title="qty" class="right-align rightalign">{{ data?.qty | number:'1.3-3' }}</td>
+                                    <td title="lod" class="right-align rightalign">{{ data?.lod | number:'1.2-2' }}</td>
+                                    <td title="rate" class="right-align rightalign">{{
+                                        convert_to_currency(data?.item_rate | number:'1.3-3') }}</td>
+                                    <td title="item_freight" class="center-align rightalign">{{ data?.item_freight |
+                                        number:'1.2-2' }}</td>
+                                    <td title="gst" class="center-align rightalign">{{ data.item_gst }}</td>
+                                    <td title="basic" class="right-align rightalign">{{ convert_to_currency(data?.basic
+                                        |
+                                        number:'1.2-2')
+                                        }}</td>
+                                    <td title="batch" class="right-align rightalign">{{ convert_to_currency(data?.batch
+                                        |
+                                        number:'1.2-2')
+                                        }}</td>
+                                    <td title="itc" class="right-align rightalign">{{ convert_to_currency(data?.Itc |
+                                        number:'1.2-2') }}
+                                    </td>
+                                    <td title="value" class="right-align rightalign">{{
+                                        convert_to_currency(data?.total_value | number:'1.2-2') }}</td>
+                                    <td title="perc" class="center-align rightalign">{{ data?.percentage }}%</td>
+                                </ng-container>
+                            </tr>
+                            <tr></tr>
+                        </ng-container>
+                        <ng-container *ngIf="cost_sheet?.intermed?.length && isIntermed">
+                            <tr>
+                                <td>C</td>
+                                <td colspan="13"><strong>INTERMEDIATE</strong></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr *ngFor="let data of cost_sheet?.intermed; let index = index">
+                                <ng-container *ngIf="data.isSelected">
+                                    <td title="ID" class="center-align">{{ index + 1 }}</td>
+                                    <td title="name" class="">{{ data?.item_pop?.item_name }}</td>
+                                    <td title="code" class="center-align">{{ data?.item_pop?.item_code }}</td>
+                                    <td title="uom" class="left-align rightalign">{{ data?.item_pop?.abbreviation }}
+                                    </td>
+                                    <td title="qty" class="right-align rightalign">{{ data?.qty | number:'1.3-3' }}</td>
+                                    <td title="lod" class="right-align rightalign">{{ data?.lod | number:'1.2-2' }}</td>
+                                    <td title="rate" class="right-align rightalign">{{
+                                        convert_to_currency(data?.item_rate | number:'1.3-3') }}</td>
+                                    <td title="item_freight" class="center-align rightalign">{{ data?.item_freight |
+                                        number:'1.2-2' }}</td>
+                                    <td title="gst" class="center-align rightalign">{{ data.item_gst }}</td>
+                                    <td title="basic" class="right-align rightalign">{{ convert_to_currency(data?.basic
+                                        |
+                                        number:'1.2-2')
+                                        }}</td>
+                                    <td title="batch" class="right-align rightalign">{{ convert_to_currency(data?.batch
+                                        |
+                                        number:'1.2-2')
+                                        }}</td>
+                                    <td title="itc" class="right-align rightalign">{{ convert_to_currency(data?.Itc |
+                                        number:'1.2-2') }}
+                                    </td>
+                                    <td title="value" class="right-align rightalign">{{
+                                        convert_to_currency(data?.total_value | number:'1.2-2') }}</td>
+                                    <td title="percentage" class="center-align rightalign">{{ data?.percentage }}%</td>
+                                </ng-container>
+                            </tr>
+                            <tr></tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="table3">
+            <div class="border p-3 bg-white mt-3" *ngIf="packmaster">
+                <h5>Packing Material</h5>
+                <input type="checkbox" id="table3Checkbox" [checked]=table3>
+
+                <div class="">
+                    <table class="table border align-middle mt-2" *ngIf="select_pack.isSelected">
+                        <thead>
+                            <tr>
+                                <th style="background-color: rgb(55 95 146); color: white;" class="center-align">Srl
+                                </th>
+                                <th style="background-color: rgb(55 95 146); color: white;" class="center-align">Name of
+                                    the
+                                    Item
+                                </th>
+                                <th style="background-color: rgb(55 95 146); color: white;" class="center-align">Item
+                                    Code
+                                </th>
+                                <th style="background-color: rgb(55 95 146); color: white;" class="center-align">UOM
+                                </th>
+                                <th style="background-color: rgb(55 95 146); color: white;" class="center-align">Qty /
+                                    Batch
+                                </th>
+                                <th style="background-color: rgb(55 95 146); color: white;" class="center-align">LOD /
+                                    OA
+                                </th>
+                                <th style="background-color: rgb(55 95 146); color: white;" class="center-align">BASIC
+                                </th>
+                                <th style="background-color: rgb(55 95 146); color: white;" class="center-align">Others
+                                    /
+                                    Freight
+                                </th>
+                                <th style="background-color: rgb(55 95 146); color: white;" class="center-align">GST %
+                                </th>
+                                <th style="background-color: rgb(55 95 146); color: white;" class="center-align">Basic
+                                    Value
+                                </th>
+                                <th style="background-color: rgb(55 95 146); color: white;" class="center-align">Net
+                                    Value /
+                                    Batch
+                                </th>
+                                <th style="background-color: rgb(55 95 146); color: white;" class="center-align">ITC
+                                </th>
+                                <th style="background-color: rgb(55 95 146); color: white;" class="center-align">Total
+                                    Value
+                                </th>
+                                <th style="background-color: rgb(55 95 146); color: white;" class="center-align">%</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container>
+                                <tr>
+                                    <td></td>
+                                    <td colspan="2">No of Units: {{ select_pack?.packing_name }}</td>
+                                    <td>Type: {{ select_pack?.select_type }}</td>
+                                    <td></td>
+                                    <td colspan="1">DPCO Charges: </td>
+                                    <td></td>
+                                    <td>{{ select_pack?.packvalue }}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>DPCO Single: </td>
+                                    <td>{{ select_pack?.packcharge }}</td>
+                                </tr>
+                                <tr *ngFor="let data of select_pack?.pack; let index = index">
+                                    <ng-container *ngIf="data.isSelected">
+
+                                        <td title="ID" class="center-align">{{ index + 1 }}</td>
+                                        <td title="name" class="">{{ data?.item_pop?.item_name }}</td>
+                                        <td title="code" class="center-align">{{ data?.item_pop?.item_code }}</td>
+                                        <td title="uom" class="left-align rightalign">{{ data?.item_pop?.abbreviation }}
+                                        </td>
+                                        <td title="qty" class="right-align rightalign">{{ data?.qty | number:'1.3-3' }}
+                                        </td>
+                                        <td title="lod" class="right-align rightalign">{{ data?.lod | number:'1.2-2' }}
+                                        </td>
+                                        <td title="rate" class="right-align rightalign">{{
+                                            convert_to_currency(data?.item_rate | number:'1.3-3') }}</td>
+                                        <td title="item_freight" class="center-align rightalign">{{ data?.item_freight |
+                                            number:'1.2-2' }}
+                                        </td>
+                                        <td title="gst" class="center-align rightalign">{{ data.item_gst }}</td>
+                                        <td title="basic" class="right-align rightalign">{{
+                                            convert_to_currency(data?.basic
+                                            | number:'1.2-2')
+                                            }}</td>
+                                        <td title="batch" class="right-align rightalign">{{
+                                            convert_to_currency(data?.batch
+                                            | number:'1.2-2')
+                                            }}</td>
+                                        <td title="itc" class="right-align rightalign">{{ convert_to_currency(data?.Itc
+                                            |
+                                            number:'1.2-2') }}
+                                        </td>
+                                        <td title="value" class="right-align rightalign">{{
+                                            convert_to_currency(data?.total_value | number:'1.2-2') }}</td>
+                                        <td title="percentage" class="center-align rightalign">{{ data?.percentage }}%
+                                        </td>
+                                    </ng-container>
+                                </tr>
+                                <tr></tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="table4">
+            <div class="border p-3 bg-white mt-3" *ngIf="raw_value?.percentage !== 0 && (isRawmaterial || packmaster)">
+                <input type="checkbox" id="table4Checkbox" [checked]=table4>
+                <table class="table border align-middle mt-2 text-center">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th style="background-color: rgb(55 95 146); color: white;">Name</th>
+                            <th style="background-color: rgb(55 95 146); color: white;" class="right-align">Basic Value
+                            </th>
+                            <th style="background-color: rgb(55 95 146); color: white;" class="right-align">Net Value /
+                                Batch
+                            </th>
+                            <th style="background-color: rgb(55 95 146); color: white;" class="right-align">ITC</th>
+                            <th style="background-color: rgb(55 95 146); color: white;" class="right-align">Total Value
+                            </th>
+                            <th style="background-color: rgb(55 95 146); color: white;" class="right-align">%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="rightalign"> Other Materials</td>
+                            <td class="right-align rightalign">{{ convert_to_currency(raw_value?.basic | number:'1.2-2')
+                                }}
+                            </td>
+                            <td class="right-align rightalign">{{ convert_to_currency(raw_value?.batch | number:'1.2-2')
+                                }}
+                            </td>
+                            <td class="right-align rightalign">{{ convert_to_currency(raw_value?.Itc | number:'1.2-2')
+                                }}
+                            </td>
+                            <td class="right-align rightalign">{{ convert_to_currency(raw_value?.total_value |
+                                number:'1.2-2') }}</td>
+                            <td class="right-align rightalign">{{ raw_value?.percentage.toFixed(2) }}%</td>
+                        </tr>
+                        <tr></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="table5">
+            <div class="border p-3 bg-white mt-3" *ngIf="table5">
+                <h5 class="">Total Material Cost</h5>
+                <input type="checkbox" id="table5Checkbox" [checked]=table5>
+                <table class="table border align-middle mt-2 text-center">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th style="background-color: rgb(55 95 146); color: white;"></th>
+                            <th style="background-color: rgb(55 95 146); color: white;" class="right-align">Basic Value
+                            </th>
+                            <th style="background-color: rgb(55 95 146); color: white;" class="right-align">Net Value /
+                                Batch
+                            </th>
+                            <th style="background-color: rgb(55 95 146); color: white;" class="right-align">ITC</th>
+                            <th style="background-color: rgb(55 95 146); color: white;" class="right-align">Total Value
+                            </th>
+                            <th style="background-color: rgb(55 95 146); color: white;" class="right-align">%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="rightalign"> TOTAL RM COST :</td>
+                            <td class="right-align rightalign">{{ convert_to_currency(master_raw?.master_raw_basic) }}
+                            </td>
+                            <td class="right-align rightalign">{{ convert_to_currency(master_raw?.master_raw_net) }}
+                            </td>
+                            <td class="right-align rightalign">{{ convert_to_currency(master_raw?.master_raw_itc) }}
+                            </td>
+                            <td class="right-align rightalign">{{ convert_to_currency(master_raw?.master_raw_value) }}
+                            </td>
+                            <td class="right-align rightalign">{{ master_raw?.master_raw_percentage }}%</td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="rightalign"> TOTAL PM COST :</td>
+                            <td class="right-align rightalign">{{ convert_to_currency(master_pack?.master_pack_basic) }}
+                            </td>
+                            <td class="right-align rightalign">{{ convert_to_currency(master_pack?.master_pack_net) }}
+                            </td>
+                            <td class="right-align rightalign">{{ convert_to_currency(master_pack?.master_pack_itc) }}
+                            </td>
+                            <td class="right-align rightalign">{{ convert_to_currency(master_pack?.master_pack_value) }}
+                            </td>
+                            <td class="center-align rightalign">{{ master_pack?.master_pack_percentage }}%</td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="rightalign">{{select_pack?.packing_name}} -TOTAL COST :</td>
+                            <td class="right-align rightalign">{{ convert_to_currency(total_cost?.total_cost_basic) }}
+                            </td>
+                            <td class="right-align rightalign">{{ convert_to_currency(total_cost?.total_cost_net) }}
+                            </td>
+                            <td class="right-align rightalign">{{ convert_to_currency(total_cost?.total_cost_itc) }}
+                            </td>
+                            <td class="right-align rightalign">{{ convert_to_currency(total_cost?.total_cost_value) }}
+                            </td>
+                            <td class="center-align rightalign">{{ total_cost?.total_cost_percentage }}%</td>
+                        </tr>
+
+                        <ng-container>
+                            <tr>
+                                <td>D</td>
+                                <td class="text-left-true">RM Cost </td>
+                                <td class="text-left-true"></td>
+                                <td class="text-left-true right-border rightalign">{{ total_value?.rmcost }}</td>
+                            </tr>
+                            <tr>
+                                <td>E</td>
+                                <td class="text-left-true">PM Cost </td>
+                                <td class="text-left-true"></td>
+                                <td class="text-left-true right-border rightalign">{{ total_value?.pmcost }}</td>
+                                <td></td>
+                                <td></td>
+                                <td colspan="2">Consumption (TP)</td>
+                                <td>{{ cost_sheet?.details?.consumption }}%</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>CCPC as per DPCO</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>F</td>
+                                <td class="text-left-true">Material Cost </td>
+                                <td class="text-left-true"></td>
+                                <td class="text-left-true right-border rightalign">{{ total_value?.materialcost }}</td>
+                                <td></td>
+                                <td></td>
+                                <td>Consumption(LSP)</td>
+                                <td>{{ cost_sheet?.cost_Consum }}%</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>Units in Nos</td>
+                                <td>{{ select_pack?.packing_name }}'s</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>G</td>
+                                <td class="text-left-true">Yield</td>
+                                <td class="text-left-true">{{ cost_sheet?.details?.yield }}%</td>
+                                <td class="text-left-true right-border rightalign">{{
+                                    cost_sheet?.details?.yieldvalue
+                                    }}</td>
+                                <td></td>
+                                <td></td>
+                                <td>Last Selling Price</td>
+                                <td>{{ cost_sheet?.cost_transfer }}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>CC</td>
+                                <td class="rightalign">{{ cost_sheet?.details?.ccsheet }}</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>H</td>
+                                <td class="text-left-true">Analytical Charges</td>
+                                <td class="text-left-true"></td>
+                                <td class="text-left-true right-border rightalign">{{cost_sheet?.details?.acsheet }}
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td>G.C%</td>
+                                <td>{{ total_value?.GCvalue }} %</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>PC</td>
+                                <td class="rightalign">{{ cost_sheet?.details?.pcsheet }}</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>I</td>
+                                <td class="text-left-true">CCPC </td>
+                                <td class="text-left-true">{{ cost_sheet?.details?.ccpcharge }}%</td>
+                                <td class="text-left-true right-border rightalign">{{ total_value?.ccpcvalue }}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>100% CCPC</td>
+                                <td class="rightalign">{{ total_value?.ccpc }}</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>J</td>
+                                <td class="text-left-true">Production Cost</td>
+                                <td class="text-left-true"></td>
+                                <td class="text-left-true right-border rightalign">{{ total_value?.Productvalue }}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>K</td>
+                                <td class="text-left-true">Profit Margin </td>
+                                <td class="text-left-true">{{ cost_sheet?.details?.margin }}%</td>
+                                <td class="text-left-true right-border rightalign">{{ cost_sheet?.details?.PTvalue }}
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>L</td>
+                                <td class="text-left-true">Less (ITC)</td>
+                                <td class="text-left-true"></td>
+                                <td class="text-left-true right-border rightalign">{{ cost_sheet?.details?.ITCvalue }}
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>M</td>
+                                <td class="text-left-true">Transfer Price Per {{ select_pack?.packing_name }}'s
+                                </td>
+                                <td class="text-left-true"></td>
+                                <td class="text-left-true right-border rightalign">{{ total_value?.transfer }}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>N</td>
+                                <td class="text-left-true">Cost Per Unit </td>
+                                <td class="text-left-true"></td>
+                                <td class="text-left-true right-border rightalign">{{ total_value?.unitprice }}
+                                </td>
+                            </tr>
+
+                        </ng-container>
+                    </tbody>
+                </table>
+                <table class="table border align-middle mt-2 text-center">
+                    <thead>
+
+                        <tr class="borderbottom">
+                            <th></th>
+                            <th scope="col" class="text-left-true">Prepared By</th>
+                            <th rowspan="3" scope="col" class="text-left-true">Reported By</th>
+                            <th rowspan="2" scope="col" class="text-left-true">Verified By</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td class="text-left-true">{{ convert_user(cost_sheet?.create_user) }}</td>
+                            <td rowspan="3" class="text-left-true">{{ convert_user(cost_sheet?.verified_user) }}</td>
+                            <td rowspan="2" class="text-left-true">{{ convert_user(cost_sheet?.approve_user) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- pdf section -->
+
+<div class="pdf-con w-100" *ngIf="pageloading">
+    <div class="bg-white position-absolute w-100 h-100" style="z-index: 2"></div>
+    <div id="pdf-con" style="font-family: 'Roboto', sans-serif">
+        <table class="appl_table">
+            <thead>
+                <tr>
+                    <td rowspan="3"><img src="{{ setting_data?.original_image }}" width="200px" alt="Company Logo"></td>
+                    <td class="pdf-right">Location :</td>
+                    <td class="pdf-left borderline">{{ cost_sheet?.details?.location }}</td>
+                    <td class="pdf-right">Type :</td>
+                    <td class="pdf-left borderline">{{ cost_sheet?.details?.license }}</td>
+                    <td></td>
+                    <td class="pdf-right">Cost Sheet Control No :</td>
+                    <td class="pdf-left borderline">{{ cost_sheet?.control_no }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class="pdf-right">Dosage :</td>
+                    <td class="pdf-left borderline">{{ cost_sheet?.details?.dosage }}</td>
+                    <td></td>
+
+                    <td class="pdf-right">Date :</td>
+                    <td class="pdf-left borderline">{{ currentDate }}</td>
+                </tr>
+                <tr class="bottom-border">
+                    <td></td>
+                    <td></td>
+                    <td class="pdf-right">Sub Type :</td>
+                    <td class="pdf-left borderline">{{ cost_sheet?.details?.subtype1 }}</td>
+                    <td class="pdf-left borderline">{{ cost_sheet?.details?.subtype2 }}</td>
+                    <td class="pdf-right">Revision No. / Date :</td>
+                    <td class="borderline"></td>
+
+                </tr>
+                <tr class="bottom-border">
+                    <td class="pdf-left"><strong>NAME OF THE CUSTOMER :</strong></td>
+                    <td colspan="3" class="pdf-left borderline"><strong>{{ cost_sheet?.customer_pop?.name }}</strong>
+                    </td>
+                    <td class="pdf-right"><strong>BATCH SIZE :</strong></td>
+                    <td class="pdf-right borderline"><strong>{{ convert_only_currency(cost_sheet?.details?.batch)
+                            }}</strong></td>
+                    <td colspan="2" class="pdf-center">No of Units Pack</td>
+                </tr>
+                <tr class="bottom-border">
+                    <td class="pdf-left"><strong>NAME OF THE PRODUCT :</strong></td>
+                    <td colspan="5" class="borderline"></td>
+                    <td class="pdf-center pdfright"><strong>Sales </strong></td>
+                    <td class="pdf-center"><strong>{{ convert_only_currency(cost_sheet?.details?.unit_pack)}}</strong>
+                    </td>
+                </tr>
+                <tr class="bottom-border">
+                    <td class="pdf-left"><strong>GENERIC NAME :</strong></td>
+                    <td colspan="5" class="pdf-left borderline"><strong>{{ cost_sheet?.sheet_name }}</strong></td>
+                    <td class="pdf-right"><strong>No. of Ingredients</strong></td>
+                    <td class="pdf-center borderline"><strong>1</strong></td>
+                </tr>
+                <tr class="bottom-border" style="height: 220px;">
+                    <td class="pdf-left pdfright"><strong>PRODUCT COMPOSITION :</strong></td>
+                    <td colspan="7" class="pdf-left"><strong [innerHTML]="quillContent"></strong></td>
+                </tr>
+                <tr>
+                    <td class="pdf-left"><strong>PACKING PROFILE :</strong></td>
+                    <td colspan="4"><strong></strong></td>
+                    <td><strong>YIELD @ </strong></td>
+                    <td class="borderline"><strong>{{ cost_sheet?.details?.yield }}%</strong></td>
+                    <td><strong>{{convert_only_currency(cost_sheet?.details?.final_unit) }}</strong> No of Units Pack
+                    </td>
+                </tr>
+            </thead>
+        </table>
+        <div *ngIf="isRawmaterial">
+            <h5 class="mx-3">Raw Material Details</h5>
+            <table class="appl_table">
+                <thead>
+                    <tr class="borderbottom">
+                        <th class="borderight">Srl</th>
+                        <th class="borderight">Name of the Item</th>
+                        <th class="borderight">Item Code</th>
+                        <th class="borderight">UOM</th>
+                        <th class="borderight">Qty / Batch</th>
+                        <th class="borderight">LOD / OA</th>
+                        <th class="borderight">BASIC</th>
+                        <th class="borderight">Others / Freight</th>
+                        <th class="borderight">GST %</th>
+                        <th class="borderight">Basic Value</th>
+                        <th class="borderight">Net Value / Batch</th>
+                        <th class="borderight">ITC</th>
+                        <th class="borderight">Total Value</th>
+                        <th class="">%</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngIf="cost_sheet?.raw?.length" class="">
+                        <tr class="borderline" *ngIf="isRaw">
+                            <td class="pdf-left" colspan="4"><strong>API</strong></td>
+                        </tr>
+                        <tr *ngFor="let data of cost_sheet?.raw; let index = index" class="borderbottom">
+                            <ng-container *ngIf="data.isSelected">
+                                <td title="ID" class="pdf-left borderight">{{ index + 1 }}</td>
+                                <td title="name" class="pdf-left borderight">{{ data?.item_pop?.item_name }}</td>
+                                <td title="code" class="pdf-left borderight">{{ data?.item_pop?.item_code }}</td>
+                                <td title="uom" class="pdf-left borderight">{{ data?.item_pop?.abbreviation }}</td>
+                                <td title="qty" class="pdf-right borderight">{{ data?.qty | number:'1.3-3' }}</td>
+                                <td title="lod" class="pdf-right borderight">{{ data?.lod | number:'1.2-2' }}</td>
+                                <td title="rate" class="pdf-right borderight">{{ convert_to_currency(data?.item_rate |
+                                    number:'1.3-3') }}</td>
+                                <td title="freight" class="pdf-right borderight">{{ data?.item_freight | number:'1.2-2'
+                                    }}
+                                </td>
+                                <td title="gst" class="pdf-right borderight">{{ data.item_gst }}%</td>
+                                <td title="basic" class="pdf-right borderight">{{ convert_to_currency(data?.basic) }}
+                                </td>
+                                <td title="batch" class="pdf-right borderight">{{ convert_to_currency(data?.batch) }}
+                                </td>
+                                <td title="itc" class="pdf-right borderight">{{ convert_to_currency(data?.Itc) }}</td>
+                                <td title="value" class="pdf-right borderight">{{ convert_to_currency(data?.total_value)
+                                    }}
+                                </td>
+                                <td title="perc" class="pdf-right borderight">{{ data?.percentage }} %</td>
+                            </ng-container>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="cost_sheet?.excipient.length">
+                        <tr class="borderline" *ngIf="isExcipient">
+                            <td class="pdf-left" colspan="4"><strong>EXCIPIENTS MATERIAL</strong></td>
+                        </tr>
+                        <tr *ngFor="let data of cost_sheet?.excipient; let index = index" class="borderbottom">
+                            <ng-container *ngIf="data.isSelected">
+                                <td title="ID" class="pdf-left borderight">{{ index + 1 }}</td>
+                                <td title="name" class="pdf-left borderight">{{ data?.item_pop?.item_name }}</td>
+                                <td title="code" class="pdf-left borderight">{{ data?.item_pop?.item_code }}</td>
+                                <td title="uom" class="pdf-left borderight">{{ data?.item_pop?.abbreviation }}</td>
+                                <td title="qty" class="pdf-right borderight">{{ data?.qty | number:'1.3-3' }}</td>
+                                <td title="lod" class="pdf-right borderight">{{ data?.lod | number:'1.2-2' }}</td>
+                                <td title="rate" class="pdf-right borderight">{{ convert_to_currency(data?.item_rate |
+                                    number:'1.3-3') }}</td>
+                                <td title="freight" class="pdf-right borderight">{{ data?.item_freight | number:'1.2-2'
+                                    }}
+                                </td>
+                                <td title="gst" class="pdf-right borderight">{{ data.item_gst }}%</td>
+                                <td title="basic" class="pdf-right borderight">{{ convert_to_currency(data?.basic) }}
+                                </td>
+                                <td title="batch" class="pdf-right borderight">{{ convert_to_currency(data?.batch) }}
+                                </td>
+                                <td title="itc" class="pdf-right borderight">{{ convert_to_currency(data?.Itc) }}</td>
+                                <td title="value" class="pdf-right borderight">{{ convert_to_currency(data?.total_value)
+                                    }}
+                                </td>
+                                <td title="perc" class="pdf-right borderight">{{ data?.percentage }} %</td>
+                            </ng-container>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="cost_sheet?.intermed.length">
+                        <tr class="borderline" *ngIf="isIntermed">
+                            <td class="pdf-left" colspan="4"><strong>INTERMEDIATE MATERIAL</strong></td>
+                        </tr>
+                        <tr *ngFor="let data of cost_sheet?.intermed; let index = index" class="borderbottom">
+                            <ng-container *ngIf="data.isSelected">
+                                <td title="ID" class="pdf-left borderight">{{ index + 1 }}</td>
+                                <td title="name" class="pdf-left borderight">{{ data?.item_pop?.item_name }}</td>
+                                <td title="code" class="pdf-left borderight">{{ data?.item_pop?.item_code }}</td>
+                                <td title="uom" class="pdf-left borderight">{{ data?.item_pop?.abbreviation }}</td>
+                                <td title="qty" class="pdf-right borderight">{{ data?.qty | number:'1.3-3' }}</td>
+                                <td title="lod" class="pdf-right borderight">{{ data?.lod | number:'1.2-2' }}</td>
+                                <td title="rate" class="pdf-right borderight">{{ convert_to_currency(data?.item_rate |
+                                    number:'1.3-3') }}</td>
+                                <td title="freight" class="pdf-right borderight">{{ data?.item_freight | number:'1.2-2'
+                                    }}
+                                </td>
+                                <td title="gst" class="pdf-right borderight">{{ data.item_gst }}%</td>
+                                <td title="basic" class="pdf-right borderight">{{ convert_to_currency(data?.basic) }}
+                                </td>
+                                <td title="batch" class="pdf-right borderight">{{ convert_to_currency(data?.batch) }}
+                                </td>
+                                <td title="itc" class="pdf-right borderight">{{ convert_to_currency(data?.Itc) }}</td>
+                                <td title="value" class="pdf-right borderight">{{ convert_to_currency(data?.total_value)
+                                    }}
+                                </td>
+                                <td title="perc" class="pdf-right borderight">{{ data?.percentage }} %
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+
+        <div *ngIf="packmaster">
+            <h5 class="mx-3">Packing Material</h5>
+            <div class="">
+                <table *ngIf="select_pack.isSelected" class="appl_table">
+                    <thead>
+                        <tr class="">
+                            <th class="borderight">Srl</th>
+                            <th class="borderight">Name of the Item</th>
+                            <th class="borderight">Item Code</th>
+                            <th class="borderight">UOM</th>
+                            <th class="borderight">Qty / Batch</th>
+                            <th class="borderight">BASIC</th>
+                            <th class="borderight">Others / Freight</th>
+                            <th class="borderight">GST %</th>
+                            <th class="borderight">Basic Value</th>
+                            <th class="borderight">Net Value / Batch</th>
+                            <th class="borderight">ITC</th>
+                            <th class="borderight">Total Value</th>
+                            <th class="">%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container>
+                            <tr class="borderline">
+                                <th colspan="3" style="font-size: 16px;"> No of Units: {{ select_pack?.packing_name }}
+                                </th>
+                                <th colspan="3" style="font-size: 16px;">Type: {{ select_pack?.select_type }}</th>
+                                <th colspan="3" style="font-size: 16px;">DPCO Charges: {{ select_pack?.packvalue
+                                    }}</th>
+                                <th colspan="3" style="font-size: 16px;">DPCO Single: {{ select_pack?.packcharge
+                                    }}</th>
+                            </tr>
+                            <tr *ngFor="let data of select_pack?.pack; let index = index" class="borderbottom">
+                                <ng-container *ngIf="data.isSelected">
+                                    <td title="ID" class="pdf-left borderight">{{ index + 1 }}</td>
+                                    <td title="name" class="pdf-left borderight">{{ data?.item_pop?.item_name }}</td>
+                                    <td title="code" class="pdf-left borderight">{{ data?.item_pop?.item_code }}</td>
+                                    <td title="uom" class="pdf-left borderight">{{ data?.item_pop?.abbreviation }}</td>
+                                    <td title="qty" class="pdf-right borderight">{{ data?.qty | number:'1.3-3' }}</td>
+                                    <td title="rate" class="pdf-right borderight">{{ convert_to_currency(data?.item_rate
+                                        |
+                                        number:'1.3-3') }}</td>
+                                    <td title="freight" class="pdf-right borderight">{{ data?.item_freight |
+                                        number:'1.2-2'
+                                        }}
+                                    </td>
+                                    <td title="gst" class="pdf-right borderight">{{ data.item_gst }}%</td>
+                                    <td title="basic" class="pdf-right borderight">{{ convert_to_currency(data?.basic)
+                                        }}
+                                    </td>
+                                    <td title="batch" class="pdf-right borderight">{{ convert_to_currency(data?.batch)
+                                        }}
+                                    </td>
+                                    <td title="itc" class="pdf-right borderight">{{ convert_to_currency(data?.Itc) }}
+                                    </td>
+                                    <td title="value" class="pdf-right borderight">{{
+                                        convert_to_currency(data?.total_value)
+                                        }}
+                                    </td>
+                                    <td title="perc" class="pdf-right borderight">{{ data?.percentage }} %
+                                    </td>
+                                </ng-container>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div *ngIf="raw_value?.percentage !== 0 && (isRawmaterial || packmaster)">
+            <div class="">
+                <table class="appl_table">
+                    <thead>
+                        <tr class="borderbottom">
+                            <th class="borderight">Name</th>
+                            <th class="borderight">Basic Value</th>
+                            <th class="borderight">Net Value / Batch</th>
+                            <th class="borderight">ITC</th>
+                            <th class="borderight">Total Value</th>
+                            <th class="borderight">Percentage %</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="borderbottom">
+                            <th class="pdf-right borderight"> Other Materials:</th>
+                            <td class="pdf-right borderight">{{ convert_to_currency(raw_value?.basic | number:'1.2-2')
+                                }}</td>
+                            <td class="pdf-right borderight">{{ convert_to_currency(raw_value?.batch | number:'1.2-2')
+                                }}</td>
+                            <td class="pdf-right borderight">{{ convert_to_currency(raw_value?.Itc | number:'1.2-2')
+                                }}</td>
+                            <td class="pdf-right borderight">{{ convert_to_currency(raw_value?.total_value |
+                                number:'1.2-2')
+                                }}</td>
+                            <td class="pdf-right borderight">{{
+                                raw_value?.percentage.toFixed(2)
+                                }}%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div *ngIf="table5">
+            <h5 class="mx-3">Total Material Cost</h5>
+            <table class="appl_table">
+                <thead>
+                    <tr class="borderbottom">
+                        <td></td>
+                        <th class="borderight">Basic Value</th>
+                        <th class="borderight">Net Value / Batch</th>
+                        <th class="borderight">ITC</th>
+                        <th class="borderight">Total Value</th>
+                        <th colspan="2" class="borderight">Percentage %</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="borderbottom">
+                        <th class="pdf-right borderight"> TOTAL RM COST :</th>
+                        <td class="pdf-right borderight">{{ convert_to_currency(master_raw?.master_raw_basic) }}</td>
+                        <td class="pdf-right borderight">{{ convert_to_currency(master_raw?.master_raw_net) }}</td>
+                        <td class="pdf-right borderight">{{ convert_to_currency(master_raw?.master_raw_itc) }}</td>
+                        <td class="pdf-right borderight">{{ convert_to_currency(master_raw?.master_raw_value) }}</td>
+                        <td colspan="2" class="pdf-right borderight">{{ master_raw?.master_raw_percentage }}%</td>
+                    </tr>
+
+                    <tr class="borderbottom">
+                        <th class="pdf-right borderight"> TOTAL PM COST :</th>
+                        <td class="pdf-right borderight">{{ convert_to_currency(master_pack?.master_pack_basic) }}</td>
+                        <td class="pdf-right borderight">{{ convert_to_currency(master_pack?.master_pack_net) }}</td>
+                        <td class="pdf-right borderight">{{ convert_to_currency(master_pack?.master_pack_itc) }}</td>
+                        <td class="pdf-right borderight">{{ convert_to_currency(master_pack?.master_pack_value) }}</td>
+                        <td colspan="2" class="pdf-right borderight">{{ master_pack?.master_pack_percentage }}%</td>
+                    </tr>
+
+                    <tr class="borderbottom">
+                        <th class="pdf-right borderight">{{select_pack?.packing_name}} -TOTAL COST :</th>
+                        <td class="pdf-right borderight">{{ convert_to_currency(total_cost?.total_cost_basic) }}</td>
+                        <td class="pdf-right borderight">{{ convert_to_currency(total_cost?.total_cost_net) }}</td>
+                        <td class="pdf-right borderight">{{ convert_to_currency(total_cost?.total_cost_itc) }}</td>
+                        <td class="pdf-right borderight">{{ convert_to_currency(total_cost?.total_cost_value) }}</td>
+                        <td colspan="2" class="pdf-right borderight">{{ total_cost?.total_cost_percentage }}%</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+                    <ng-container>
+                        <tr class="borderbottom">
+                            <td class="pdf-left borderight">RM Cost </td>
+                            <td class="borderight"></td>
+                            <td class="pdf-right borderight">{{ total_value?.rmcost }}</td>
+                            <td colspan="3"></td>
+                        </tr>
+                        <tr class="borderbottom">
+                            <td class="pdf-left borderight">PM Cost </td>
+                            <td class="borderight"></td>
+                            <td class="pdf-right borderight">{{ total_value?.pmcost }}</td>
+                            <td>Consumption (TP)</td>
+                            <td>{{ cost_sheet?.details?.consumption }}% </td>
+                            <td><strong>CCPC as per DPCO</strong></td>
+                            <td></td>
+                        </tr>
+                        <tr class="borderbottom">
+                            <td class="pdf-left borderight">Material Cost </td>
+                            <td class="borderight"></td>
+                            <td class="pdf-right borderight">{{ total_value?.materialcost }}</td>
+                            <td>Consumption (LSP)</td>
+                            <td>{{ cost_sheet?.cost_Consum }}<span *ngIf="cost_sheet.cost_Consum">%</span></td>
+                            <td><strong>Units in Nos</strong></td>
+                            <td>{{ select_pack?.packing_name }}'s</td>
+                        </tr>
+                        <tr class="borderbottom">
+                            <td class="pdf-left borderight">Yield</td>
+                            <td class="borderight">{{ cost_sheet?.details?.yield }}%</td>
+                            <td class="pdf-right borderight">{{ cost_sheet?.details?.yieldvalue }}</td>
+                            <td>Last Selling Price</td>
+                            <td>{{ cost_sheet?.cost_transfer }}</td>
+                            <td>CC</td>
+                            <td class="cellcolor">{{ cost_sheet?.details?.ccsheet }}</td>
+                        </tr>
+                        <tr class="borderbottom">
+                            <td class="pdf-left borderight">Analytical Charges</td>
+                            <td class="borderight"></td>
+                            <td class="pdf-right borderight">{{ cost_sheet?.details?.acsheet }}</td>
+                            <td>G.C%</td>
+                            <td>{{ total_value?.GCvalue }}<span *ngIf="total_value.GCvalue">%</span></td>
+                            <td>PC</td>
+                            <td class="cellcolor">{{ cost_sheet?.details?.pcsheet }}</td>
+                        </tr>
+                        <tr class="borderbottom">
+                            <td class="pdf-left borderight">CCPC </td>
+                            <td class="borderight">{{ cost_sheet?.details?.ccpcharge }}%</td>
+                            <td class="pdf-right borderight">{{ total_value?.ccpcvalue }}</td>
+                            <td></td>
+                            <td></td>
+                            <td><strong>100% CCPC</strong></td>
+                            <td><strong>{{ total_value?.ccpc }}</strong></td>
+                        </tr>
+                        <tr class="borderbottom">
+                            <td class="pdf-left borderight">Production Cost</td>
+                            <td class="borderight"></td>
+                            <td class="pdf-right borderight">{{ total_value?.Productvalue }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="borderbottom">
+                            <td class="pdf-left borderight">Profit Margin </td>
+                            <td class="borderight">{{ cost_sheet?.details?.margin }}%</td>
+                            <td class="pdf-right borderight cellcolor">{{ cost_sheet?.details?.PTvalue }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="borderbottom">
+                            <td class="pdf-left borderight">Less (ITC) </td>
+                            <td class="borderight"></td>
+                            <td class="pdf-right borderight">{{ cost_sheet?.details?.ITCvalue }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="borderbottom">
+                            <td class="pdf-left borderight cellcolor"> Transfer Price Per {{ select_pack?.packing_name
+                                }}'s</td>
+                            <td class="borderight cellcolor"></td>
+                            <td class="pdf-right borderight cellcolor">{{ total_value?.transfer }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr class="">
+                            <td class="pdf-left borderight cellcolor"><strong>Cost Per Unit</strong></td>
+                            <td class="borderight cellcolor"></td>
+                            <td class="pdf-right borderight cellcolor"><strong>{{ total_value?.unitprice }}</strong>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+            <table class="appl_table">
+                <thead>
+                    <tr class="borderbottom">
+                        <th colspan="2" scope="col" class="pdf-left borderight">Prepared By</th>
+                        <th colspan="2" scope="col" class="pdf-left borderight">Reported By</th>
+                        <th colspan="2" scope="col" class="pdf-left borderight">Verified By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="2" class="pdf-left borderight">{{ convert_user(cost_sheet?.create_user) }}</td>
+                        <td colspan="2" class="pdf-left borderight">{{ convert_user(cost_sheet?.verified_user) }}</td>
+                        <td colspan="2" class="pdf-left borderight">{{ convert_user(cost_sheet?.approve_user) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

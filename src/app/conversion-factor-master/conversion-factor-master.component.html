@@ -1,0 +1,61 @@
+<app-loader [isLoader]="page_loading"></app-loader>
+<div class="container-fluid custom-page">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="mt-3">
+        <div class="bg-white p-3 border-top border-start border-end rounded shadow-sm mb-3">
+          <div class="d-flex align-items-center justify-content-between">
+            <h5 class="mb-0">Conversion Factor Master</h5>
+            <button type="button" class="custom-button" routerLink="form" *ngIf="hasPermission('ConversionFactorMaster.Create')">
+                <fa-icon [icon]="faPlus" class="me-1"></fa-icon> ADD
+            </button>
+          </div>
+        </div>
+        <div class="bg-white rounded-6px table-responsive-sm p-3 shadow-sm">
+          <table id="scroll-horizontal"
+            class="table border table-hover table-striped table-responsive-lg text-center rounded-top"
+            *ngIf="conversionFactors?.length">
+            <thead>
+              <tr>
+                <th scope="col" class="bg-gradient text-center" style="width: 5%">
+                  S.No
+                </th>
+                <th scope="col" class="bg-gradient text-start">
+                  Factor Name</th>
+                <th scope="col" class="bg-gradient text-center">
+                  INR to USD
+                </th>
+                <th scope="col" class="bg-gradient text-center">
+                  Updated Date & Time
+                </th>
+                <th scope="col" class="bg-gradient" *ngIf="
+                        hasPermission('ConversionFactorMaster.Update')">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of conversionFactors; let i = index" class="details-row">
+                <td class="text-center">{{ i + 1 }}</td>
+                <td class="left-align px-2">{{ item.name }}</td>
+                <td class="text-center">
+                  {{ item.inrToUsd }}
+                </td>
+                <td class="text-center">
+                  {{ item.updatedAt | date: 'dd-MMM-yyyy HH:mm:ss' }}
+                </td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-outline-secondary btn-sm mr-1"
+                    *ngIf="hasPermission('ConversionFactorMaster.Update')" [routerLink]="'form/' + item._id">
+                    <fa-icon [icon]="faEdit"></fa-icon>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <app-pagination [data]="pagination_data"></app-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

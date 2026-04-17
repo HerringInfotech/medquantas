@@ -1,0 +1,159 @@
+<div class="mq-login-wrapper">
+
+  <!-- Left Panel -->
+  <div class="mq-left-panel">
+    <div class="mq-left-inner">
+      <div class="mq-brand-icon">
+        <span>MQ</span>
+      </div>
+      <h1 class="mq-brand-name">MedQuantas</h1>
+      <p class="mq-brand-tagline">Intelligent Costing &amp; Inventory Platform</p>
+
+      <div class="mq-features">
+        <div class="mq-feature-item">
+          <span class="mq-feature-dot"></span>
+          <span>Real-time BOM &amp; Cost Management</span>
+        </div>
+        <div class="mq-feature-item">
+          <span class="mq-feature-dot"></span>
+          <span>Advanced Pricing &amp; Reporting</span>
+        </div>
+        <div class="mq-feature-item">
+          <span class="mq-feature-dot"></span>
+          <span>Role-based Access Control</span>
+        </div>
+      </div>
+    </div>
+    <div class="mq-left-circles">
+      <div class="circle c1"></div>
+      <div class="circle c2"></div>
+      <div class="circle c3"></div>
+    </div>
+  </div>
+
+  <!-- Right Panel -->
+  <div class="mq-right-panel">
+    <div class="mq-form-box">
+
+      <div class="mq-form-header">
+        <h2>Welcome Back</h2>
+        <p>Sign in to your MedQuantas account</p>
+      </div>
+
+      <form #formData="ngForm" (ngSubmit)="formSubmit(formData)" *ngIf="current_url[2] !== 'forgot-password'">
+
+        <div class="mq-field">
+          <label>Email Address</label>
+          <div class="mq-input-wrap" [class.invalid]="email.invalid && (email.dirty || email.touched || formData.submitted)">
+            <fa-icon [icon]="faEnvelope" class="mq-input-icon"></fa-icon>
+            <input id="emailInput" name="email" type="email" placeholder="you@example.com"
+              autocomplete="off" required [(ngModel)]="formValues['email']" #email="ngModel">
+          </div>
+          <span class="mq-error" *ngIf="email.invalid && (email.dirty || email.touched || formData.submitted)">
+            Email is required
+          </span>
+        </div>
+
+        <div class="mq-field">
+          <label>Password</label>
+          <div class="mq-input-wrap" [class.invalid]="password.invalid && (password.dirty || password.touched || formData.submitted)">
+            <fa-icon [icon]="faLock" class="mq-input-icon"></fa-icon>
+            <input [type]="password_type" name="password" placeholder="Enter your password"
+              required [(ngModel)]="formValues['password']" #password="ngModel">
+            <button type="button" class="mq-eye-btn"
+              (click)="password_type = password_type === 'password' ? 'text' : 'password'">
+              <fa-icon [icon]="password_type === 'password' ? faEyeSlash : faEye"></fa-icon>
+            </button>
+          </div>
+          <span class="mq-error" *ngIf="password.invalid && (password.dirty || password.touched || formData.submitted)">
+            Password is required
+          </span>
+        </div>
+
+        <div class="mq-actions">
+          <label class="mq-remember">
+            <input type="checkbox"> Stay signed in
+          </label>
+          <a class="mq-forgot" (click)="go_forgot()">Forgot password?</a>
+        </div>
+
+        <button class="mq-submit-btn" type="submit" [disabled]="btn_loading">
+          <span class="spinner-border spinner-border-sm me-2" *ngIf="btn_loading"></span>
+          {{ btn_loading ? 'Signing in...' : 'Sign In' }}
+        </button>
+
+      </form>
+
+      <!-- Forgot Password -->
+      <div *ngIf="current_url[2] === 'forgot-password'">
+        <div class="mq-field">
+          <label>Email Address</label>
+          <div class="mq-input-wrap">
+            <fa-icon [icon]="faEnvelope" class="mq-input-icon"></fa-icon>
+            <input name="email" type="email" placeholder="you@example.com"
+              autocomplete="off" [(ngModel)]="formValues['email']">
+          </div>
+        </div>
+        <button class="mq-submit-btn w-100 mb-3" (click)="forgot()" [disabled]="btn_loading">
+          <span class="spinner-border spinner-border-sm me-2" *ngIf="btn_loading"></span>
+          Reset Password
+        </button>
+        <div class="text-center">
+          <a href="auth/login" class="mq-back-link">Back to Sign In</a>
+        </div>
+      </div>
+
+      <div class="mq-form-footer">
+        &copy; 2025 MedQuantas. All rights reserved.
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Password Expiry Modal -->
+<ng-template #expiredPassTemplate>
+  <div class="modal-body p-4">
+    <div class="text-center mb-4">
+      <div class="mq-modal-icon">
+        <fa-icon [icon]="faKey" class="text-warning fs-2"></fa-icon>
+      </div>
+      <h5 class="fw-bold mt-3">Password Expired</h5>
+      <p class="text-muted small">Your password has expired. Please set a new strong password.</p>
+    </div>
+    <form #expForm="ngForm" (ngSubmit)="resetExpiredPassword(expForm)">
+      <div class="mq-field mb-3">
+        <label>New Password</label>
+        <div class="mq-input-wrap" [class.invalid]="(nPass.invalid && (nPass.dirty || nPass.touched || expForm.submitted)) || passComplexityError">
+          <fa-icon [icon]="faLock" class="mq-input-icon"></fa-icon>
+          <input [type]="newPassVisible ? 'text' : 'password'" name="newPassword"
+            placeholder="Strong new password" [(ngModel)]="newPassValues.newPassword"
+            #nPass="ngModel" required minlength="8"
+            (ngModelChange)="passComplexityError = false; passMismatchError = false">
+          <button type="button" class="mq-eye-btn" (click)="newPassVisible = !newPassVisible">
+            <fa-icon [icon]="newPassVisible ? faEye : faEyeSlash"></fa-icon>
+          </button>
+        </div>
+        <span class="mq-error" *ngIf="passComplexityError">Must contain Uppercase, Lowercase, Number &amp; Symbol.</span>
+      </div>
+      <div class="mq-field mb-4">
+        <label>Confirm Password</label>
+        <div class="mq-input-wrap" [class.invalid]="(cPass.invalid && (cPass.dirty || cPass.touched || expForm.submitted)) || passMismatchError">
+          <fa-icon [icon]="faCheckCircle" class="mq-input-icon"></fa-icon>
+          <input [type]="confirmPassVisible ? 'text' : 'password'" name="confirmPassword"
+            placeholder="Repeat your password" [(ngModel)]="newPassValues.confirmPassword"
+            #cPass="ngModel" required (ngModelChange)="passMismatchError = false">
+          <button type="button" class="mq-eye-btn" (click)="confirmPassVisible = !confirmPassVisible">
+            <fa-icon [icon]="confirmPassVisible ? faEye : faEyeSlash"></fa-icon>
+          </button>
+        </div>
+        <span class="mq-error" *ngIf="passMismatchError">Passwords do not match.</span>
+      </div>
+      <button class="mq-submit-btn w-100" type="submit" [disabled]="submitLoading">
+        <span class="spinner-border spinner-border-sm me-2" *ngIf="submitLoading"></span>
+        {{ submitLoading ? 'Updating...' : 'Update Password' }}
+      </button>
+    </form>
+  </div>
+</ng-template>

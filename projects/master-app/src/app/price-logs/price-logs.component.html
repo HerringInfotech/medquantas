@@ -1,0 +1,70 @@
+<app-loader [isLoader]="page_loading"></app-loader>
+<div class="container-fluid" *ngIf="!page_loading">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="mt-3">
+                <div class="mx-auto custom-height">
+                    <div class="bg-white p-3 border-top border-start border-end rounded shadow-sm mb-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h5 class="mb-0">Price Logs</h5>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-6px table-responsive-sm p-3 shadow-sm">
+                        <div class="row px-3 pt-2 pb-3">
+                            <div class="col-lg-6 col-xl-4 col-12">
+                                <label class="m-0">Search by Item</label>
+                                <div class="input-group flex-nowrap mt-1">
+                                    <input type="text" class="form-control" (ngModelChange)="onSearchChange($event)"
+                                        placeholder="search item name/code" [(ngModel)]="search" />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text bg-white pointer rounded-start-0"
+                                            id="addon-wrapping"><fa-icon class="text-secondary"
+                                                [icon]="faSearch"></fa-icon></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Loader only for table -->
+                        <div *ngIf="table_loading" class="text-center p-4">
+                            <app-loader [isLoader]="true"></app-loader>
+                        </div>
+
+                        <!-- No data -->
+                        <app-not-data *ngIf="!table_loading && !priceLog?.length" [message]="'No Price Logs found'">
+                        </app-not-data>
+
+                        <!-- Table data -->
+                        <table id="scroll-horizontal"
+                            class="table border table-hover table-striped table-responsive-lg text-center rounded-top"
+                            *ngIf="!table_loading && priceLog?.length">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="bg-blue text-center">S.No</th>
+                                    <th scope="col" class="bg-blue left-align">Update Date</th>
+                                    <th scope="col" tableColumn class="bg-blue custom-select text-start">Item Code</th>
+                                    <th scope="col" class="bg-blue text-end">Old Rate</th>
+                                    <th scope="col" class="bg-blue text-end">New Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of priceLog; let index = index" class="details-row">
+                                    <td class="text-center">{{ index + pagination_data?.pagingCounter }}</td>
+                                    <td class="left-align">{{ data?.createdAt | date:'short' }}</td>
+                                    <td class="left-align">{{ data?.code }}</td>
+                                    <td class="text-end">{{ convert_to_currency(data?.oldRate) || 0 }}</td>
+                                    <td class="text-end">{{ convert_to_currency(data?.newRate) }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <app-pagination *ngIf="!table_loading && priceLog?.length" [data]="pagination_data">
+                        </app-pagination>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

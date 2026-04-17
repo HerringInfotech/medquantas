@@ -1,0 +1,103 @@
+<!-- <app-loader [isLoader]="page_loader"></app-loader> -->
+<div class="container-fluid" *ngIf="!page_loader">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="custom-height">
+                <div class="mx-auto col-lg-12">
+                    <div class="mb-2 p-2 px-0">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h5 class="mb-0">
+                                <span *ngIf="!brandId">ADD FG Master</span>
+                                <span *ngIf="brandId">Edit FG Master</span>
+                            </h5>
+                            <button class=" custom-button" (click)="goBack()">Back</button>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-6px table-responsive-sm p-3 shadow-sm">
+                        <form class="p-3" #formData="ngForm" (ngSubmit)="formSubmit(formData)">
+                            <div class="col-12">
+                                <div class="row mt-2">
+                                    <div class="form-group col-lg-6 col-md-6">
+                                        <label for="sapcodeInput">SAP Code</label>
+                                        <input id="sapcodeInput" name="sapcode" class="form-control"
+                                            placeholder="FG sapcode" autocomplete="off"
+                                            [(ngModel)]="formValues['fg_sapcode']" #sapcode="ngModel"
+                                            [ngClass]="{ 'is-invalid': sapcode.invalid && (sapcode.dirty || sapcode.touched || formData.submitted) }">
+                                        <div *ngIf="sapcode.invalid && (sapcode.dirty || sapcode.touched  || formData.submitted)"
+                                            class="invalid-feedback">
+                                            <span *ngIf="sapcode.errors.required">SAP Code is required.</span>
+                                        </div>
+                                        <span *ngIf="sapError" style="color:red;">{{sapError}}</span>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="form-group col-lg-6 col-md-6">
+                                        <label for="nameInput">FG Name <span
+                                                style="color:red;font-family: sans-serif;">*</span></label>
+                                        <input id="nameInput" name="name" class="form-control" placeholder="FG name"
+                                            required autocomplete="off" [(ngModel)]="formValues['name']"
+                                            (input)="brand_name()" #name="ngModel"
+                                            [ngClass]="{ 'is-invalid': name.invalid && (name.dirty || name.touched || formData.submitted) }">
+                                        <div *ngIf="name.invalid && (name.dirty || name.touched  || formData.submitted)"
+                                            class="invalid-feedback">
+                                            <span *ngIf="name.errors.required">FG name is required.</span>
+                                        </div>
+                                        <span *ngIf="nameError" style="color:red;">{{nameError}}</span>
+                                    </div>
+                                    <div class="form-group col-lg-6 col-md-6">
+                                        <label for="nameInput">FG code <span
+                                                style="color:red;font-family: sans-serif;">*</span></label>
+                                        <input id="codeInput" name="code" class="form-control" placeholder="FG Code"
+                                            required autocomplete="off" [disabled]="true"
+                                            [(ngModel)]="formValues['brand_code']" #code="ngModel"
+                                            [ngClass]="{ 'is-invalid': code.invalid && (code.dirty || code.touched || formData.submitted) }">
+                                        <div *ngIf="code.invalid && (code.dirty || code.touched  || formData.submitted)"
+                                            class="invalid-feedback">
+                                            <span *ngIf="code.errors.required">FG code is required.</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="form-group col-lg-6 col-md-6">
+                                        <label for="statusInput">Status <span class="text-danger">*</span></label>
+                                        <select name="status" class="form-control custom-select"
+                                            [(ngModel)]="formValues['status']" #status="ngModel">
+                                            <option disabled value="">Select Status</option>
+                                            <option *ngFor="let data of statusList" [value]="data">{{data}}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-lg-6 col-md-6">
+                                        <label for="packInput">FG Pack Type <span
+                                                style="color:red;font-family: sans-serif;">*</span></label>
+                                        <select name="pack" class="form-control" [(ngModel)]="formValues['pack_id']"
+                                            (change)="onpackChange()" #pack="ngModel" dropdownPosition="bottom">
+                                            <option disabled value="">Select pack type</option>
+                                            <option *ngFor="let data of pack_data" [value]="data.id">
+                                                {{data.name}}</option>
+                                        </select>
+                                        <span style="font-size: 0.875em; color: #dc3545;" *ngIf="isPack">Pack type
+                                            is
+                                            required.</span>
+                                    </div>
+                                </div>
+
+                                <button class=" custom-button border-0 mt-3" type="submit"
+                                    [disabled]="btn_loading ? 'disabled': null">
+                                    <span class="spinner-border" *ngIf="btn_loading" role="status"
+                                        aria-hidden="true"></span>
+                                    <span *ngIf="!btn_loading">{{ brandId ? 'Update' : 'Create'}}</span>
+                                </button>
+                                <button class=" reset-button mt-3 ms-2" type="button" *ngIf="!brandId"
+                                    (click)="resetForm(formData)">Reset</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

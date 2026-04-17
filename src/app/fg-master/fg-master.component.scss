@@ -1,0 +1,30 @@
+.highlight-yes {
+  color: #35d95b;
+}
+
+.highlight-no {
+  color: #721c24;
+}
+
+:host ::ng-deep .bg-blue {
+  background-color: transparent;
+  color: inherit;
+}
+
+.wrapLine {
+  max-width: 150px;
+  overflow-x: scroll;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.active-status {
+  color: green;
+  font-weight: bold;
+}
+
+.inactive-status {
+  color: red;
+  font-weight: bold;
+}

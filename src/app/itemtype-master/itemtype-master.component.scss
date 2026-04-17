@@ -1,0 +1,17 @@
+.wrapLine {
+    max-width: 100px;
+    overflow-x: scroll;
+    // text-wrap: nowrap;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+:host ::ng-deep .bg-blue {
+    background-color: transparent;
+    color: inherit;
+}
+
+.custom-page {
+    background-color: #f8f9fa;
+}

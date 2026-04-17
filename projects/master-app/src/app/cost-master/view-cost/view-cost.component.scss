@@ -1,0 +1,122 @@
+// th {
+//     text-align: center;
+// }
+
+// .cost-container {
+//     margin-top: 20px;
+//     padding: 15px;
+//     border: 1px solid #dee2e6;
+//     border-radius: 5px;
+// }
+
+
+// .right {
+//     text-align: right;
+// }
+
+// .right {
+//     text-align: left;
+// }
+
+// .bold{
+//     font-weight: bold
+// }
+
+
+.custom-color {
+    background-color: #009688;
+    border-color: #009688;
+    color: white;
+}
+
+.font-weight {
+    font-weight: bold;
+}
+
+
+
+.low-rate {
+    border: 1px solid red;
+}
+
+.high-rate {
+    border: 1px solid green;
+}
+
+.low-rate:focus {
+    border-color: red !important;
+}
+
+.high-rate:focus {
+    border-color: green !important;
+}
+
+
+td[title='name'] {
+    max-width: 100px;
+    overflow-x: scroll;
+    text-wrap: nowrap;
+}
+
+td[title="name"]::-webkit-scrollbar {
+    height: 5px;
+}
+
+td[title="name"]::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+td[title="name"]::-webkit-scrollbar-thumb {
+    background: #ccc;
+}
+
+td[title="name"]::-webkit-scrollbar-thumb:hover {
+    background: #ccc;
+}
+
+.bom-container {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+}
+
+.loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.wider-input {
+    width: 300px;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.popover-scrollable {
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+
+
+.excel-button:hover {
+  background-color: #1D6F42; /* or use #217346, the classic Excel green */
+  color: white;
+}
+
+/* PDF red */
+.pdf-button:hover {
+  background-color: #D9534F; /* or Adobe red: #FF0000 */
+  color: white;
+}
+

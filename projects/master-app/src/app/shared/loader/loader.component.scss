@@ -1,0 +1,141 @@
+/* Loader Overlay with darkened background and glowing effect */
+.loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Darker overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    flex-direction: column;
+    animation: fadeIn 2s ease-out;
+}
+
+/* Loader container centered with smooth scaling */
+.loader-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: scaleUp 2s ease-out;
+}
+
+/* Box around the logo with glowing and royal border */
+.logo-box {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    height: 80px;
+}
+
+.logo {
+    width: 100%;
+    height: auto;
+    z-index: 2;
+}
+
+/* Glowing, royal frame around the logo with animation */
+.loading-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 4px solid #ffffff; /* White border for elegance */
+    border-radius: 8px;
+    animation: pulse-frame 1.5s ease-in-out infinite, glow-shadow 1.5s ease-in-out infinite;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.7); /* White glow for the border */
+}
+
+/* Pulse animation for the frame */
+@keyframes pulse-frame {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Glowing shadow around the frame */
+@keyframes glow-shadow {
+    0% {
+        box-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(255, 255, 255, 1); /* White glow effect */
+    }
+    100% {
+        box-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
+    }
+}
+
+/* Text fade in/out with glowing white effect */
+.loading-text {
+    font-size: 22px;
+    font-family: 'Times New Roman', serif;
+    color: #ffffff; /* White text color */
+    margin-top: 20px;
+    text-align: center;
+    text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.8); /* White glow effect */
+    animation: fadeText 2s ease-out infinite, glowingText 1.5s ease-in-out infinite;
+}
+
+/* Fade in/out effect for loading text */
+@keyframes fadeText {
+    0% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.5;
+    }
+}
+
+/* Glowing text effect with white shadow */
+@keyframes glowingText {
+    0% {
+        text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.8);
+    }
+    50% {
+        text-shadow: 2px 2px 15px rgba(255, 255, 255, 1);
+    }
+    100% {
+        text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.8);
+    }
+}
+
+/* Smooth fade-in effect for loader overlay */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Smooth scaling effect for loader container */
+@keyframes scaleUp {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}

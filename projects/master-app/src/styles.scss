@@ -1,0 +1,812 @@
+/* You can add global styles to this file, and also import other style files */
+@import "../../../node_modules/bootstrap/scss/bootstrap.scss";
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import "~bootstrap/scss/bootstrap";
+@import "../../../node_modules/quill/dist/quill.snow.css";
+
+// MedQuantas Design System
+:root {
+  --mq-primary: #0a2540;
+  --mq-accent: #635bff;
+  --mq-accent2: #00c6a2;
+  --mq-bg: #f7f9fc;
+  --mq-text: #1a1f36;
+  --mq-muted: #6b7c93;
+  --mq-border: #eef0f5;
+  --mq-card-shadow: 0 4px 24px rgba(10,37,64,0.08);
+  --mq-radius: 16px;
+
+  --vz-vertical-menu-item-color: rgba(255,255,255,0.6);
+  --vz-vertical-menu-item-hover-color: #ffffff;
+  --vz-vertical-menu-item-active-color: #635bff;
+  --vz-border-width: 0px !important;
+}
+
+.left-align {
+  text-align: left;
+}
+
+.right-align {
+  text-align: right;
+}
+
+.center-align {
+  text-align: center;
+}
+
+/* Hide number input arrows in Firefox */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Standard appearance property for compatibility */
+input[type="number"] {
+  -moz-appearance: textfield;
+  /* For Firefox */
+  appearance: textfield;
+  /* Standard property for other browsers */
+}
+
+.img-too-small {
+  margin-top: 10px;
+  max-width: 20px;
+  right: 0;
+  margin-right: 10px;
+}
+
+.readonly-input {
+  background-color: #f6f9ff;
+  color: #555;
+  cursor: not-allowed;
+}
+
+.details-row:hover td {
+  background-color: #f1f1f1 !important;
+  color: #222;
+  cursor: pointer;
+}
+
+:host ::ng-deep .bg-blue {
+  background-color: transparent;
+  color: inherit;
+}
+
+// .table > :first-child {
+//     border:1px solid red;
+// }
+// .table tr:first-child {
+//     border-bottom: 1px solid var(--bs-table-border-color);
+// }
+.table tr {
+  // border-color: var(--bs-border-color);
+  border-color: #e6e9eb;
+}
+
+.navbar-menu .navbar-nav .nav-link {
+  cursor: pointer;
+}
+
+// tbody{
+//     border-color:var(--bs-table-border-color) !important;
+// }
+.page-link {
+  color: #232a3e;
+  cursor: pointer;
+}
+
+.disabled > .page-link {
+  background: #fff;
+}
+
+.page-link.active,
+.active > .page-link {
+  background-color: var(--mq-accent);
+  color: #fff;
+  border-color: var(--mq-accent);
+}
+
+// #6d77f1
+.page-link:hover {
+  color: inherit;
+}
+
+.table svg.fa-eye path,
+svg.fa-eye path,
+svg.fa-eye-slash path {
+  fill: #6d77f1;
+}
+
+.table svg.fa-edit path {
+  fill: #a070ba;
+}
+
+.table svg.fa-trash-alt path {
+  fill: rgb(253, 101, 101);
+}
+
+.table tr td select {
+  text-align: center;
+}
+
+body {
+  // background-color: var(--vz-topbar-user-bg);
+  background-color: #f6f9ff;
+}
+
+.table td button.btn.btn-outline-light.text-dark.border {
+  border: 0px !important;
+  font-size: 12px;
+}
+
+.page-content {
+  background-color: #f3f3f9;
+}
+
+.form-control:disabled {
+  background-color: #f6f9ff;
+}
+
+.page-title-box {
+  box-shadow: none;
+  border-bottom: 0px;
+  padding: 10px 1.5rem;
+  margin-top: 0px;
+}
+
+.text-left-true {
+  text-align: left !important;
+}
+
+.page-title-box h4,
+.theme-black {
+  color: #232a3e;
+}
+
+.fw-600 {
+  font-weight: 600;
+}
+
+.space_20 {
+  height: 20px;
+}
+
+.focus-none:focus {
+  outline: 0;
+}
+
+.navbar-menu {
+  background: #405189;
+}
+
+.last-update {
+  color: #6e6893;
+}
+
+.update-date {
+  color: #6d5bd0;
+  font-weight: bold;
+}
+
+.table thead {
+  vertical-align: middle;
+  border-bottom-width: 1px;
+  border-bottom-color: #e6e9eb;
+}
+
+.table thead tr th {
+  // background-color: var(--vz-topbar-user-bg);
+  font-size: 14px;
+  color: #333;
+  border-bottom-width: 0px;
+}
+
+.table td .btn:hover {
+  color: inherit;
+  background-color: transparent;
+}
+
+.btn.quote-btn {
+  font-size: 14px;
+}
+
+.table-header {
+  background-color: #ffffff;
+  padding: 15px 15px;
+}
+
+.text-blue-dark {
+  color: #1b3f7f;
+}
+
+.bg-primary-blue {
+  // background-color: #393185 !important;
+  background-color: #0dcaf0 !important;
+  color: inherit;
+}
+
+svg.fa-search {
+  font-size: 13px;
+}
+
+.btn.btn-primary {
+  background-color: var(--mq-accent) !important;
+  border-color: var(--mq-accent) !important;
+}
+
+.bg-primary-red {
+  background-color: var(--mq-accent) !important;
+}
+
+.bg-primary-gray {
+  background-color: #232a3e !important;
+}
+
+.bg-light-gray {
+  background-color: #d8e0e4 !important;
+}
+
+.edit_icon {
+  position: absolute;
+  left: 50%;
+  top: 3px;
+}
+
+textarea {
+  border: var(--bs-border-width) solid var(--bs-border-color);
+}
+
+textarea:focus {
+  outline: 0;
+}
+
+.card-body {
+  overflow-x: auto;
+}
+
+.card-body::-webkit-scrollbar {
+  height: 7px;
+}
+
+.card-body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.card-body::-webkit-scrollbar-thumb {
+  background: #ccc;
+}
+
+.card-body::-webkit-scrollbar-thumb:hover {
+  background: #ccc;
+}
+
+.table-responsive::-webkit-scrollbar {
+  height: 7px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: #ccc;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+  background: #ccc;
+}
+
+.text-primary-green {
+  color: #007f00 !important;
+}
+
+.border-color-green {
+  border-color: #007f00;
+}
+
+.bg-secondary-green {
+  background-color: #cdffcd;
+}
+
+// login page
+.auth-page {
+  background-image: url("./assets/images/login-bg.png");
+  background-size: cover;
+}
+
+// .login form {
+//     width: 400px;
+// }
+.form-check-input:checked {
+  background-color: #e31e24;
+  border-color: #e31e24;
+}
+
+.forgot-password {
+  font-size: 14px;
+}
+
+// button[type='submit']:hover {
+//     background-color: #E31E24;
+// }
+
+.bg-gray {
+  background: #becdd6;
+}
+
+.details_outer {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background-color: #fff;
+}
+
+@media (max-width: 1024px) {
+  .hstack {
+    flex-wrap: wrap;
+  }
+}
+
+.bs-datepicker-head,
+.bs-datepicker-head,
+.bs-datepicker button:active,
+.bs-datepicker-body table td span.selected,
+.bs-datepicker-body table td.selected span,
+.bs-datepicker-body table td span[class*="select-"]:after,
+.bs-datepicker-body table td[class*="select-"] span:after,
+.bs-datepicker-body table td.active-week span:hover {
+  background-color: $primary !important;
+}
+
+.bs-datepicker-body table td.week span {
+  color: $primary !important;
+}
+
+.dropdown-outer {
+  z-index: 9;
+  position: relative;
+}
+
+.dropdown-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ccc;
+  border-top: none;
+  max-height: 160px;
+  overflow-y: auto;
+  background-color: #fff;
+}
+
+.dropdown-list li {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.dropdown-list li:hover {
+  background-color: #f2f2f2;
+}
+
+.dropdown-list.custom {
+  padding: 8px 10px !important;
+  width: 100%;
+}
+
+.read-only-input {
+  background-color: #f6f9ff;
+  border: 1px solid #ccc;
+  padding: 5px;
+}
+
+.navbar-header .dropdown-toggle::after {
+  position: absolute;
+  top: 22px;
+  right: 5px;
+}
+
+.navbar-header .dropdown-toggle:focus {
+  outline: 0 !important;
+  border: 0px;
+}
+
+.navbar-header .dropdown-toggle {
+  padding-right: 25px;
+  background-color: var(--vz-topbar-search-bg);
+}
+
+input:focus,
+select:focus {
+  outline: 0 !important;
+  box-shadow: none !important;
+  border-color: var(--bs-border-color) !important;
+}
+
+.app-search .form-control:focus {
+  background-color: #f3f3f9;
+}
+
+.ng-dropdown-panel {
+  padding: 10px 10px !important;
+  background: #fff !important;
+  left: 0 !important;
+  border: 1px solid #ccc !important;
+  top: 40px !important;
+  border-radius: 5px !important;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  margin-bottom: 7px;
+}
+
+.custom-select {
+  cursor: pointer;
+}
+
+// end
+
+// .item-name-td{
+//     max-width:100px;
+//     overflow-x: scroll;
+//     text-wrap: nowrap;
+// }
+.card {
+  --bs-card-border-color: rgba(211, 211, 211, 18%);
+}
+
+.tooltip {
+  // display:none;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+
+// .tooltip-btn:hover .tooltip{
+//     display: inline !important;
+// }
+.dash .avatar-sm {
+  width: auto;
+  min-width: 3rem;
+}
+
+.fw-12 {
+  font-size: 12px !important;
+}
+
+.topbar-badge2 {
+  right: -23px;
+  top: -8px !important;
+}
+
+.table .form-control {
+  min-width: 30px;
+  max-width: 70px;
+  padding: 0.175rem 0.35rem;
+  overflow-x: scroll;
+  text-wrap: nowrap;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.table td {
+  padding: 0.3rem 0.3rem;
+}
+
+// .table thead tr th,.table td{
+//     text-wrap:nowrap;
+// }
+.z1 {
+  z-index: 1;
+}
+
+.custom-height {
+  min-height: 620px;
+  padding: 10px;
+}
+
+.profile_image {
+  object-fit: contain;
+  max-height: 75px;
+  max-width: 90px;
+}
+
+.custom-page {
+  padding-top: 10px;
+}
+
+.table-hover tbody tr:hover button,
+.table-hover tbody tr:hover .fa-icon {
+  color: inherit !important;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected,
+.ng-dropdown-panel
+  .ng-dropdown-panel-items
+  .ng-option.ng-option-selected.ng-option-marked {
+  background-color: #f1f1f1 !important;
+}
+
+.ng-dropdown-panel
+  .ng-dropdown-panel-items
+  .ng-option.ng-option-selected
+  .ng-option-label,
+.ng-dropdown-panel
+  .ng-dropdown-panel-items
+  .ng-option.ng-option-selected.ng-option-marked
+  .ng-option-label {
+  font-weight: 400 !important;
+}
+
+button.bg-primary-red {
+  --bs-btn-color: inherit;
+}
+
+// .page-title h5{
+//     font-weight:500;
+// }
+.table thead td {
+  border-bottom-width: 0px !important;
+}
+
+.rounded-6px {
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+}
+
+.pagination {
+  --bs-pagination-padding-x: 0.55rem;
+  --bs-pagination-padding-y: 0.15rem;
+}
+
+.bg-primary-subtle {
+  background: #f6f9ff !important;
+}
+
+// MedQuantas buttons
+.custom-button {
+  background-color: var(--mq-accent);
+  color: #ffffff;
+  padding: 0 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-weight: 500;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  font-size: 14px;
+}
+
+.custom-button:hover {
+  background-color: var(--mq-primary);
+  color: #fff;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.custom-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Reset Button */
+// .reset-button {
+//     background-color: #F4F4F4;
+//     color: #54595F;
+//     border: 1px solid #D3D3D3;
+//     padding: 8px 16px;
+//     border-radius: 8px;
+//     cursor: pointer;
+//     transition: background-color 0.3s ease, color 0.3s ease;
+// }
+
+// .reset-button:hover {
+//     background-color: #E0E0E0;
+//     color: #1A2E4F;
+// }
+.custom-button-outline {
+  border: 1px solid #1a2e4f;
+  color: #1a2e4f;
+  background-color: transparent;
+  padding: 0 15px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-button-outline:hover {
+  background-color: #1a2e4f;
+  color: #fff !important;
+}
+
+.reset-button {
+  background-color: #ffffff;
+  color: #ff4c4c;
+  border: 2px solid #ff4c4c;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease,
+    transform 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+}
+
+.reset-button:hover {
+  background-color: #ff4c4c;
+  color: #ffffff;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+
+/* /* ==========================================================================
+   UNIFIED PREMIUM MODULE STYLING (SAFE VERSION)
+   ========================================================================== */
+
+:root {
+  --primary-brand: #635bff;
+  --bg-main: #f7f9fc;
+  --white: #ffffff;
+  --card-radius: 20px;
+  --card-shadow: 0px 18px 40px rgba(112, 144, 176, 0.12);
+  --text-primary: #1b2559;
+  --text-secondary: #a3aed1;
+  --border-light: #e6edf9;
+}
+
+body {
+    background-color: var(--bg-main) !important;
+}
+
+.custom-page {
+    background-color: transparent !important;
+    padding: 24px 30px !important;
+}
+
+/* 2. Unified Header Section */
+.custom-page .bg-white.p-3.border-all.rounded.shadow-sm.mb-3,
+.custom-page .table-header,
+.custom-page .page-title-box,
+.custom-page .mb-0.p-3.px-0 { /* Added itemtype-master pattern */
+    background: var(--white) !important;
+    border: none !important;
+    border-radius: 16px !important;
+    box-shadow: var(--card-shadow) !important;
+    padding: 20px 25px !important;
+    margin-bottom: 24px !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    h5 {
+        font-weight: 800 !important;
+        font-size: 22px !important;
+        color: var(--text-primary) !important;
+        margin-bottom: 0 !important;
+    }
+}
+
+/* 3. Unified Content Card */
+.custom-page .bg-white.rounded-6px.p-3.shadow-sm,
+.custom-page .card,
+.custom-page .details_outer,
+.custom-page .custom-height {
+    background: var(--white) !important;
+    border-radius: 20px !important;
+    border: none !important;
+    box-shadow: var(--card-shadow) !important;
+    padding: 25px !important;
+    margin-top: 0 !important;
+    margin-bottom: 30px !important;
+}
+
+/* 4. Action Buttons (Fix Icon Visibility) */
+.custom-page .custom-button, 
+.custom-page .btn-primary {
+    height: 44px !important;
+    padding: 0 20px !important;
+    border-radius: 12px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    background: var(--primary-brand) !important;
+    color: white !important;
+    border: none !important;
+    box-shadow: 0px 4px 10px rgba(67, 24, 255, 0.2) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    
+    fa-icon {
+        color: white !important;
+    }
+}
+
+/* 5. Table Premium Styling */
+.custom-page .table {
+    --bs-table-bg: transparent;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    
+    thead th {
+        color: var(--text-secondary) !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        font-size: 11px !important;
+        letter-spacing: 0.1em !important;
+        background-color: #f8fafd !important;
+        border-bottom: 1px solid var(--border-light) !important;
+        padding: 15px !important;
+    }
+    
+    tbody tr td {
+        padding: 18px 15px !important;
+        border-bottom: 1px solid var(--border-light) !important;
+        color: var(--text-primary) !important;
+        vertical-align: middle;
+        font-size: 14px !important;
+        background-color: transparent !important;
+    }
+}
+
+/* Table Action Buttons */
+.btn-outline-secondary, .btn-outline-light {
+    border: none !important;
+    background: transparent !important;
+    padding: 8px !important;
+    transition: all 0.2s ease;
+    
+    fa-icon {
+        font-size: 16px;
+    }
+    
+    &[routerLink*="form"] fa-icon, &.fa-edit fa-icon { color: #4318ff !important; }
+    &[routerLink*="view"] fa-icon, &.fa-eye fa-icon { color: #00d1b2 !important; }
+    &.fa-trash-alt fa-icon, &.btn-outline-danger fa-icon { color: #ff4d4f !important; }
+
+    &:hover {
+        background: var(--bg-main) !important;
+        border-radius: 10px !important;
+    }
+}
+
+
+/* Status Badges */
+.status-badge {
+    padding: 6px 14px !important;
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+    font-size: 11px !important;
+    text-transform: uppercase !important;
+    border: none !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+}
+
+.status-active {
+    background-color: #e6fcf5 !important;
+    color: #4318ff !important;
+}
+
+.status-inactive {
+    background-color: #fff1f0 !important;
+    color: #ff4d4f !important;
+}

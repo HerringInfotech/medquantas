@@ -1,0 +1,180 @@
+// MedQuantas Sidebar
+$mq-sidebar-bg: #0a2540;
+$mq-sidebar-hover: rgba(255,255,255,0.06);
+$mq-active-bg: rgba(99,91,255,0.15);
+$mq-active-color: #635bff;
+$mq-text: rgba(255,255,255,0.65);
+$mq-text-active: #fff;
+$mq-accent: #00c6a2;
+
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 68px;
+  height: 100vh;
+  background: $mq-sidebar-bg;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 4px 0 24px rgba(0,0,0,0.18);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+
+  &.expanded { width: 260px; }
+
+  .header {
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    flex-shrink: 0;
+
+    .logo-full {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
+
+      .logo-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #635bff, #00c6a2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.95rem;
+        font-weight: 900;
+        color: #fff;
+        flex-shrink: 0;
+      }
+
+      .logo-text {
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: #fff;
+        letter-spacing: -0.3px;
+      }
+    }
+
+    .logo-mini {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #635bff, #00c6a2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: 900;
+      color: #fff;
+    }
+  }
+
+  &.expanded .header {
+    .logo-full { display: flex; }
+    .logo-mini { display: none; }
+  }
+
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 12px 10px;
+
+    &::-webkit-scrollbar { width: 3px; }
+    &::-webkit-scrollbar-track { background: transparent; }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+    }
+
+    .link {
+      margin-bottom: 2px;
+
+      .content {
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        height: 46px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        overflow: hidden;
+
+        .icon {
+          flex: 0 0 28px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 16px;
+          color: $mq-text;
+          transition: color 0.2s ease;
+        }
+
+        .title {
+          flex: 1;
+          font-size: 0.9rem;
+          font-weight: 600;
+          color: $mq-text;
+          white-space: nowrap;
+          opacity: 0;
+          margin-left: 12px;
+          transition: opacity 0.2s ease;
+        }
+
+        &:hover {
+          background: $mq-sidebar-hover;
+
+          .icon, .title { color: $mq-text-active; }
+        }
+      }
+
+      &.activeMenu > .content,
+      .activeMenu {
+        background: $mq-active-bg !important;
+
+        .icon { color: $mq-active-color !important; }
+        .title { color: $mq-text-active !important; font-weight: 700 !important; opacity: 1; }
+
+        &::after {
+          content: '';
+          position: absolute;
+          right: 0;
+          top: 8px;
+          bottom: 8px;
+          width: 3px;
+          background: $mq-active-color;
+          border-radius: 3px 0 0 3px;
+        }
+      }
+
+      position: relative;
+    }
+
+    .children {
+      margin: 2px 0 4px 14px;
+      padding-left: 10px;
+      border-left: 1px solid rgba(255,255,255,0.08);
+
+      .link {
+        .content {
+          height: 38px;
+          border-radius: 8px;
+          font-size: 0.85rem;
+
+          .icon { font-size: 13px; flex: 0 0 22px; }
+        }
+
+        &.active > .content {
+          background: rgba(99,91,255,0.1);
+          .icon, .title { color: $mq-active-color !important; }
+        }
+      }
+    }
+  }
+
+  &.expanded .content .link .content .title { opacity: 1; }
+}

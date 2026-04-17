@@ -1,0 +1,35 @@
+td[title='name'] {
+    max-width: 100px;
+    overflow-x: scroll;
+    text-wrap: nowrap;
+}
+
+td[title='address'] {
+    max-width: 100px;
+    overflow-x: scroll;
+    // text-wrap: nowrap;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+td[title="name"]::-webkit-scrollbar {
+    height: 5px;
+}
+
+td[title="name"]::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+td[title="name"]::-webkit-scrollbar-thumb {
+    background: #ccc;
+}
+
+td[title="name"]::-webkit-scrollbar-thumb:hover {
+    background: #ccc;
+}
+
+:host ::ng-deep .bg-blue {
+    background-color: transparent;
+    color: inherit;
+}

@@ -1,0 +1,63 @@
+<div class="container-fluid custom-page">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="mt-3">
+                <div class="bg-white p-3 border-top border-start border-end rounded shadow-sm mb-3">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h5 class="mb-0">User Management</h5>
+                        <button type="button" class="custom-button" routerLink="form">
+                            <fa-icon [icon]="faPlus" class="me-1"></fa-icon> ADD
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-6px table-responsive-sm p-3 shadow-sm">
+                <app-not-data *ngIf="!user_list?.length" [message]="'No user found'" [route]="'form'"
+                    [button]="'Add new user'"></app-not-data>
+
+                <table class="table nowrap text-center" *ngIf="user_list?.length">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="bg-white">S.no</th>
+                            <th scope="col" class="bg-white left-align">Role</th>
+                            <th scope="col" tableColumn class="bg-white left-align custom-select">Name</th>
+                            <th scope="col" class="bg-white left-align">Email</th>
+                            <th scope="col" class="bg-white left-align">Registration time</th>
+                            <th scope="col" class="bg-white left-align">Last login time</th>
+                            <th scope="col" class="bg-white left-align">Status</th>
+                            <th scope="col" class="bg-white">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of user_list; let index = index" class="details-row">
+                            <td title="ID">{{ index+1 }}</td>
+                            <td title="Role" class="left-align">{{ data?.role_pop?.name }}</td>
+                            <td title="Name" class="left-align">{{ data?.name }}</td>
+                            <td title="Email" class="left-align">{{ data?.email }}</td>
+                            <td title="create_time" class="left-align">{{
+                                formatDateWithoutTimeZone(data?.createdAt) }}</td>
+                            <td title="last_time" class="left-align">{{
+                                formatDateWithoutTimeZone(data?.lastLogin) }}</td>
+                            <td title="Status" class="left-align">
+                                <button (click)="toggleStatus(data)" [ngStyle]="{'background-color': data?.status === 'Active' ? '#6d77f1' : '#fd6565',
+                                                                'color': 'white', 'border': 'none', 'border-radius': '5px',
+                                                                'padding': '5px 10px', 'cursor': 'pointer'}">
+                                    {{ data?.status === 'Active' ? 'Active' : 'Inactive' }}
+                                </button>
+                            </td>
+                            <td title="Action">
+                                <div class="btn-group" role="group" aria-label="">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm"
+                                        routerLink="form/{{data._id}}">
+                                        <fa-icon [icon]="faEdit"></fa-icon>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <app-pagination [data]="pagination_data"></app-pagination>
+            </div>
+        </div>
+    </div>
+</div>

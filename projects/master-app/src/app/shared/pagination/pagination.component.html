@@ -1,0 +1,22 @@
+<nav aria-label="custom-pagination" class="mt-5">
+    <ul *ngIf="pages && pages.length > 1" class="pagination justify-content-end f-wrap">
+        <li class="page-item">
+            <span class="page-link pointer" aria-hidden="true">Total: {{ data?.totalDocs }}</span>
+        </li>
+        <li class="page-item" [ngClass]="{disabled:current === 1}">
+            <a class="page-link pointer" (click)="get_data(1)"><span aria-hidden="true">&laquo;</span></a>
+        </li>
+        <li class="page-item" [ngClass]="{disabled:current === 1}">
+            <a class="page-link pointer" (click)="get_data(current - 1)">Previous</a>
+        </li>
+        <li class="page-item" *ngFor="let page of pages" [ngClass]="{active:current === page}">
+            <a class="page-link pointer" (click)="get_data(page)">{{page}}</a>
+        </li>
+        <li class="page-item" [ngClass]="{disabled:current === totalPages}">
+            <a class="page-link pointer" (click)="get_data(current + 1)">Next</a>
+        </li>
+        <li class="page-item" [ngClass]="{disabled:current === totalPages}">
+            <a class="page-link pointer" (click)="get_data(totalPages)"><span aria-hidden="true">&raquo;</span></a>
+        </li>
+    </ul>
+</nav>

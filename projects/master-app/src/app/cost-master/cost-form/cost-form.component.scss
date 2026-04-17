@@ -1,0 +1,67 @@
+.custom-color {
+    background-color: #009688;
+    border-color: #009688;
+    color: white;
+}
+
+.font-weight {
+    font-weight: bold;
+}
+
+
+
+.low-rate {
+    border: 1px solid red;
+}
+
+.high-rate {
+    border: 1px solid green;
+}
+
+.low-rate:focus {
+    border-color: red !important;
+}
+
+.high-rate:focus {
+    border-color: green !important;
+}
+
+.bom-container {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+}
+
+.loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.wider-input {
+    width: 300px;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.popover-scrollable {
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.wrapLine {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

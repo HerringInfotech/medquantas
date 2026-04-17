@@ -1,0 +1,449 @@
+<div class="container-fluid custom-page">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="my-3 border-0">
+        <div class="bg-white p-3 border-top border-start border-end rounded shadow-sm">
+          <div class="d-flex align-items-center justify-content-between">
+            <h5 class="">
+              <span *ngIf="!bomID">ADD Bill of Material</span>
+              <span *ngIf="bomID">Edit Bill of Material</span>
+            </h5>
+            <button type="button" class="custom-button" (click)="goBack()">
+              <fa-icon [icon]="faArrowLeft"></fa-icon> Back
+            </button>
+          </div>
+        </div>
+        <div class="bg-white rounded shadow-sm p-4 mt-2">
+          <form #genericData="ngForm" (ngSubmit)="saveBom(genericData)">
+            <div class="row">
+              <div class="form-group col-lg-4 col-md-4">
+                <mat-label style="font-weight: bold">Bom Name</mat-label>
+                <mat-form-field appearance="outline" class="w-100 mt-1">
+                  <mat-label>Bom Name</mat-label>
+                  <input matInput type="text" placeholder="Enter Bom Name" [(ngModel)]="formValues['name']"
+                    autocomplete="off" name="name" (blur)="checkBomNameExists()" required />
+                  <mat-error *ngIf="
+                      genericData?.controls?.name?.invalid &&
+                      genericData?.controls?.name?.touched
+                    ">
+                    Please enter Bom Name
+                  </mat-error>
+                  <mat-error *ngIf="nameExists">
+                    This BOM name already exists
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="form-group col-lg-4 col-md-4">
+                <mat-label style="font-weight: bold">FG Code</mat-label>
+                <mat-form-field appearance="outline" class="w-100 mt-1">
+                  <mat-label>FG Code</mat-label>
+                  <input matInput type="text" placeholder="Enter FG Code" [(ngModel)]="formValues['code']"
+                    autocomplete="off" name="code" required />
+                  <mat-error *ngIf="genericData?.controls?.code?.invalid && genericData?.controls?.code?.touched">
+                    Please enter FG Code
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="form-group col-lg-4 col-md-4">
+                <mat-label style="font-weight: bold">Location Code</mat-label>
+                <mat-form-field appearance="outline" class="w-100 mt-1">
+                  <mat-label>Location Code</mat-label>
+                  <input matInput type="text" placeholder="Enter Location Code" [(ngModel)]="formValues['locCd']"
+                    autocomplete="off" name="locCd" required />
+                  <mat-error *ngIf="genericData?.controls?.locCd?.invalid && genericData?.controls?.locCd?.touched">
+                    Please enter Location Code
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row mb-1">
+              <div class="form-group col-lg-6 col-md-6">
+                <mat-label style="font-weight: bold">Batch Size</mat-label>
+                <mat-form-field appearance="outline" class="w-100 mt-1">
+                  <mat-label>Batch Size</mat-label>
+                  <input matInput type="text" placeholder="Enter Batch Size" [(ngModel)]="formValues['batch']"
+                    autocomplete="off" name="batch" required />
+                </mat-form-field>
+              </div>
+              <div class="form-group col-lg-6 col-md-6">
+                <mat-label style="font-weight: bold">Cost Unit</mat-label>
+                <mat-form-field appearance="outline" class="w-100 mt-1">
+                  <mat-label>Cost Unit</mat-label>
+                  <input matInput type="text" placeholder="Enter Cost Unit" [(ngModel)]="formValues['costunit']"
+                    autocomplete="off" name="costunit" required />
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row mb-1">
+              <div class="form-group col-lg-6 col-md-6">
+                <mat-label style="font-weight: bold">Manufacture Qty</mat-label>
+                <mat-form-field appearance="outline" class="w-100 mt-1">
+                  <mat-label>Manufacture Qty</mat-label>
+                  <input matInput type="text" placeholder="Enter Manufacture Qty"
+                    [(ngModel)]="formValues['manufacture_qty']" autocomplete="off" name="manufacture_qty" required />
+                  <mat-error
+                    *ngIf="genericData?.controls?.manufacture_qty?.invalid && genericData?.controls?.manufacture_qty?.touched">
+                    Please enter Manufacture Qty
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="form-group col-lg-6 col-md-6">
+                <mat-label style="font-weight: bold">Manufacture Total</mat-label>
+                <mat-form-field appearance="outline" class="w-100 mt-1">
+                  <mat-label>Manufacture Total</mat-label>
+                  <input matInput type="text" placeholder="Enter Manufacture Total"
+                    [(ngModel)]="formValues['manufacture_total']" autocomplete="off" name="manufacture_total"
+                    required />
+                  <mat-error
+                    *ngIf="genericData?.controls?.manufacture_total?.invalid && genericData?.controls?.manufacture_total?.touched">
+                    Please enter Manufacture Total
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row mb-1">
+
+              <div class="form-group col-lg-6 col-md-6">
+                <mat-label style="font-weight: bold">Manufacture ITC</mat-label>
+                <mat-form-field appearance="outline" class="w-100 mt-1">
+                  <mat-label>Manufacture ITC</mat-label>
+                  <input matInput type="text" placeholder="Enter Manufacture ITC"
+                    [(ngModel)]="formValues['manufacture_matval']" autocomplete="off" name="manufacture_matval"
+                    required />
+                  <mat-error
+                    *ngIf="genericData?.controls?.manufacture_matval?.invalid && genericData?.controls?.manufacture_matval?.touched">
+                    Please enter Manufacture ITC
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="form-group col-lg-6 col-md-6">
+                <mat-label style="font-weight: bold">Pack Qty</mat-label>
+                <mat-form-field appearance="outline" class="w-100 mt-1">
+                  <mat-label>Pack Qty</mat-label>
+                  <input matInput type="text" placeholder="Enter Pack Qty" [(ngModel)]="formValues['pack_qty']"
+                    autocomplete="off" name="pack_qty" required />
+                  <mat-error
+                    *ngIf="genericData?.controls?.pack_qty?.invalid && genericData?.controls?.pack_qty?.touched">
+                    Please enter Pack Qty
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row mb-1">
+
+              <div class="form-group col-lg-6 col-md-6">
+                <mat-label style="font-weight: bold">Pack Total</mat-label>
+                <mat-form-field appearance="outline" class="w-100 mt-1">
+                  <mat-label>Pack Total</mat-label>
+                  <input matInput type="text" placeholder="Enter Pack Total" [(ngModel)]="formValues['pack_total']"
+                    autocomplete="off" name="pack_total" required />
+                  <mat-error
+                    *ngIf="genericData?.controls?.pack_total?.invalid && genericData?.controls?.pack_total?.touched">
+                    Please enter Pack Total
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="form-group col-lg-6 col-md-6">
+                <mat-label style="font-weight: bold">Pack ITC</mat-label>
+                <mat-form-field appearance="outline" class="w-100 mt-1">
+                  <mat-label>Pack ITC</mat-label>
+                  <input matInput type="text" placeholder="Enter Pack ITC" [(ngModel)]="formValues['pack_matval']"
+                    autocomplete="off" name="pack_matval" required />
+                  <mat-error
+                    *ngIf="genericData?.controls?.pack_matval?.invalid && genericData?.controls?.pack_matval?.touched">
+                    Please enter Pack ITC
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row mb-1">
+
+              <div class="form-group col-lg-6 col-md-6">
+                <mat-label style="font-weight: bold">Analytical Value</mat-label>
+                <mat-form-field appearance="outline" class="w-100 mt-1">
+                  <mat-label>Analytical Value</mat-label>
+                  <input matInput type="text" placeholder="Enter Analytical Value"
+                    [(ngModel)]="formValues['analytical_value']" autocomplete="off" name="analytical_value" required />
+                  <mat-error
+                    *ngIf="genericData?.controls?.analytical_value?.invalid && genericData?.controls?.analytical_value?.touched">
+                    Please enter Analytical Value
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="form-group col-lg-6 col-md-6">
+                <mat-label style="font-weight: bold">Punch Value</mat-label>
+                <mat-form-field appearance="outline" class="w-100 mt-1">
+                  <mat-label>Punch Value</mat-label>
+                  <input matInput type="text" placeholder="Enter Punch Value" [(ngModel)]="formValues['punch_value']"
+                    autocomplete="off" name="punch_value" required />
+                  <mat-error
+                    *ngIf="genericData?.controls?.punch_value?.invalid && genericData?.controls?.punch_value?.touched">
+                    Please enter Punch Value
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row mb-1">
+
+              <div class="form-group col-lg-6 col-md-6">
+                <mat-label style="font-weight: bold">Freight %</mat-label>
+                <mat-form-field appearance="outline" class="w-100 mt-1">
+                  <mat-label>Freight %</mat-label>
+                  <input matInput type="text" placeholder="Enter Freight" [(ngModel)]="formValues['freight']"
+                    autocomplete="off" name="freight" required />
+                  <mat-error *ngIf="genericData?.controls?.freight?.invalid && genericData?.controls?.freight?.touched">
+                    Please enter Freight
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="form-group col-lg-6 col-md-6">
+                <mat-label style="font-weight: bold">Percentage %</mat-label>
+                <mat-form-field appearance="outline" class="w-100 mt-1">
+                  <mat-label>Percentage %</mat-label>
+                  <input matInput type="text" placeholder="Enter Percentage" [(ngModel)]="formValues['percentage']"
+                    autocomplete="off" name="percentage" required />
+                  <mat-error
+                    *ngIf="genericData?.controls?.percentage?.invalid && genericData?.controls?.percentage?.touched">
+                    Please enter Percentage
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+
+          </form>
+        </div>
+
+        <div class="bg-white rounded shadow-sm p-4 mt-2">
+          <h5>API</h5>
+          <ng-container>
+            <div class="row align-items-center mb-2">
+              <div class="col-lg-5 col-12 mb-2">
+                <mat-label class="fw-bold">Enter Item Name</mat-label>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Enter Item Name</mat-label>
+                  <input type="text" matInput name="rawname" [(ngModel)]="rawValues['name']"
+                    [matAutocomplete]="autoItem" (input)="getRawItem()" required />
+                  <mat-autocomplete #autoItem="matAutocomplete" (optionSelected)="
+                        selectRawItem($event.option.value)">
+                    <mat-option *ngFor="let sug of raw_list" [value]="sug">
+                      {{ sug.name }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </div>
+
+              <!-- Item Code (Disabled) -->
+              <div class="col-lg-2 col-12 mb-2">
+                <mat-label class="fw-bold">Item Code</mat-label>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Item Code</mat-label>
+                  <input matInput name="rawcode" [ngModel]="rawValues['code']"
+                    [ngStyle]="{ color: 'black', cursor: 'not-allowed' }" placeholder="Item Code" disabled />
+                </mat-form-field>
+              </div>
+
+              <!-- Standard Quantity -->
+              <div class="col-lg-2 col-12 mb-2">
+                <mat-label class="fw-bold">Standard Quantity</mat-label>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Standard Quantity</mat-label>
+                  <input matInput type="text" name="standQty" [(ngModel)]="rawValues['standQty']" required />
+                </mat-form-field>
+              </div>
+
+              <!-- Request Quantity -->
+              <div class="col-lg-2 col-12 mb-2">
+                <mat-label class="fw-bold">Request Quantity</mat-label>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Request Quantity</mat-label>
+                  <input matInput type="text" name="requestQty" [(ngModel)]="rawValues['requestQty']" required />
+                </mat-form-field>
+              </div>
+
+              <div class="col-lg-1 col-12 mb-2 text-right">
+                <button type="button" class="custom-button mt-2" (click)="add_raw()">
+                  ADD
+                </button>
+              </div>
+            </div>
+          </ng-container>
+          <div class="table-responsive" *ngIf="rawMaterials?.length">
+            <table class="table text-nowra align-middle text-center">
+              <thead class="bg-primary text-white">
+                <tr>
+                  <th scope="col" class="align-middle">S.No</th>
+                  <th scope="col" class="align-middle text-start">Item Name</th>
+                  <th scope="col" class="align-middle text-start">Item Code</th>
+                  <th scope="col" class="align-middle text-start">Type</th>
+                  <th scope="col" class="align-middle">UOM</th>
+                  <th scope="col" class="align-middle">StandOutQty</th>
+                  <th scope="col" class="align-middle">RequestQty</th>
+                  <th scope="col" class="align-middle">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let val of rawMaterials; let i = index">
+                  <tr>
+                    <td>{{ i + 1 }}</td>
+                    <td class="text-start">{{ val?.name }}</td>
+                    <td class="text-start">{{ val?.code }}</td>
+                    <td class="text-start">{{ val?.typeCode }}</td>
+                    <td class="">{{ val?.convertUnit }}</td>
+
+                    <td class="text-end">
+                      <input type="number" [(ngModel)]="val.standQty" class="form-control custom-input" />
+                    </td>
+                    <td class="text-end">
+                      <input type="number" [(ngModel)]="val.requestQty" class="form-control custom-input" />
+                    </td>
+
+                    <td>
+                      <button type="button" class="reset-button" (click)="removeItem(val)">
+                        <fa-icon [icon]="faTrashAlt"></fa-icon>
+                      </button>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="bg-white rounded shadow-sm p-4 mt-2">
+          <h5>Packing Material</h5>
+          <div class="row">
+            <div class="col-6 mb-2">
+              <mat-label class="fw-bold">Product Name</mat-label>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Product Name</mat-label>
+                <mat-select name="typeCode" [(ngModel)]="productname" (selectionChange)="onProductSelect($event.value)"
+                  required (opened)="filterProductCodes('')">
+                  <div class="p-2 position-sticky top-0 bg-white" style="z-index: 2;">
+                    <input class="form-control" placeholder="Search Product..."
+                      (keyup)="filterProductCodes($event.target.value)" autocomplete="off"
+                      (keydown)="$event.stopPropagation()">
+                  </div>
+                  <mat-option *ngFor="let type of filtered_product_codes" [value]="type.fgCode">
+                    {{ type.fgName }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-6 mb-2">
+              <mat-label class="fw-bold">Product Code</mat-label>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Product Code</mat-label>
+                <input matInput type="text" name="productcode" [ngStyle]="{ color: 'black', cursor: 'not-allowed' }"
+                  [(ngModel)]="productcode" [disabled]="true" />
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row align-items-center mb-2">
+            <div class="col-lg-5 col-12 mb-2">
+              <mat-label class="fw-bold">Enter Item Name</mat-label>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Enter Item Name</mat-label>
+                <input type="text" matInput name="packname" [(ngModel)]="itemValues['name']"
+                  [matAutocomplete]="autopackItem" (input)="getItem()" required />
+                <mat-autocomplete #autopackItem="matAutocomplete" (optionSelected)="selectItem($event.option.value)">
+                  <mat-option *ngFor="let item of itemLists" [value]="item">
+                    {{ item.name }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+
+            <div class="col-lg-2 col-12 mb-2">
+              <mat-label class="fw-bold">Item Code</mat-label>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Item Code</mat-label>
+                <input matInput name="code" [ngModel]="itemValues['code']"
+                  [ngStyle]="{ color: 'black', cursor: 'not-allowed' }" placeholder="Item Code" disabled />
+              </mat-form-field>
+            </div>
+
+            <div class="col-lg-2 col-12 mb-2">
+              <mat-label class="fw-bold">Standard Quantity</mat-label>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Standard Quantity</mat-label>
+                <input matInput type="text" name="standQty" [(ngModel)]="itemValues['standQty']" required />
+              </mat-form-field>
+            </div>
+
+            <div class="col-lg-2 col-12 mb-2">
+              <mat-label class="fw-bold">Request Quantity</mat-label>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Request Quantity</mat-label>
+                <input matInput type="text" name="requestQty" [(ngModel)]="itemValues['requestQty']" required />
+              </mat-form-field>
+            </div>
+
+            <div class="col-lg-1 col-12 text-right">
+              <button type="button" class="custom-button" (click)="add_Pack()">
+                ADD
+              </button>
+            </div>
+          </div>
+          <div class="table-responsive mt-1" *ngIf="packstage?.length">
+            <table class="table text-nowra align-middle mt-2 text-center">
+              <thead class="bg-primary text-white">
+                <tr>
+                  <th scope="col" class="align-middle">S.No</th>
+                  <th scope="col" class="align-middle text-start">Item Name</th>
+                  <th scope="col" class="align-middle text-start">Item Code</th>
+                  <th scope="col" class="align-middle text-start">Type</th>
+                  <th scope="col" class="align-middle">UOM</th>
+                  <th scope="col" class="align-middle">StandOutQty</th>
+                  <th scope="col" class="align-middle">RequestQty</th>
+                  <th scope="col" class="align-middle">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngIf="packstage?.length" class="details-row">
+                  <ng-container *ngFor="let val of packstage; let j = index">
+                    <tr>
+                      <td>{{ j + 1 }}</td>
+                      <td class="text-start">{{ val?.name }}</td>
+                      <td class="text-start">{{ val?.code }}</td>
+                      <td class="text-start">{{ val?.typeCode }}</td>
+                      <td class="">{{ val?.convertUnit }}</td>
+
+                      <td class="text-end">
+                        <input type="number" [(ngModel)]="val.standQty" class="form-control custom-input" />
+                      </td>
+                      <td class="text-end">
+                        <input type="number" [(ngModel)]="val.requestQty" class="form-control custom-input" />
+                      </td>
+                      <td>
+                        <button class="reset-button" type="button" (click)="removePack(val)">
+                          <fa-icon [icon]="faTrashAlt"></fa-icon>
+                        </button>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="d-flex justify-content-start mt-2 gap-2">
+          <button class="btn btn-success custom-button border-0" style="width: 100px" type="button"
+            (click)="saveBom(genericData)" [disabled]="btn_loader ? 'disabled' : null">
+            <span class="spinner-border" *ngIf="btn_loader" role="status" aria-hidden="true"></span>
+            <span *ngIf="!btn_loader">{{ bomID ? "Update" : "Create" }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

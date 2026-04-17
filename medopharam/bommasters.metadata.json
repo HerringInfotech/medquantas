@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"medopharam.bommasters"}],"uuid":"c28c356d02cc4ca4bfccc19a75ae9bda"}

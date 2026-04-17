@@ -1,0 +1,16 @@
+:host ::ng-deep .bg-blue {
+  background-color: transparent;
+  color: inherit;
+}
+
+.wrapLine {
+  max-width: 100px;
+  overflow-x: scroll;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btn-close{
+ 
+}

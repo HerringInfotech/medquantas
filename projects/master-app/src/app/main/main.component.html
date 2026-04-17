@@ -1,0 +1,86 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
+    <p style="color: white"> Loading... </p>
+</ngx-spinner>
+
+
+<app-sidebar [isExpanded]="sidebarExpanded" (toggleSidebar)="sidebarExpanded = !sidebarExpanded"></app-sidebar>
+<div class="content" [ngClass]="{ 'sidebarExpanded': sidebarExpanded }">
+    <app-header></app-header>
+    <router-outlet></router-outlet>
+</div>
+
+
+<div *ngIf="is_delete_confirmation" [config]="{ show: true }" (onHidden)="onConfirmationModelHidden()" bsModal
+    #autoShownModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-auto-name">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="modal-body text-center">
+                    <p>{{(delete_data?.message)?delete_data?.message:'Do you want to confirm?'}}</p>
+                    <button type="button" class="btn btn-light mr-3" (click)="confirm_delete()">Yes</button>
+                    <button type="button" class="btn btn-dark" (click)="close_delete_confirmation()">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Welcome Modal (First Time Login Boost) -->
+<ng-template #welcomeTemplate>
+    <div class="welcome-modal-content flash-entrance">
+        <!-- Confetti / Paper Bomb Effect -->
+        <div class="confetti-wrapper">
+            <div class="confetti-piece"></div>
+            <div class="confetti-piece"></div>
+            <div class="confetti-piece"></div>
+            <div class="confetti-piece"></div>
+            <div class="confetti-piece"></div>
+            <div class="confetti-piece"></div>
+            <div class="confetti-piece"></div>
+            <div class="confetti-piece"></div>
+            <div class="confetti-piece"></div>
+            <div class="confetti-piece"></div>
+            <div class="confetti-piece"></div>
+            <div class="confetti-piece"></div>
+            <div class="confetti-piece"></div>
+            <div class="confetti-piece"></div>
+            <div class="confetti-piece"></div>
+            <div class="confetti-piece"></div>
+            <div class="confetti-piece"></div>
+            <div class="confetti-piece"></div>
+            <div class="confetti-piece"></div>
+            <div class="confetti-piece"></div>
+        </div>
+
+        <div class="welcome-header-bg">
+            <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+            </div>
+            <div class="welcome-icon-wrapper">
+                <div class="welcome-outer-ring"></div>
+                <div class="welcome-inner-ring"></div>
+                <img src="assets/images/logo.png" class="welcome-brand-logo" alt="Logo">
+            </div>
+        </div>
+
+        <div class="welcome-body pulsate">
+            <h2 class="welcome-title">Costing Intelligence Ready!</h2>
+            <p class="welcome-subtitle">Hello, <span class="user-highlight">{{ user?.name || 'User' }}</span>!</p>
+
+            <div class="welcome-message-card">
+                <p>Your account is fully activated. You are now ready to track all activities and manage costing sheets with precision and secure monitoring.</p>
+            </div>
+
+            <button class="btn-get-started mt-4" (click)="modalRef.hide()">
+                <span>TAKE ME TO DASHBOARD</span>
+                <span class="btn-arrow">→</span>
+            </button>
+        </div>
+
+        <div class="welcome-footer">
+            <p>© {{ todayYear }} Medopharm Manufacturing Pvt Ltd • Secure Monitoring Enabled</p>
+        </div>
+    </div>
+</ng-template>

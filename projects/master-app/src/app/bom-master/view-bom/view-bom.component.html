@@ -1,0 +1,173 @@
+<div class="container-fluid custom-page">
+  <div class="row">
+    <div class="col-lg-12">
+      <!-- Page Header -->
+      <div class="card bg-white border-0 shadow-sm my-3">
+        <div class="card-body d-flex justify-content-between align-items-center">
+          <h4 class="page-title m-0">
+            <span *ngIf="!bomID">View Bill of Material</span>
+            <span *ngIf="bomID">View Bill of Material</span>
+          </h4>
+          <div class="d-flex gap-2">
+
+            <button type="button" class="custom-button excel-button" (click)="exportExcel()">
+              <fa-icon [icon]="faFileExcel"></fa-icon>
+              Excel
+            </button>
+
+            <button type="button" class="custom-button pdf-button" (click)="downloadPDF()">
+              <fa-icon [icon]="faFilePdf"></fa-icon>
+              PDF
+            </button>
+            <button type="button" class="custom-button" (click)="goBack()">
+              <fa-icon [icon]="faArrowLeft"></fa-icon>
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOM Details Section -->
+      <div class="card shadow-sm mb-3">
+        <div class="card-body">
+          <h5 class="section-title mb-3">BOM Details</h5>
+          <div class="row">
+            <div class="col-md-4 mb-3 d-flex gap-3">
+              <label class="fw-bold text-muted">BOM Name :</label>
+              <div class="text-capitalize">{{ bom_list?.name }}</div>
+            </div>
+            <div class="col-md-4 mb-3 d-flex gap-3">
+              <label class="fw-bold text-muted">BOM Code :</label>
+              <div class="text-uppercase">{{ bom_list?.code }}</div>
+            </div>
+            <div class="col-md-4 mb-3 d-flex gap-3">
+              <label class="fw-bold text-muted">Location :</label>
+              <div class="">{{ bom_list?.locCd }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- API Items Table -->
+      <div class="card shadow-sm mb-3" *ngIf="rawItems?.length">
+        <div class="card-body">
+          <h5 class="section-title mb-3">API Items</h5>
+          <div class="table-responsive">
+            <table class="table table-bordered  text-center align-middle" id="api-items-table">
+              <thead class="table-primary">
+                <tr>
+                  <th>S.No</th>
+                  <th class="text-start">Item Name</th>
+                  <th class="text-start">Item Code</th>
+                  <th class="text-start">Type</th>
+                  <th class="text-center">UOM</th>
+                  <th>StandOut Qty</th>
+                  <th>Request Qty</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let val of rawItems; let i = index">
+                  <tr>
+                    <td>{{ i + 1 }}</td>
+                    <td class="text-start">{{ val?.name }}</td>
+                    <td class="text-start">{{ val?.code }}</td>
+                    <td class="text-start">{{ val?.typeCode }}</td>
+                    <td class="text-center">{{ val?.convertUnit }}</td>
+                    <td class="text-center">{{ val?.standQty }}</td>
+                    <td class="text-center">{{ val?.requestQty }}</td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Packing Material Table -->
+      <div class="card shadow-sm mb-3" *ngIf="packItems?.length">
+        <div class="card-body">
+          <h5 class="section-title mb-3">Packing Materials</h5>
+          <div class="table-responsive">
+            <!-- <ng-container *ngFor="let val of bom_list?.packstage; let k = index" *ngFor="let val of packItems; let j = index"> -->
+            <ng-container *ngFor="let stage of bom_list?.packstage; let k = index">
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="fw-bold text-muted">Product Name :</label>
+                  <div class="text-capitalize">{{ stage?.fgName }}</div>
+                </div>
+                <div class="col-md-6">
+                  <label class="fw-bold text-muted">Product Code :</label>
+                  <div class="text-uppercase">{{ stage?.fgCode }}</div>
+                </div>
+              </div>
+              <table class="table table-bordered text-center align-middle" id="packing-material-table">
+                <thead class="table-primary">
+                  <tr>
+                    <th>S.No</th>
+                    <th class="text-start">Item Name</th>
+                    <th class="text-start">Item Code</th>
+                    <th class="text-start">Type</th>
+                    <th class="align-middle">UOM</th>
+                    <th>StandOut Qty</th>
+                    <th>Request Qty</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let val of stage.ingredients; let j = index">
+                    <tr>
+                      <td>{{ j + 1 }}</td>
+                      <td class="text-start">{{ val?.name }}</td>
+                      <td class="text-start">{{ val?.code }}</td>
+                      <td class="text-start">{{ val?.typeCode }}</td>
+                      <td class="">{{ val?.convertUnit }}</td>
+                      <td class="text-center">{{ val?.standQty }}</td>
+                      <td class="text-center">{{ val?.requestQty }}</td>
+                    </tr>
+                  </ng-container>
+                </tbody>
+              </table>
+            </ng-container>
+
+            <div class="container my-2 cost-container bg-white shadow-sm">
+              <div class="no-scroll"
+                *ngIf='bom_list?.approve_user || bom_list?.verified_user || bom_list?.create_decline'>
+                <div class="col-12 text-left py-1" style="background-color: #f8f9fa; border-bottom: 1px solid #ddd">
+                  <h5 class="header-text mb-0" style="font-weight: bold; color: #343a40">
+                    Approver Status
+                  </h5>
+                </div>
+                <div class="row text-left">
+                  <div class="col-8">
+                    <div class="d-flex justify-content-between">
+                      <div>
+                        <strong>Creator</strong><br />
+                        {{ convert_user(bom_list?.create_user) }}<br />
+                        {{ formatDateWithoutTimeZone(bom_list?.create_time) }}
+                      </div>
+                      <div class="">
+                        <strong>Verifier</strong><br />
+                        {{ convert_user(bom_list?.verified_user)
+                        ||
+                        convert_user(bom_list?.create_decline)}}<br />
+                        {{ formatDateWithoutTimeZone(bom_list?.verified_time) }}
+                      </div>
+                      <div class="">
+                        <strong>Approver</strong><br />
+                        {{
+                        convert_user(bom_list?.approve_user) ||
+                        convert_user(bom_list?.verified_decline)
+                        }}<br />
+
+                        {{ formatDateWithoutTimeZone(bom_list?.approve_time) }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

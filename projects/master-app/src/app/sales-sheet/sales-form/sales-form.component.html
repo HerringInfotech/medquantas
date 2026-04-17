@@ -1,0 +1,1187 @@
+<div class="container-fluid custom-page">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="my-3 border-0">
+                <div class="bg-white p-3 border-top border-start border-end rounded shadow-sm">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h5 class="">
+                            <span *ngIf="!sheetID">ADD Sales Sheet</span>
+                            <span *ngIf="sheetID">Update Sales Sheet</span>
+                        </h5>
+                        <div class="d-flex gap-2">
+                            <button type="button" class="custom-button" (click)="goBack()">
+                                <fa-icon [icon]="faArrowLeft" class="me-1"></fa-icon> Back
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <ng-container *ngIf="!sheetID || roleName?.toLowerCase() === 'sale'">
+                    <div class="bg-white rounded shadow-sm p-4 mt-2 mx-auto">
+                        <div class="row">
+                            <div class="form-group col-lg-3 col-md-3" *ngIf="!sheetID">
+                                <mat-label style="font-weight: bold">Unit / Location</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <mat-label>Select Location</mat-label>
+                                    <mat-select [(ngModel)]="sheetValues['searchloc']" [disabled]="sheetID"
+                                        (selectionChange)="getProductList()">
+                                        <mat-option value="">All Locations</mat-option>
+                                        <mat-option *ngFor="let loc of locations" [value]="loc">{{ loc }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="form-group col-lg-5 col-md-5">
+                                <mat-label style="font-weight: bold">Product Name</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <mat-label>Search Product Name / Code</mat-label>
+                                    <input matInput type="text" placeholder="Product Name / code"
+                                        [(ngModel)]="sheetValues['productname']" [ngModelOptions]="{ standalone: true }"
+                                        (input)="getProductList()" [matAutocomplete]="productAuto" autocomplete="off"
+                                        [disabled]="sheetID" required />
+                                    <mat-autocomplete #productAuto="matAutocomplete"
+                                        (optionSelected)="onProductSelect($event.option.value)">
+                                        <mat-option *ngFor="let product of selectProductList" [value]="product"
+                                            [matTooltip]="product?.productcode" matTooltipPosition="above">
+                                            <span>{{ product?.productcode }} - {{ product?.productname }}</span>
+                                            <small class="text-muted ms-2">[{{ product?.locCd }}]</small>
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                                <mat-error *ngIf="nameError">{{nameError}}</mat-error>
+                            </div>
+
+                            <div class="form-group col-lg-2 col-md-2" *ngIf="sheetValues['productcode']">
+                                <mat-label style="font-weight: bold">Product Code</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <mat-label>Product Code</mat-label>
+                                    <input matInput type="text" placeholder="Enter Product Code"
+                                        [(ngModel)]="sheetValues['productcode']" autocomplete="off" name="productcode"
+                                        [disabled]="sheetID" [ngStyle]="{ color: 'black', cursor: 'not-allowed' }" />
+                                </mat-form-field>
+                            </div>
+
+                            <div class="form-group col-lg-2 col-md-2" *ngIf="sheetValues['locCd']">
+                                <mat-label style="font-weight: bold">Location Code</mat-label>
+                                <mat-form-field appearance="outline" class="w-100 mt-1">
+                                    <mat-label>Location Code</mat-label>
+                                    <input matInput type="text" placeholder="Location Code"
+                                        [(ngModel)]="sheetValues['locCd']" autocomplete="off" name="locCd"
+                                        [disabled]="sheetID" [ngStyle]="{ color: 'black', cursor: 'not-allowed' }" />
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="shadow-sm p-3 bg-white rounded mt-2" *ngIf="onselectSheet">
+                        <h5 class="mb-3 text-primary border-bottom pb-2">Medopharm Cost Overview</h5>
+                        <div class="table-responsive">
+                            <table class="table table-bordered align-middle text-center mb-0">
+                                <thead class="custom-color bg-gradient">
+                                    <tr>
+                                        <th scope="col" class="text-center">Product</th>
+                                        <th scope="col" class="text-center">Packing Unit</th>
+                                        <th scope="col" class="text-center">API</th>
+                                        <th scope="col" class="text-center">Rate INR</th>
+                                        <th scope="col" class="text-center">Rate in USD</th>
+                                        <th scope="col" class="text-center">Conversion Rate</th>
+                                        <th scope="col" class="text-center">CST Percentage</th>
+                                        <th scope="col" class="text-center">Batch Size</th>
+                                        <th scope="col" class="text-center">Cost Unit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="fw-medium">{{ selectSheet?.medopharm?.name || '-' }}</td>
+                                        <td class="fw-medium">{{ selectSheet?.medopharm?.packtype || '-' }}</td>
+                                        <td class="fw-medium">{{ selectSheet?.medopharm?.api || 0.00 }}</td>
+                                        <td class="fw-medium">₹{{ selectSheet?.medopharm?.rupee || 0.00 }}</td>
+                                        <td class="fw-medium">${{ selectSheet?.medopharm?.doller || 0.00 }}</td>
+                                        <td class="fw-medium">{{ selectSheet?.medopharm?.convertrate || '-' }}
+                                        </td>
+                                        <td class="fw-medium">
+                                            <input *ngIf="isEditMode" type="number"
+                                                class="form-control form-control-sm mx-auto" style="width: 70px"
+                                                [(ngModel)]="detailValues.percentage" (input)="onValueChange()">
+                                            <span *ngIf="!isEditMode">{{ detailValues?.percentage || 0 }}%</span>
+                                        </td>
+                                        <td class="fw-medium">
+                                            <input *ngIf="isEditMode" type="number"
+                                                class="form-control form-control-sm mx-auto" style="width: 100px"
+                                                [(ngModel)]="detailValues.batch" (input)="onValueChange()">
+                                            <span *ngIf="!isEditMode">{{ selectSheet?.detailValues?.batch |
+                                                number:'1.0-0' }}</span>
+                                        </td>
+                                        <td class="fw-medium">
+                                            <input *ngIf="isEditMode" type="number"
+                                                class="form-control form-control-sm mx-auto" style="width: 80px"
+                                                [(ngModel)]="detailValues.costunit" (input)="onValueChange()">
+                                            <span *ngIf="!isEditMode">{{ selectSheet?.detailValues?.costunit || '-'
+                                                }}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="d-flex justify-content-start mt-2 gap-2" *ngIf="!sheetID">
+                            <button class="btn btn-success custom-button border-0" style="width: 100px" type="button"
+                                (click)="saveSheet()" [disabled]="btn_loader ? 'disabled' : null">
+                                <span class="spinner-border" *ngIf="btn_loader" role="status" aria-hidden="true"></span>
+                                <span *ngIf="!btn_loader">{{"Create"}}</span>
+                            </button>
+                        </div>
+                    </div>
+                </ng-container>
+
+
+                <ng-container *ngIf="sheetID && roleName?.toLowerCase() !== 'sale'">
+                    <div class="bg-white rounded shadow-sm p-4 mt-2" id="costsheet-details">
+                        <div class="col-lg-12 mx-auto">
+                            <div class="row">
+                                <div class="form-group col-lg-5 col-md-5">
+                                    <mat-label style="font-weight: bold">Sheet Name</mat-label>
+                                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                                        <mat-label>Sheet Name</mat-label>
+                                        <input matInput type="text" placeholder="Sheet Name"
+                                            [(ngModel)]="sheetValues['name']" [ngModelOptions]="{ standalone: true }"
+                                            [ngStyle]="{ color: 'black', cursor: 'not-allowed' }" autocomplete="off"
+                                            required [disabled]="true" />
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="form-group col-lg-2 col-md-2">
+                                    <mat-label style="font-weight: bold">FG Code</mat-label>
+                                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                                        <mat-label>FG Code</mat-label>
+                                        <input matInput type="text" placeholder="FG Code"
+                                            [(ngModel)]="sheetValues['code']" [disabled]="true"
+                                            [ngStyle]="{ color: 'black', cursor: 'not-allowed' }" />
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="form-group col-lg-2 col-md-2">
+                                    <mat-label style="font-weight: bold">Location Code</mat-label>
+                                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                                        <mat-label>Location Code</mat-label>
+                                        <input matInput type="text" placeholder="Location Code"
+                                            [(ngModel)]="sheetValues['locCd']" [disabled]="true"
+                                            [ngStyle]="{ color: 'black', cursor: 'not-allowed' }" />
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="row mb-1">
+                                <div class="form-group col-lg-6 col-md-6">
+                                    <mat-label style="font-weight: bold">Product Name</mat-label>
+                                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                                        <mat-label>Product Name</mat-label>
+                                        <input matInput type="text" placeholder="Product Name"
+                                            [(ngModel)]="sheetValues['productname']"
+                                            [ngModelOptions]="{ standalone: true }" autocomplete="off" required
+                                            [disabled]="true" [ngStyle]="{ color: 'black', cursor: 'not-allowed' }" />
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-group col-lg-6 col-md-6">
+                                    <mat-label style="font-weight: bold">Product Code</mat-label>
+                                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                                        <mat-label>Product Code</mat-label>
+                                        <input matInput type="text" placeholder="Enter Product Code"
+                                            [(ngModel)]="sheetValues['productcode']" autocomplete="off"
+                                            [disabled]="true" name="productcode"
+                                            [ngStyle]="{ color: 'black', cursor: 'not-allowed' }" />
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="row mb-1">
+                                <div class="form-group col-lg-6 col-md-6">
+                                    <mat-label style="font-weight: bold">Batch Size</mat-label>
+                                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                                        <mat-label>Batch Size</mat-label>
+                                        <input matInput type="text" placeholder="Enter Batch Size"
+                                            [(ngModel)]="detailValues['batch']" (input)="onValueChange()"
+                                            autocomplete="off" name="batch" />
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-group col-lg-6 col-md-6">
+                                    <mat-label style="font-weight: bold">Cost Unit</mat-label>
+                                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                                        <mat-label>Cost Unit</mat-label>
+                                        <input matInput type="text" placeholder="Enter Cost Unit"
+                                            [(ngModel)]="detailValues['costunit']" (input)="onValueChange()"
+                                            autocomplete="off" name="costunit" />
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="row mb-1">
+                                <div class="form-group col-lg-6 col-md-6">
+                                    <mat-label style="font-weight: bold">Yield %</mat-label>
+                                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                                        <mat-label>Yield %</mat-label>
+                                        <input matInput type="text" placeholder="Enter Yield Percentage"
+                                            [(ngModel)]="detailValues['yield']" (input)="onValueChange()"
+                                            autocomplete="off" name="yield" />
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-group col-lg-6 col-md-6">
+                                    <mat-label style="font-weight: bold">Yield Value</mat-label>
+                                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                                        <mat-label>Yield Value</mat-label>
+                                        <input matInput type="text" placeholder="Enter Yield Value"
+                                            [(ngModel)]="detailValues['yieldvalue']" (input)="onValueChange()"
+                                            autocomplete="off" name="yieldvalue" />
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="row mb-1">
+                                <div class="form-group col-lg-6 col-md-6">
+                                    <mat-label style="font-weight: bold">Manufacture Qty</mat-label>
+                                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                                        <mat-label>Manufacture Qty</mat-label>
+                                        <input matInput type="text" placeholder="Enter Manufacture Qty"
+                                            [(ngModel)]="detailValues['manufacture_qty']" (input)="onValueChange()"
+                                            autocomplete="off" name="manufacture_qty" />
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-group col-lg-6 col-md-6">
+                                    <mat-label style="font-weight: bold">Manufacture Total</mat-label>
+                                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                                        <mat-label>Manufacture Total</mat-label>
+                                        <input matInput type="text" placeholder="Enter Manufacture Total"
+                                            [(ngModel)]="detailValues['manufacture_total']" (input)="onValueChange()"
+                                            autocomplete="off" name="manufacture_total" />
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="row mb-1">
+                                <div class="form-group col-lg-6 col-md-6">
+                                    <mat-label style="font-weight: bold">Manufacture ITC</mat-label>
+                                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                                        <mat-label>Manufacture ITC</mat-label>
+                                        <input matInput type="text" placeholder="Enter Manufacture ITC"
+                                            [(ngModel)]="detailValues['manufacture_matval']" (input)="onValueChange()"
+                                            autocomplete="off" name="manufacture_matval" />
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-group col-lg-6 col-md-6">
+                                    <mat-label style="font-weight: bold">Pack Qty</mat-label>
+                                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                                        <mat-label>Pack Qty</mat-label>
+                                        <input matInput type="text" placeholder="Enter Pack Qty"
+                                            [(ngModel)]="detailValues['pack_qty']" (input)="onValueChange()"
+                                            autocomplete="off" name="pack_qty" />
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="row mb-1">
+                                <div class="form-group col-lg-6 col-md-6">
+                                    <mat-label style="font-weight: bold">Pack Total</mat-label>
+                                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                                        <mat-label>Pack Total</mat-label>
+                                        <input matInput type="text" placeholder="Enter Pack Total"
+                                            [(ngModel)]="detailValues['pack_total']" (input)="onValueChange()"
+                                            autocomplete="off" name="pack_total" />
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-group col-lg-6 col-md-6">
+                                    <mat-label style="font-weight: bold">Pack ITC</mat-label>
+                                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                                        <mat-label>Pack ITC</mat-label>
+                                        <input matInput type="text" placeholder="Enter Pack ITC"
+                                            [(ngModel)]="detailValues['pack_matval']" (input)="onValueChange()"
+                                            autocomplete="off" name="pack_matval" />
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="row mb-1">
+                                <div class="form-group col-lg-6 col-md-6">
+                                    <mat-label style="font-weight: bold">Analytical Value</mat-label>
+                                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                                        <mat-label>Analytical Value</mat-label>
+                                        <input matInput type="text" placeholder="Enter Analytical Value"
+                                            [(ngModel)]="detailValues['analytical_value']" (input)="onValueChange()"
+                                            autocomplete="off" name="analytical_value" />
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-group col-lg-6 col-md-6">
+                                    <mat-label style="font-weight: bold">Punch Value</mat-label>
+                                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                                        <mat-label>Punch Value</mat-label>
+                                        <input matInput type="text" placeholder="Enter Punch Value"
+                                            [(ngModel)]="detailValues['punch_value']" (input)="onValueChange()"
+                                            autocomplete="off" name="punch_value" />
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="row mb-1">
+                                <div class="form-group col-lg-6 col-md-6">
+                                    <mat-label style="font-weight: bold">Freight %</mat-label>
+                                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                                        <mat-label>Freight %</mat-label>
+                                        <input matInput type="text" placeholder="Enter Freight %"
+                                            [(ngModel)]="detailValues['freight']" (input)="onValueChange()"
+                                            autocomplete="off" name="freight" />
+                                    </mat-form-field>
+                                </div>
+                                <div class="form-group col-lg-6 col-md-6">
+                                    <mat-label style="font-weight: bold">Convert Rate</mat-label>
+                                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                                        <mat-label>Convert Rate</mat-label>
+                                        <input matInput type="text" placeholder="Enter Convert Rate"
+                                            [(ngModel)]="convertrate" (input)="onValueChange()" autocomplete="off"
+                                            name="convertrate" />
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="row mb-1">
+                                <div class="form-group col-lg-6 col-md-6">
+                                    <mat-label style="font-weight: bold">Percentage %</mat-label>
+                                    <mat-form-field appearance="outline" class="w-100 mt-1">
+                                        <mat-label>Percentage %</mat-label>
+                                        <input matInput type="text" placeholder="Enter Percentage %"
+                                            [(ngModel)]="detailValues['percentage']" (input)="onValueChange()"
+                                            autocomplete="off" name="percentage" />
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-white shadow-sm rounded mt-2" *ngIf="rawstage?.length">
+                        <h5 class="mb-3 text-primary border-bottom pb-2">API</h5>
+                        <div class="table-responsive">
+                            <table class="table table-bordered align-middle text-center" id="api-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="custom-color bg-gradient">
+                                            S.No
+                                        </th>
+                                        <th scope="col" tableColumn
+                                            class="custom-color bg-gradient text-start custom-select">
+                                            Name
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-start">
+                                            Code
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            Type
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            Qty
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-center">
+                                            UOM
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            STD Rate ({{ isActive ? "$" : "INR" }})
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            Rate ({{ isActive ? "$" : "INR" }})
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            GST%
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            EXCISE ({{ isActive ? "$" : "INR" }})
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            Cess ({{ isActive ? "$" : "INR" }})
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            CST ({{ isActive ? "$" : "INR" }})
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            TOTAL ({{ isActive ? "$" : "INR" }})
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            Value ({{ isActive ? "$" : "INR" }})
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            ITC ({{ isActive ? "$" : "INR" }})
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            Net AMT ({{ isActive ? "$" : "INR" }})
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            Cost ({{ isActive ? "$" : "INR" }})
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngIf="rawstage?.length">
+                                        <ng-container *ngFor="let ingredient of rawstage; let i = index">
+                                            <tr>
+                                                <td>{{ i + 1 }}</td>
+                                                <td class="text-start">{{ ingredient?.name }}</td>
+                                                <td class="text-start">{{ ingredient?.code }}</td>
+                                                <td class="text-end">{{ ingredient?.typeCode }}</td>
+                                                <td class="text-end">{{ ingredient?.requestQty }}</td>
+                                                <td class="text-center">{{ ingredient?.convertUnit }}</td>
+                                                <td class="text-end">
+                                                    <!-- {{ convert_to_currency(ingredient?.rate) }} -->
+
+                                                    {{
+                                                    this.currencyService.formatWithCommas(ingredient.grnRate)
+                                                    }}
+                                                </td>
+                                                <td class="text-end">
+                                                    <input type="number" class="form-control form-control-sm text-end"
+                                                        [(ngModel)]="ingredient.rate" (input)="onValueChange()">
+                                                </td>
+                                                <td class="text-end">
+                                                    <input type="number" class="form-control form-control-sm text-end"
+                                                        [(ngModel)]="ingredient.gst" (input)="onValueChange()">
+                                                </td>
+                                                <td class="text-end">
+                                                    {{
+                                                    this.currencyService.formatWithCommas(
+                                                    ingredient.excise
+                                                    )
+                                                    }}
+                                                </td>
+                                                <td class="text-end">
+                                                    {{
+                                                    this.currencyService.formatWithCommas(ingredient.cess)
+                                                    }}
+                                                </td>
+                                                <td class="text-end">
+                                                    {{
+                                                    this.currencyService.formatWithCommas(ingredient.cst)
+                                                    }}
+                                                </td>
+                                                <td class="text-end">
+                                                    {{
+                                                    this.currencyService.formatWithCommas(
+                                                    ingredient.total
+                                                    )
+                                                    }}
+                                                </td>
+                                                <td class="text-end">
+                                                    {{
+                                                    this.currencyService.formatWithCommas(
+                                                    ingredient.value
+                                                    )
+                                                    }}
+                                                </td>
+                                                <td class="text-end">
+                                                    {{
+                                                    this.currencyService.formatWithCommas(
+                                                    ingredient.modvat
+                                                    )
+                                                    }}
+                                                </td>
+                                                <td class="text-end">
+                                                    {{
+                                                    this.currencyService.formatWithCommas(
+                                                    ingredient.netamt
+                                                    )
+                                                    }}
+                                                </td>
+                                                <td class="text-end">
+                                                    {{
+                                                    this.currencyService.formatWithCommas(ingredient.cost)
+                                                    }}
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                        <tr class="table-info fw-bold">
+                                            <th colspan="4" class="text-end">Total:</th>
+                                            <th class="text-end">
+                                                {{
+                                                this.currencyService.formatWithCommas(
+                                                getTotalRaw("requestQty")
+                                                )
+                                                }}
+                                            </th>
+                                            <th class="text-end"></th>
+
+                                            <th class="text-end">
+                                                {{
+                                                this.currencyService.formatWithCommas(
+                                                getTotalRaw("grnRate")
+                                                )
+                                                }}
+                                            </th>
+                                            <th class="text-end">
+                                                {{
+                                                this.currencyService.formatWithCommas(
+                                                getTotalRaw("rate")
+                                                )
+                                                }}
+                                            </th>
+                                            <th class="text-end"></th>
+                                            <th class="text-end">
+                                                {{
+                                                this.currencyService.formatWithCommas(
+                                                getTotalRaw("excise")
+                                                )
+                                                }}
+                                            </th>
+                                            <th class="text-end">
+                                                {{
+                                                this.currencyService.formatWithCommas(
+                                                getTotalRaw("cess")
+                                                )
+                                                }}
+                                            </th>
+                                            <th class="text-end">
+                                                {{
+                                                this.currencyService.formatWithCommas(
+                                                getTotalRaw("cst")
+                                                )
+                                                }}
+                                            </th>
+                                            <th class="text-end">
+                                                {{
+                                                this.currencyService.formatWithCommas(
+                                                getTotalRaw("total")
+                                                )
+                                                }}
+                                            </th>
+                                            <th class="text-end">
+                                                {{
+                                                this.currencyService.formatWithCommas(
+                                                getTotalRaw("value")
+                                                )
+                                                }}
+                                            </th>
+                                            <th class="text-end">
+                                                {{
+                                                this.currencyService.formatWithCommas(
+                                                getTotalRaw("modvat")
+                                                )
+                                                }}
+                                            </th>
+                                            <th class="text-end">
+                                                {{
+                                                this.currencyService.formatWithCommas(
+                                                getTotalRaw("netamt")
+                                                )
+                                                }}
+                                            </th>
+                                            <th class="text-end">
+                                                {{
+                                                this.currencyService.formatWithCommas(
+                                                getTotalRaw("cost")
+                                                )
+                                                }}
+                                            </th>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-white shadow-sm rounded mt-2" *ngIf="packstage?.length">
+                        <h5 class="mb-3 text-primary border-bottom pb-2">Packing Material</h5>
+                        <div class="table-responsive">
+                            <table class="table table-bordered align-middle mb-0 text-center" id="packing-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="custom-color bg-gradient">
+                                            S.No
+                                        </th>
+                                        <th scope="col" tableColumn
+                                            class="custom-color bg-gradient text-start custom-select">
+                                            Name
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-start">
+                                            Code
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            Type
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            Qty
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-center">
+                                            UOM
+                                        </th>
+
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            STD Rate ({{ isActive ? "$" : "INR" }})
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            Rate ({{ isActive ? "$" : "INR" }})
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            GST%
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            EXCISE ({{ isActive ? "$" : "INR" }})
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            Cess ({{ isActive ? "$" : "INR" }})
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            CST ({{ isActive ? "$" : "INR" }})
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            TOTAL ({{ isActive ? "$" : "INR" }})
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            Value ({{ isActive ? "$" : "INR" }})
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            ITC ({{ isActive ? "$" : "INR" }})
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            Net AMT ({{ isActive ? "$" : "INR" }})
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end">
+                                            Cost ({{ isActive ? "$" : "INR" }})
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngIf="packstage?.length" class="details-row">
+                                        <ng-container *ngFor="let val of packstage; let i = index">
+                                            <tr>
+                                                <td>{{ i + 1 }}</td>
+                                                <td class="text-start">{{ val?.name }}</td>
+                                                <td class="text-start">{{ val?.code }}</td>
+                                                <td class="text-end">{{ val?.typeCode }}</td>
+                                                <td class="text-end">{{ val?.requestQty }}</td>
+                                                <td class="text-center">{{ val?.convertUnit }}</td>
+                                                <td class="text-end">
+                                                    {{ this.currencyService.formatWithCommas(val?.grnRate) }}
+                                                </td>
+                                                <td class="text-end">
+                                                    <input type="number" class="form-control form-control-sm text-end"
+                                                        [(ngModel)]="val.rate" (input)="onValueChange()">
+                                                </td>
+                                                <td class="text-end">
+                                                    <input type="number" class="form-control form-control-sm text-end"
+                                                        [(ngModel)]="val.gst" (input)="onValueChange()">
+                                                </td>
+                                                <td class="text-end">
+                                                    {{
+                                                    this.currencyService.formatWithCommas(val?.excise)
+                                                    }}
+                                                </td>
+                                                <td class="text-end">
+                                                    {{ this.currencyService.formatWithCommas(val?.cess) }}
+                                                </td>
+                                                <td class="text-end">
+                                                    {{ this.currencyService.formatWithCommas(val?.cst) }}
+                                                </td>
+                                                <td class="text-end">
+                                                    {{
+                                                    this.currencyService.formatWithCommas(val?.total)
+                                                    }}
+                                                </td>
+                                                <td class="text-end">
+                                                    {{
+                                                    this.currencyService.formatWithCommas(val?.value)
+                                                    }}
+                                                </td>
+                                                <td class="text-end">
+                                                    {{
+                                                    this.currencyService.formatWithCommas(val?.modvat)
+                                                    }}
+                                                </td>
+                                                <td class="text-end">
+                                                    {{
+                                                    this.currencyService.formatWithCommas(val?.netamt)
+                                                    }}
+                                                </td>
+                                                <td class="text-end">
+                                                    {{ this.currencyService.formatWithCommas(val?.cost) }}
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                        <tr class="table-section-title details-row">
+                                            <th colspan="4" class="text-end bg-light">Total</th>
+                                            <th class="text-end bg-light">
+                                                {{
+                                                convert_to_currency(
+                                                getTotal("requestQty")
+                                                )
+                                                }}
+                                            </th>
+                                            <th class="text-end bg-light"></th>
+                                            <th class="text-end bg-light">
+                                                {{
+                                                this.currencyService.formatWithCommas(
+                                                getTotal("grnRate")
+                                                )
+                                                }}
+                                            </th>
+                                            <th class="text-end bg-light">
+                                                {{
+                                                this.currencyService.formatWithCommas(
+                                                getTotal("rate")
+                                                )
+                                                }}
+                                            </th>
+                                            <th class="text-end bg-light">
+                                                {{
+                                                convert_to_currency(
+                                                getTotal("gst")
+                                                )
+                                                }}
+                                            </th>
+                                            <th class="text-end bg-light">
+                                                {{
+                                                this.currencyService.formatWithCommas(
+                                                getTotal("excise")
+                                                )
+                                                }}
+                                            </th>
+                                            <th class="text-end bg-light">
+                                                {{
+                                                this.currencyService.formatWithCommas(
+                                                getTotal("cess")
+                                                )
+                                                }}
+                                            </th>
+                                            <th class="text-end bg-light">
+                                                {{
+                                                this.currencyService.formatWithCommas(
+                                                getTotal("cst")
+                                                )
+                                                }}
+                                            </th>
+                                            <th class="text-end bg-light">
+                                                {{
+                                                this.currencyService.formatWithCommas(
+                                                getTotal("total")
+                                                )
+                                                }}
+                                            </th>
+                                            <th class="text-end bg-light">
+                                                {{
+                                                this.currencyService.formatWithCommas(
+                                                getTotal("value")
+                                                )
+                                                }}
+                                            </th>
+                                            <th class="text-end bg-light">
+                                                {{
+                                                this.currencyService.formatWithCommas(
+                                                getTotal("modvat")
+                                                )
+                                                }}
+                                            </th>
+                                            <th class="text-end bg-light">
+                                                {{
+                                                this.currencyService.formatWithCommas(
+                                                getTotal("netamt")
+                                                )
+                                                }}
+                                            </th>
+                                            <th class="text-end bg-light">
+                                                {{
+                                                this.currencyService.formatWithCommas(
+                                                getTotal("cost")
+                                                )
+                                                }}
+                                            </th>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-white shadow-sm rounded mt-2">
+                        <h5 class="mb-3 text-primary border-bottom pb-2">Total Material</h5>
+                        <div class="table-responsive">
+                            <table class="table table-bordered align-middle text-center mb-0" id="total-material-table">
+                                <tbody>
+                                    <tr>
+                                        <th scope="col" class="custom-color bg-gradient"></th>
+                                        <th scope="col" class="custom-color bg-gradient text-start">
+                                            PRODUCT
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-start excel">
+                                            QTY
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end excel">
+                                            RATE 1000s
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end excel">
+                                            RATE 10s
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end excel">
+                                            additional 100s upto 1000s
+                                        </th>
+                                        <th scope="col" class="custom-color bg-gradient text-end"></th>
+                                        <th scope="col" class="custom-color bg-gradient text-end"></th>
+                                        <th scope="col" class="custom-color bg-gradient text-end"></th>
+                                        <th scope="col" class="custom-color bg-gradient text-end"></th>
+                                        <th scope="col" class="custom-color bg-gradient text-end"></th>
+                                        <th scope="col" class="custom-color bg-gradient text-end"></th>
+                                        <th scope="col" class="custom-color bg-gradient text-end"></th>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col" class="text-end"></th>
+                                        <th scope="col" class="text-start">FOR MANUFACTURING</th>
+                                        <td scope="col" class="text-end">
+                                            {{ convert_to_currency(detailValues?.manufacture_qty) }}
+                                        </td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end">
+                                            {{ detailValues?.manufacture_total }}
+                                        </td>
+                                        <td scope="col" class="text-end">
+                                            {{ convert_to_currency(detailValues?.manufacture_value) }}
+                                        </td>
+                                        <td scope="col" class="text-end">
+                                            {{ detailValues?.manufacture_matval }}
+                                        </td>
+                                        <td scope="col" class="text-end">
+                                            {{ convert_to_currency(detailValues?.manufacture_netamt) }}
+                                        </td>
+                                        <td scope="col" class="text-end">
+                                            {{ detailValues?.manufacture_cost }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col" class="text-end"></th>
+                                        <th scope="col" class="text-start">FOR PACKING</th>
+                                        <td scope="col" class="text-end">
+                                            {{ convert_to_currency(detailValues?.pack_qty) }}
+                                        </td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end">
+                                            {{ detailValues?.pack_total }}
+                                        </td>
+                                        <td scope="col" class="text-end">
+                                            {{ convert_to_currency(detailValues?.pack_value) }}
+                                        </td>
+                                        <td scope="col" class="text-end">
+                                            {{ detailValues?.pack_matval }}
+                                        </td>
+                                        <td scope="col" class="text-end">
+                                            {{ convert_to_currency(detailValues?.pack_netamt) }}
+                                        </td>
+                                        <td scope="col" class="text-end">
+                                            {{ detailValues?.pack_cost }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col" class="text-end"></th>
+                                        <th scope="col" class="text-start">
+                                            ANALYTICAL CHARGES (RM & FG)
+                                        </th>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end">
+                                            {{ convert_to_currency(detailValues?.analytical_value) }}
+                                        </td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end">
+                                            {{ convert_to_currency(detailValues?.analytical_value) }}
+                                        </td>
+                                        <td scope="col" class="text-end">
+                                            {{ detailValues?.analytical_cost }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col" class="text-end"></th>
+                                        <th scope="col" class="text-start">PUNCHES</th>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end">
+                                            {{ convert_to_currency(detailValues?.punch_value) }}
+                                        </td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end">
+                                            {{ convert_to_currency(detailValues?.punch_value) }}
+                                        </td>
+                                        <td scope="col" class="text-end">
+                                            {{ detailValues?.punch_cost }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col" class="text-end"></th>
+                                        <td scope="col" class="text-start">RM.Cost</td>
+                                        <td scope="col" class="text-end">{{ percentage?.rmcost }}</td>
+                                        <td scope="col" class="text-end">
+                                            {{ percentage?.rmcostPercentage }}%
+                                        </td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col" class="text-end"></th>
+                                        <td scope="col" class="text-start">PM.Cost</td>
+                                        <td scope="col" class="text-end">{{ percentage?.pmcost }}</td>
+                                        <td scope="col" class="text-end">
+                                            {{ percentage?.pmcostPercentage }}%
+                                        </td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col" class="text-end"></th>
+                                        <td scope="col" class="text-start">Material Cost</td>
+                                        <td scope="col" class="text-end">
+                                            {{ percentage?.materialcost }}
+                                        </td>
+                                        <td scope="col" class="text-end">
+                                            {{ percentage?.materialcostPercentage }}%
+                                        </td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col" class="text-end"></th>
+                                        <td scope="col" class="text-start">Conv.Cost</td>
+                                        <td scope="col" class="text-end">
+                                            {{ percentage?.convcost }}
+                                        </td>
+                                        <td scope="col" class="text-end">
+                                            {{ percentage?.convcostPercentage }}%
+                                        </td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col" class="text-end"></th>
+                                        <td scope="col" class="text-start">Analytical Charges</td>
+                                        <td scope="col" class="text-end">
+                                            {{ percentage?.analyticalcost }}
+                                        </td>
+                                        <td scope="col" class="text-end">
+                                            {{ percentage?.analyticalcostPercentage }}%
+                                        </td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col" class="text-end"></th>
+                                        <td scope="col" class="text-start">PUNCHES</td>
+                                        <td scope="col" class="text-end">
+                                            {{ percentage?.punchcost }}
+                                        </td>
+                                        <td scope="col" class="text-end">
+                                            {{ percentage?.punchcostPercentage }}%
+                                        </td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col" class="text-end"></th>
+                                        <td scope="col" class="text-start">
+                                            FREIGHT {{ detailValues?.freight }}% INWARD
+                                        </td>
+                                        <td scope="col" class="text-end">
+                                            {{ percentage?.freightcost }}
+                                        </td>
+                                        <td scope="col" class="text-end">
+                                            {{ percentage?.freightcostPercentage }}%
+                                        </td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col" class="text-end"></th>
+                                        <td scope="col" class="text-start">Ex.fac.cost</td>
+                                        <td scope="col" class="text-end">
+                                            {{ percentage?.factorycost }}
+                                        </td>
+                                        <td scope="col" class="text-end">
+                                            {{ percentage?.factorycostPercentage }}%
+                                        </td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                        <td scope="col" class="text-end"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="shadow-sm p-3 bg-white rounded mt-2">
+                        <div class="table-responsive">
+                            <h5 class="mb-3 text-primary border-bottom pb-2">Medopharm Cost Overview</h5>
+                            <table class="table table-bordered align-middle mb-0 text-center">
+                                <thead class="custom-color bg-gradient">
+                                    <tr>
+                                        <th scope="col" class="text-center">Product</th>
+                                        <th scope="col" class="text-center">Packing Unit</th>
+                                        <th scope="col" class="text-center">API</th>
+                                        <th scope="col" class="text-center">Rate INR</th>
+                                        <th scope="col" class="text-center">Rate in USD</th>
+                                        <th scope="col" class="text-center">Conversion Rate</th>
+                                        <th scope="col" class="text-center">Batch Size</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="fw-medium">{{ selectSheet?.medopharm?.name || '-' }}</td>
+                                        <td class="fw-medium">{{ selectSheet?.medopharm?.packtype || '-' }}</td>
+                                        <td class="fw-medium">{{ selectSheet?.medopharm?.api || 0.00 }}</td>
+                                        <td class="fw-medium">₹{{ selectSheet?.medopharm?.rupee || 0.00}}</td>
+                                        <td class="fw-medium">${{ selectSheet?.medopharm?.doller || 0.00 }}</td>
+                                        <td class="fw-medium">{{ selectSheet?.medopharm?.convertrate || '-' }}</td>
+                                        <td class="fw-medium">{{ selectSheet?.detailValues?.batch | number:'1.0-0'
+                                            }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <h5 class="table-heading">Systematic Cost</h5>
+                            <table class="table text-nowra align-middle text-center">
+                                <tbody>
+                                    <tr>
+                                        <td scope="col" class="text-center" style="background-color: #a9d18e">
+                                            Product
+                                        </td>
+                                        <td scope="col" class="text-center" style="background-color: #c6e0b4">
+                                            Packing Unit
+                                        </td>
+                                        <td scope="col" class="text-center" style="background-color: #bdd7ee">
+                                            API
+                                        </td>
+                                        <td scope="col" class="text-center" style="background-color: #d9d9d9">
+                                            Rate INR
+                                        </td>
+                                        <td scope="col" class="text-center" style="background-color: #d9c9d9">
+                                            Rate in USD
+                                        </td>
+                                        <td scope="col" class="text-center" style="background-color: #ddffff">
+                                            Conversion Rate
+                                        </td>
+                                        <td scope="col" class="text-center" style="background-color: #ffccdd">
+                                            Minimum Batch size (In Lakh)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="col" class="text-center">{{ selectSheet?.system?.name }}</td>
+                                        <td scope="col" class="text-center">
+                                            {{ selectSheet?.system?.packtype }}
+                                        </td>
+                                        <td scope="col" class="text-center">{{ selectSheet?.system?.api || 0.00 }}</td>
+                                        <td scope="col" class="text-center">₹{{ selectSheet?.system?.rupee || 0.00 }}
+                                        </td>
+                                        <td scope="col" class="text-center">
+                                            ${{ selectSheet?.system?.doller || 0.00 }}
+                                        </td>
+                                        <td scope="col" class="text-center">
+                                            {{ selectSheet?.system?.convertrate }}
+                                        </td>
+                                        <td scope="col" class="text-center">
+                                            {{ selectSheet?.detailValues?.batch | number:'1.0-0' }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Remarks Section (Dynamic Multi-Row) -->
+                        <div class="mt-4 p-3 bg-white rounded shadow-sm" *ngIf="selectSheet">
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <label class="fw-bold mb-0 d-flex align-items-center gap-2">
+                                    <span class="badge bg-primary rounded-pill" style="font-size: 11px;">Remarks</span>
+                                    <span class="text-muted small fw-normal">Add one or more remarks below</span>
+                                </label>
+                                <button type="button"
+                                    class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1"
+                                    (click)="addRemark()">
+                                    Add Remark
+                                </button>
+                            </div>
+
+                            <div *ngIf="!selectSheet.remarks || selectSheet.remarks.length === 0"
+                                class="text-center text-muted py-3 border rounded bg-light">
+                                <i class="material-icons d-block mb-1" style="font-size:28px;opacity:0.4">notes</i>
+                                <small>No remarks added. Click "Add Remark" to start.</small>
+                            </div>
+
+                            <div *ngFor="let remark of selectSheet.remarks; let i = index; trackBy: trackByIndex"
+                                class="d-flex align-items-center gap-2 mb-2">
+                                <span
+                                    class="badge bg-secondary rounded-circle d-flex align-items-center justify-content-center"
+                                    style="min-width:28px;height:28px;font-size:12px;">{{ i + 1 }}</span>
+                                <input type="text" class="form-control shadow-none" [placeholder]="'Remark ' + (i + 1)"
+                                    [value]="remark" (input)="selectSheet.remarks[i] = $any($event.target).value"
+                                    [name]="'remark_' + i" />
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-start mt-4 gap-3">
+                            <button class="btn btn-success custom-button border-0" style="width: 100px" type="button"
+                                (click)="saveSheet()" [disabled]="btn_loader ? 'disabled' : null">
+                                <span class="spinner-border" *ngIf="btn_loader" role="status" aria-hidden="true"></span>
+                                <span *ngIf="!btn_loader">{{
+                                    sheetID ? "Update" : "Create"
+                                    }}</span>
+                            </button>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>

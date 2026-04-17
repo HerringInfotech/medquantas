@@ -1,0 +1,76 @@
+<div class="d-flex align-items-center justify-content-center login mx-auto">
+    <div>
+        <img src="assets/images/logo.png" alt="" height="60" class="mx-auto d-block mb-3">
+        <div class="bg-white shadow-sm p-3 py-5">
+            <form #formData="ngForm" (ngSubmit)="formSubmit(formData)">
+                <!-- <h4 class="text-center mb-3">Let's Get Started Herring Infotech</h4> -->
+
+                <div class="form-outline mb-4">
+                    <label for="roleInput">Role name</label>
+                    <select name="role" class="form-control" placeholder="Select Role" [(ngModel)]="formValues['role']"
+                        #role="ngModel" dropdownPosition="bottom">
+                        <option disabled value="">Select Role</option>
+                        <option *ngFor="let data of role_data" [value]="data.id">{{data.name}}</option>
+                    </select>
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label for="nameInput">Name</label>
+                    <input id="nameInput" name="name" class="form-control" placeholder="Enter your name"
+                        autocomplete="off" required [(ngModel)]="formValues['name']" #name="ngModel"
+                        [ngClass]="{ 'is-invalid': name.invalid && (name.dirty || name.touched || formData.submitted) }">
+                    <div *ngIf="name.invalid && (name.dirty || name.touched  || formData.submitted)"
+                        class="invalid-feedback">
+                        <span *ngIf="name.errors.required">please enter your name</span>
+                    </div>
+                </div>
+                <div class="form-outline mb-4">
+                    <label for="emailInput">Email</label>
+                    <input id="emailInput" name="email" class="form-control" placeholder="Enter your email"
+                        autocomplete="off" required [(ngModel)]="formValues['email']" #email="ngModel"
+                        [ngClass]="{ 'is-invalid': email.invalid && (email.dirty || email.touched || formData.submitted) }">
+                    <div *ngIf="email.invalid && (email.dirty || email.touched  || formData.submitted)"
+                        class="invalid-feedback">
+                        <span *ngIf="email.errors.required">Enter valid email address</span>
+                    </div>
+                </div>
+                <div class="form-outline mb-4">
+                    <label for="mobileInput">Mobile</label>
+                    <input id="mobileInput" name="mobile" class="form-control" placeholder="Enter your mobile"
+                        autocomplete="off" required [(ngModel)]="formValues['mobile']" #mobile="ngModel"
+                        [ngClass]="{ 'is-invalid': mobile.invalid && (mobile.dirty || mobile.touched || formData.submitted) }">
+                    <div *ngIf="mobile.invalid && (mobile.dirty || mobile.touched  || formData.submitted)"
+                        class="invalid-feedback">
+                        <span *ngIf="mobile.errors.required">Enter valid mobile number</span>
+                    </div>
+                </div>
+                <div class="form-outline mb-4">
+                    <label for="passwordInput">Password</label>
+                    <div class="input-group">
+                        <input type="{{password_type}}" class="form-control" name="password" required
+                            [(ngModel)]="formValues['password']" id="passwordInput" placeholder="Enter your password"
+                            value="" #password="ngModel"
+                            [ngClass]="{ 'is-invalid': password.invalid && (password.dirty || password.touched  || formData.submitted) }">
+                        <div class="input-group-append">
+                            <span class="input-group-text pointer" id="visibility">
+                                <fa-icon class="text-secondary" (click)="password_type='password'"
+                                    *ngIf="password_type=='text'" [icon]="faEye"></fa-icon>
+                                <fa-icon class="text-secondary" (click)="password_type='text'"
+                                    *ngIf="password_type=='password'" [icon]="faEyeSlash"></fa-icon>
+                            </span>
+                        </div>
+                        <div *ngIf="password.invalid && (password.dirty || password.touched  || formData.submitted)"
+                            class="invalid-feedback">
+                            <span *ngIf="password.errors.required">Enter valid password</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-block mb-4 w-100" type="submit"
+                    [disabled]="btn_loading ? 'disabled': null">
+                    <span class="spinner-border" *ngIf="btn_loading" role="status" aria-hidden="true"></span>
+                    <span *ngIf="!btn_loading">Register</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

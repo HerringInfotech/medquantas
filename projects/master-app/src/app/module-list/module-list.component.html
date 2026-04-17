@@ -1,0 +1,44 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="mt-3">
+                <div class="mx-auto py-5">
+                    <div class="mb-2 p-2 px-0">
+                        <div class="d-flex align-items-center justify-content-between ">
+                            <h5 class="mb-0">Module Management</h5>
+                            <div>
+                                <button type="button" class="custom-button border-0" routerLink="form"
+                                    tooltip="ADD a new BOM">ADD</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-6px table-responsive-sm p-3 shadow-sm">
+                        <app-not-data *ngIf="!module?.length" [message]="'No module found'" [route]="'form'"
+                            [button]="'Add new module'"></app-not-data>
+                        <table class="table rounded nowrap text-center" *ngIf="module?.length">
+                            <thead>
+                                <tr>
+                                    <th class="bg-white " scope="col">S.No</th>
+                                    <th class="bg-white left-align custom-select" tableColumn scope="col">Module Name
+                                    </th>
+                                    <!-- <th class="bg-white left-align" scope="col">Action</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of module; let index = index" class="details-row">
+                                    <td title="S.no">{{ index + pagination_data?.pagingCounter
+                                        }}</td>
+                                    <td title="Name" class="left-align">{{ data?.name }}</td>
+                                    <td><button type="button" class="btn btn-outline-light text-dark border mr-1"
+                                            (click)="confirm_delete(data)"><fa-icon class="text-secondary"
+                                                [icon]="faTrashAlt"></fa-icon></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <app-pagination [data]="pagination_data"></app-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

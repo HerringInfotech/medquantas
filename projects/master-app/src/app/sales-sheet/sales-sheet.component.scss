@@ -1,0 +1,83 @@
+.wrapLine {
+    max-width: 100px;
+    // overflow-x: scroll;
+    // text-wrap: nowrap;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.wrapLine::-webkit-scrollbar {
+    height: 5px;
+}
+
+.wrapLine::-webkit-scrollbar-track {
+    background: #ffffff;
+}
+
+.wrapLine::-webkit-scrollbar-thumb {
+    background: #85acc1;
+    cursor: pointer;
+}
+
+.wrapLine::-webkit-scrollbar-thumb:hover {
+    background: #85acc1;
+    cursor: pointer;
+}
+
+:host ::ng-deep .bg-blue {
+    background-color: transparent;
+    color: inherit;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.table-hover tbody tr:hover td.create-class,
+.table-hover tbody tr:hover td.Verified-class,
+.table-hover tbody tr:hover td.approve-class,
+.table-hover tbody tr:hover td.decline-class {
+    color: inherit;
+}
+
+.table-hover tbody tr:hover button,
+.table-hover tbody tr:hover fa-icon {
+    color: inherit;
+}
+
+.popover-content {
+    padding: 10px;
+    max-width: 250px;
+}
+
+.popover-content hr {
+    border-top: 1px solid #ddd;
+}
+
+.popover-content .d-flex {
+    display: flex;
+    align-items: center;
+}
+
+.popover-content .btn-group {
+    display: flex;
+    gap: 5px;
+}
+
+.popover-content select {
+    width: 100%;
+    margin-top: 5px;
+}
+
+.mr-2 {
+    margin-right: 8px;
+}
+
+.ml-2 {
+    margin-left: 8px;
+}
+
+.form-group label {
+    font-weight: bold;
+}
