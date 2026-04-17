@@ -10,18 +10,18 @@
 
 :root {
   /* ── Teal Pharma Color Palette ── */
-  --primary-brand:    #00b4c8;
-  --primary-hover:    #009aac;
-  --primary-dark:     #007a8a;
-  --secondary-brand:  #0d3547;
-  --accent-color:     #00d4aa;
-  --success:          #10b981;
+  --primary-brand:    #00a896;   /* User preferred header teal */
+  --primary-hover:    #00c3ac;   /* User preferred medical green */
+  --primary-dark:     #0b5e6e;   /* User preferred deep teal */
+  --secondary-brand:  #0b5e6e;
+  --accent-color:     #00c3ac;
+  --success:          #00c3ac;
   --warning:          #f59e0b;
   --danger:           #ef4444;
 
   /* ── Sidebar ── */
-  --bg-sidebar-top:   #0d3547;
-  --bg-sidebar-bot:   #072330;
+  --bg-sidebar-top:   #0b5e6e;
+  --bg-sidebar-bot:   #063d4a;
   --bg-sidebar:       linear-gradient(180deg, var(--bg-sidebar-top) 0%, var(--bg-sidebar-bot) 100%);
 
   /* ── Page Backgrounds ── */

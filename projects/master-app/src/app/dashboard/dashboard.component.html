@@ -1,25 +1,21 @@
 <div class="row px-5 pt-4 pb-2">
   <h5 class="mb-4 text-blue-dark" style="font-weight: 700;">Dashboard Summary</h5>
 
+  <!-- Total BOM -->
   <div class="col-xl-4 col-md-6 mb-4 created">
-    <div class="card card-animate dash shadow-sm" style="border-radius: 20px;">
+    <div class="card card-animate dash shadow-sm">
       <div class="card-body p-4">
         <div class="d-flex align-items-center justify-content-between">
           <div>
-            <h6 class="text-uppercase text-muted mb-3 fw-bold" style="font-size: 0.8rem; letter-spacing: 1px;">Total BOM
-            </h6>
-            <h2 class="counter-value mb-0" style="color: #4318ff; font-weight: 800; font-size: 2.5rem;">
-              {{ metricsData?.total_bom || 0 }}
-            </h2>
+            <h6 class="text-uppercase mb-3">Total BOM</h6>
+            <h2 class="counter-value mb-0">{{ metricsData?.total_bom || 0 }}</h2>
           </div>
           <div class="avatar-sm">
-            <span class="avatar-title rounded-circle" style="background: rgba(67, 24, 255, 0.1);">
+            <span class="avatar-title">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M21 8V16C21 18.7614 18.7614 21 16 21H8C5.23858 21 3 18.7614 3 16V8C3 5.23858 5.23858 3 8 3H16C18.7614 3 21 5.23858 21 8Z"
-                  stroke="#4318ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M7 12H17" stroke="#4318ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M7 8H13" stroke="#4318ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M21 8V16C21 18.7614 18.7614 21 16 21H8C5.23858 21 3 18.7614 3 16V8C3 5.23858 5.23858 3 8 3H16C18.7614 3 21 5.23858 21 8Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M7 12H17" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M7 8H13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </span>
           </div>
@@ -28,25 +24,21 @@
     </div>
   </div>
 
+  <!-- Total Costsheet -->
   <div class="col-xl-4 col-md-6 mb-4 pending">
-    <div class="card card-animate dash shadow-sm" style="border-radius: 20px;">
+    <div class="card card-animate dash shadow-sm">
       <div class="card-body p-4">
         <div class="d-flex align-items-center justify-content-between">
           <div>
-            <h6 class="text-uppercase text-muted mb-3 fw-bold" style="font-size: 0.8rem; letter-spacing: 1px;">Total
-              Costsheet</h6>
-            <h2 class="counter-value mb-0" style="color: #ff9800; font-weight: 800; font-size: 2.5rem;">
-              {{ metricsData?.total_costsheet || 0 }}
-            </h2>
+            <h6 class="text-uppercase mb-3">Total Costsheet</h6>
+            <h2 class="counter-value mb-0">{{ metricsData?.total_costsheet || 0 }}</h2>
           </div>
           <div class="avatar-sm">
-            <span class="avatar-title rounded-circle" style="background: rgba(255, 152, 0, 0.1);">
+            <span class="avatar-title">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                  stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M12 8V16" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M8 12H16" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 8V16" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8 12H16" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </span>
           </div>
@@ -55,24 +47,20 @@
     </div>
   </div>
 
+  <!-- Total Salesheet -->
   <div class="col-xl-4 col-md-6 mb-4 approved">
-    <div class="card card-animate dash shadow-sm" style="border-radius: 20px;">
+    <div class="card card-animate dash shadow-sm">
       <div class="card-body p-4">
         <div class="d-flex align-items-center justify-content-between">
           <div>
-            <h6 class="text-uppercase text-muted mb-3 fw-bold" style="font-size: 0.8rem; letter-spacing: 1px;">Total
-              Salesheet</h6>
-            <h2 class="counter-value mb-0" style="color: #4caf50; font-weight: 800; font-size: 2.5rem;">
-              {{ metricsData?.total_salesheet || 0 }}
-            </h2>
+            <h6 class="text-uppercase mb-3">Total Salesheet</h6>
+            <h2 class="counter-value mb-0">{{ metricsData?.total_salesheet || 0 }}</h2>
           </div>
           <div class="avatar-sm">
-            <span class="avatar-title rounded-circle" style="background: rgba(76, 175, 80, 0.1);">
+            <span class="avatar-title">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2V22" stroke="#4caf50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                <path
-                  d="M17 5H9.5C8.57174 5 7.6815 5.36875 7.02513 6.02513C6.36875 6.6815 6 7.57174 6 8.5C6 9.42826 6.36875 10.3185 7.02513 10.9749C7.6815 11.6313 8.57174 12 9.5 12H14.5C15.4283 12 16.3185 12.3687 16.9749 13.0251C17.6313 13.6815 18 14.5717 18 15.5C18 16.4283 17.6313 17.3185 16.9749 17.9749C16.3185 18.6313 15.4283 19 14.5 19H6"
-                  stroke="#4caf50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M12 2V22" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M17 5H9.5C8.57174 5 7.6815 5.36875 7.02513 6.02513C6.36875 6.6815 6 7.57174 6 8.5C6 9.42826 6.36875 10.3185 7.02513 10.9749C7.6815 11.6313 8.57174 12 9.5 12H14.5C15.4283 12 16.3185 12.3687 16.9749 13.0251C17.6313 13.6815 18 14.5717 18 15.5C18 16.4283 17.6313 17.3185 16.9749 17.9749C16.3185 18.6313 15.4283 19 14.5 19H6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </span>
           </div>
@@ -82,21 +70,20 @@
   </div>
 </div>
 
+<!-- ERP Update Cards -->
 <div class="row px-5 pb-4">
   <div class="col-xl-4 col-md-6 mb-4">
-    <div class="card card-animate dash shadow-sm"
-      style="border-radius: 12px; border-left: 6px solid #4318ff !important;">
+    <div class="card card-animate dash shadow-sm" style="border-left: 4px solid #00a896 !important;">
       <div class="card-body py-3 px-4">
         <div class="d-flex align-items-center justify-content-between">
           <div>
-            <h6 class="mb-1" style="color: #1b2559; font-weight: 700;">ERP BOM Last Update</h6>
-            <p class="text-muted mb-0 fw-bold" style="font-size: 0.9rem;">
-              <i class="bx bx-time mr-1"></i> {{ metricsData?.update_erb_bom ? formatDate(metricsData?.update_erb_bom) :
-              'No updates found' }}
+            <h6 class="mb-1" style="color: #0b5e6e; font-weight: 700;">ERP BOM Last Update</h6>
+            <p class="text-muted mb-0 fw-bold" style="font-size: 0.88rem;">
+              {{ metricsData?.update_erb_bom ? formatDate(metricsData?.update_erb_bom) : 'No updates found' }}
             </p>
           </div>
           <div class="text-end">
-            <h4 class="mb-0" style="color: #4318ff; font-weight: 800;">{{ metricsData?.erb_bom_updated || 0 }}</h4>
+            <h4 class="mb-0" style="color: #00a896; font-weight: 800;">{{ metricsData?.erb_bom_updated || 0 }}</h4>
             <p class="text-muted mb-0" style="font-size: 0.75rem;">Updated Today</p>
           </div>
         </div>
@@ -105,19 +92,17 @@
   </div>
 
   <div class="col-xl-4 col-md-6 mb-4">
-    <div class="card card-animate dash shadow-sm"
-      style="border-radius: 12px; border-left: 6px solid #ff9800 !important;">
+    <div class="card card-animate dash shadow-sm" style="border-left: 4px solid #f4a261 !important;">
       <div class="card-body py-3 px-4">
         <div class="d-flex align-items-center justify-content-between">
           <div>
-            <h6 class="mb-1" style="color: #1b2559; font-weight: 700;">ERP ITEM Last Update</h6>
-            <p class="text-muted mb-0 fw-bold" style="font-size: 0.9rem;">
-              <i class="bx bx-time mr-1"></i> {{ metricsData?.update_item ? formatDate(metricsData?.update_item) : 'No
-              updates found' }}
+            <h6 class="mb-1" style="color: #0b5e6e; font-weight: 700;">ERP ITEM Last Update</h6>
+            <p class="text-muted mb-0 fw-bold" style="font-size: 0.88rem;">
+              {{ metricsData?.update_item ? formatDate(metricsData?.update_item) : 'No updates found' }}
             </p>
           </div>
           <div class="text-end">
-            <h4 class="mb-0" style="color: #ff9800; font-weight: 800;">{{ metricsData?.erb_item_updated || 0 }}</h4>
+            <h4 class="mb-0" style="color: #f4a261; font-weight: 800;">{{ metricsData?.erb_item_updated || 0 }}</h4>
             <p class="text-muted mb-0" style="font-size: 0.75rem;">Updated Today</p>
           </div>
         </div>
@@ -126,19 +111,17 @@
   </div>
 
   <div class="col-xl-4 col-md-6 mb-4">
-    <div class="card card-animate dash shadow-sm"
-      style="border-radius: 12px; border-left: 6px solid #4caf50 !important;">
+    <div class="card card-animate dash shadow-sm" style="border-left: 4px solid #2a9d8f !important;">
       <div class="card-body py-3 px-4">
         <div class="d-flex align-items-center justify-content-between">
           <div>
-            <h6 class="mb-1" style="color: #1b2559; font-weight: 700;">ERP GRN Last Update</h6>
-            <p class="text-muted mb-0 fw-bold" style="font-size: 0.9rem;">
-              <i class="bx bx-time mr-1"></i> {{ metricsData?.update_grn ? formatDate(metricsData?.update_grn) : 'No
-              updates found' }}
+            <h6 class="mb-1" style="color: #0b5e6e; font-weight: 700;">ERP GRN Last Update</h6>
+            <p class="text-muted mb-0 fw-bold" style="font-size: 0.88rem;">
+              {{ metricsData?.update_grn ? formatDate(metricsData?.update_grn) : 'No updates found' }}
             </p>
           </div>
           <div class="text-end">
-            <h4 class="mb-0" style="color: #4caf50; font-weight: 800;">{{ metricsData?.erb_grn_updated || 0 }}</h4>
+            <h4 class="mb-0" style="color: #2a9d8f; font-weight: 800;">{{ metricsData?.erb_grn_updated || 0 }}</h4>
             <p class="text-muted mb-0" style="font-size: 0.75rem;">Updated Today</p>
           </div>
         </div>
@@ -147,57 +130,47 @@
   </div>
 </div>
 
+<!-- Recent Salesheet Activities -->
 <div class="row px-5 pb-5">
   <div class="col-xl-12">
-    <div class="card card-animate dash shadow-sm" style="border-radius: 20px;">
-      <div class="card-header bg-white pt-4 pb-3" style="border-bottom: 1px solid #f4f7fe;">
-        <h5 class="mb-0" style="color: #1b2559; font-weight: 700;">Recent Salesheet Activities</h5>
+    <div class="card card-animate dash shadow-sm" style="border-radius: 16px;">
+      <div class="card-header bg-white pt-4 pb-3">
+        <h5 class="mb-0">Recent Salesheet Activities</h5>
       </div>
       <div class="card-body p-0">
         <div class="table-responsive" *ngIf="metricsData?.recent_salesheets?.length; else noSalesheets">
           <table class="table table-hover table-borderless align-middle mb-0">
-            <thead style="background-color: #f4f7fe;">
+            <thead style="background-color: #eaf5f7;">
               <tr>
-                <th scope="col" class="ps-4 py-3"
-                  style="color: #a3aed1; font-weight: 600; font-size: 0.85rem; letter-spacing: 0.5px;">PRODUCT INFO</th>
-                <th scope="col" class="py-3"
-                  style="color: #a3aed1; font-weight: 600; font-size: 0.85rem; letter-spacing: 0.5px;">BOM CODE</th>
-                <th scope="col" class="py-3"
-                  style="color: #a3aed1; font-weight: 600; font-size: 0.85rem; letter-spacing: 0.5px;">User</th>
-                <th scope="col" class="pe-4 py-3"
-                  style="color: #a3aed1; font-weight: 600; font-size: 0.85rem; letter-spacing: 0.5px;">CREATED AT</th>
+                <th scope="col" class="ps-4 py-3" style="color: #4a6a74; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;">PRODUCT INFO</th>
+                <th scope="col" class="py-3"       style="color: #4a6a74; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;">BOM CODE</th>
+                <th scope="col" class="py-3"       style="color: #4a6a74; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;">User</th>
+                <th scope="col" class="pe-4 py-3"  style="color: #4a6a74; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;">CREATED AT</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let sheet of metricsData.recent_salesheets; let last = last"
-                [ngStyle]="{'border-bottom': last ? 'none' : '1px solid #f4f7fe'}">
+                [ngStyle]="{'border-bottom': last ? 'none' : '1px solid #e8f2f4'}">
                 <td class="ps-4 py-3">
                   <div class="d-flex align-items-center">
-                    <div
-                      style="width: 40px; height: 40px; border-radius: 10px; background: #e0ebff; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
-                      <span style="color: #4318ff; font-weight: 700;">{{ sheet.productname?.charAt(0) || 'P' }}</span>
+                    <div style="width: 38px; height: 38px; border-radius: 10px; background: #d4f5f0; display: flex; align-items: center; justify-content: center; margin-right: 14px; flex-shrink: 0;">
+                      <span style="color: #0b5e6e; font-weight: 700; font-size: 15px;">{{ sheet.productname?.charAt(0) || 'P' }}</span>
                     </div>
                     <div>
-                      <h6 class="mb-1" style="color: #1b2559; font-weight: 700; font-size: 0.95rem;">{{
-                        sheet.productname || 'N/A' }}</h6>
-                      <p class="text-muted mb-0" style="font-size: 0.8rem;">Code: {{ sheet.productcode }}</p>
+                      <h6 class="mb-1" style="color: #0d2e38; font-weight: 700; font-size: 0.92rem;">{{ sheet.productname || 'N/A' }}</h6>
+                      <p class="text-muted mb-0" style="font-size: 0.78rem;">Code: {{ sheet.productcode }}</p>
                     </div>
                   </div>
                 </td>
                 <td class="py-3">
-                  <span class="fw-bold" style="color: #4318ff;">{{ sheet.code || 'N/A' }}</span>
+                  <span class="fw-bold" style="color: #00a896;">{{ sheet.code || 'N/A' }}</span>
                 </td>
                 <td class="py-3">
-                  <span class="badge rounded-pill" [ngStyle]="{
-        'background-color': '#e8f5e9',
-        'color': '#4caf50',
-        'font-weight': '600',
-        'padding': '6px 12px'
-      }">
+                  <span class="badge rounded-pill" style="background-color: #d4f5f0; color: #0b5e6e; font-weight: 600; padding: 6px 12px; font-size: 0.82rem;">
                     {{ sheet.user?.name || 'N/A' }}
                   </span>
                 </td>
-                <td class="pe-4 py-3 text-muted fw-bold" style="font-size: 0.9rem;">
+                <td class="pe-4 py-3 text-muted fw-bold" style="font-size: 0.88rem;">
                   {{ formatDate(sheet.createdAt) }}
                 </td>
               </tr>
@@ -206,12 +179,9 @@
         </div>
         <ng-template #noSalesheets>
           <div class="text-center p-5">
-            <div
-              style="background: #f4f7fe; width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M9 12H15M12 9V15M3 13V15.8C3 16.9201 3 17.4802 3.21799 17.908C3.40973 18.2843 3.71569 18.5903 4.09202 18.782C4.51984 19 5.0799 19 6.2 19H17.8C18.9201 19 19.4802 19 19.908 18.782C20.2843 18.5903 20.5903 18.2843 20.782 17.908C21 17.4802 21 16.9201 21 15.8V13M3 13H5.37256C5.74836 13 5.93625 13 6.10688 13.0645C6.25757 13.1214 6.39462 13.208 6.51065 13.3195C6.64168 13.4455 6.72629 13.6148 6.8955 13.9532L7.1045 14.3712C7.27371 14.7097 7.35832 14.8789 7.48935 15.0049C7.60538 15.1164 7.74243 15.203 7.89312 15.2599C8.06375 15.3245 8.25164 15.3245 8.62744 15.3245H15.3726C15.7484 15.3245 15.9363 15.3245 16.1069 15.2599C16.2576 15.203 16.3946 15.1164 16.5106 15.0049C16.6417 14.8789 16.7263 14.7097 16.8955 14.3712L17.1045 13.9532C17.2737 13.6148 17.3583 13.4455 17.4894 13.3195C17.6054 13.208 17.7424 13.1214 17.8931 13.0645C18.0637 13 18.2516 13 18.6274 13H21M3 13V8.2C3 7.0799 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H17.8C18.9201 5 19.4802 5 19.908 5.21799C20.2843 5.40973 20.5903 5.71569 20.782 6.09202C21 6.51984 21 7.0799 21 8.2V13"
-                  stroke="#a3aed1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <div style="background: #eaf5f7; width: 72px; height: 72px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem;">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 12H15M12 9V15M3 13V15.8C3 16.9201 3 17.4802 3.21799 17.908C3.40973 18.2843 3.71569 18.5903 4.09202 18.782C4.51984 19 5.0799 19 6.2 19H17.8C18.9201 19 19.4802 19 19.908 18.782C20.2843 18.5903 20.5903 18.2843 20.782 17.908C21 17.4802 21 16.9201 21 15.8V13M3 13H5.37256C5.74836 13 5.93625 13 6.10688 13.0645C6.25757 13.1214 6.39462 13.208 6.51065 13.3195C6.64168 13.4455 6.72629 13.6148 6.8955 13.9532L7.1045 14.3712C7.27371 14.7097 7.35832 14.8789 7.48935 15.0049C7.60538 15.1164 7.74243 15.203 7.89312 15.2599C8.06375 15.3245 8.25164 15.3245 8.62744 15.3245H15.3726C15.7484 15.3245 15.9363 15.3245 16.1069 15.2599C16.2576 15.203 16.3946 15.1164 16.5106 15.0049C16.6417 14.8789 16.7263 14.7097 16.8955 14.3712L17.1045 13.9532C17.2737 13.6148 17.3583 13.4455 17.4894 13.3195C17.6054 13.208 17.7424 13.1214 17.8931 13.0645C18.0637 13 18.2516 13 18.6274 13H21M3 13V8.2C3 7.0799 3 6.51984 3.21799 6.09202C3.40973 5.71569 3.71569 5.40973 4.09202 5.21799C4.51984 5 5.0799 5 6.2 5H17.8C18.9201 5 19.4802 5 19.908 5.21799C20.2843 5.40973 20.5903 5.71569 20.782 6.09202C21 6.51984 21 7.0799 21 8.2V13" stroke="#7a9ba5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
             <h6 class="text-blue-dark fw-bold mb-2">No Activities Yet</h6>

@@ -7,87 +7,126 @@
                     <div class="d-flex align-items-center justify-content-between">
                         <h5 class="mb-0 font-weight-bold">Sales Sheet Master</h5>
                         <div class="d-flex gap-2">
-                            <button type="button" class="btn btn-primary px-4" routerLink="form">
-                                <fa-icon [icon]="faPlus" class="me-1"></fa-icon> ADD
+                            <button type="button" class="custom-button" (click)="downloadAllSheetsAsExcel()"
+                                [disabled]="btn_loading">
+                                <span class="spinner-border spinner-border-sm me-1" *ngIf="btn_loading" role="status"
+                                    aria-hidden="true"></span>
+                                <fa-icon *ngIf="!btn_loading" [icon]="faFileExcel" class="me-1"></fa-icon> EXPORT
+                            </button>
+                            <button type="button" class="custom-button" routerLink="form">
+                                <fa-icon [icon]="faPlus" class="me-1"></fa-icon> Generate Cost Sheet
                             </button>
                         </div>
                     </div>
+                </div>
 
-                    <div class="bg-white rounded-6px p-3 shadow-sm">
-                        <div class="row g-3 pb-4">
-                            <div class="col-lg-4 col-xl-4 col-12">
-                                <label class="form-label">Search by name</label>
-                                <div class="input-group search-glass">
-                                    <input type="text" class="form-control" (keyup)="get_sheet(1)"
-                                        placeholder="Search Instant Sheet" [(ngModel)]="search">
-                                    <button class="btn btn-link py-0" type="button"><fa-icon
-                                            [icon]="faSearch"></fa-icon></button>
+                <div class="bg-white rounded-6px p-3 shadow-sm">
+                    <div class="row g-3 pb-3">
+                        <div class="col-lg-3 col-xl-3 col-12">
+                            <label class="form-label">Search by Unique Code</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" (keyup)="get_sheet(1)"
+                                    placeholder="Search Unique Code" [(ngModel)]="uniqueCode">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><fa-icon class="text-secondary"
+                                            [icon]="faSearch"></fa-icon></span>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-xl-4 col-12">
-                                <label class="form-label">Search by Customer</label>
-                                <div class="input-group search-glass">
-                                    <input type="text" class="form-control" (keyup)="get_sheet(1)"
-                                        placeholder="Search Customer" [(ngModel)]="uniqueCode">
-                                    <button class="btn btn-link py-0" type="button"><fa-icon
-                                            [icon]="faSearch"></fa-icon></button>
+                        </div>
+                        <div class="col-lg-3 col-xl-3 col-12">
+                            <label class="form-label">Search by Product Name / Code</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" (keyup)="get_sheet(1)"
+                                    placeholder="Search Name / Code" [(ngModel)]="search">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><fa-icon class="text-secondary"
+                                            [icon]="faSearch"></fa-icon></span>
                                 </div>
-                            </div>
-
-                            <div class="col-lg-4 col-xl-4 col-12">
-                                <label class="form-label">Select Status</label>
-                                <ng-select (change)="get_sheet(1)" placeholder="Select Status" class="radius-md">
-                                    <ng-option value="Created">Created</ng-option>
-                                    <ng-option value="Approved">Approved</ng-option>
-                                </ng-select>
                             </div>
                         </div>
 
-                        <app-not-data *ngIf="!bom_list?.length && page_loading" [message]="'No Sales Sheet found'"
-                            [route]="'form'" [button]="'Add new Sales Sheet'"></app-not-data>
-
-                        <div *ngIf="bom_list?.length">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Type</th>
-                                        <th>Bom Code</th>
-                                        <th class="text-start">Sheet Name</th>
-                                        <th class="text-start">Customer Name</th>
-                                        <th>FG Type</th>
-                                        <th>Pack Type</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let data of bom_list; let index = index"
-                                        class="details-row cursor-pointer" routerLink="view/{{data._id}}">
-                                        <td>Generic</td>
-                                        <td>{{ data?.productcode }}</td>
-                                        <td class="text-start fw-600">{{ data?.productname }}</td>
-                                        <td class="text-start text-uppercase small">{{ data?.customer?.name || 'GRAVITI
-                                            PHARMA' }}</td>
-                                        <td>Tablets</td>
-                                        <td>Alu Alu</td>
-                                        <td>
-                                            <span class="status-badge"
-                                                [ngClass]="data?.status === 'Approved' ? 'status-approved' : 'status-created'">{{
-                                                data?.status }}</span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="mt-4 pt-3 border-top d-flex align-items-center gap-3">
-                                <div class="input-group search-glass" style="max-width: 400px;">
-                                    <input type="text" class="form-control" placeholder="Enter Control Number">
-                                </div>
-                                <button class="btn btn-primary px-4">
-                                    Go To <fa-icon [icon]="faChartLine" class="ms-2"></fa-icon>
-                                </button>
-                            </div>
+                        <div class="col-lg-3 col-xl-3 col-12">
+                            <label class="form-label">Filter by Location</label>
+                            <select class="form-select" (change)="get_sheet(1)" [(ngModel)]="searchloc">
+                                <option value="">All Locations</option>
+                                <option *ngFor="let loc of locations" [value]="loc">{{ loc }}</option>
+                            </select>
                         </div>
+
+                        <div class="col-lg-3 col-xl-3 col-12">
+                            <label class="m-0">Search by Date</label>
+                            <ng-select [(ngModel)]="selectedDateFilter" (change)="onDateFilterChange()"
+                                class="mt-1 custom-select">
+                                <ng-option disabled value="">Select Date Filter</ng-option>
+                                <ng-option value="today">Today</ng-option>
+                                <ng-option value="yesterday">Yesterday</ng-option>
+                                <ng-option value="last7days">Last 7 Days</ng-option>
+                                <ng-option value="range">Set Date Range</ng-option>
+                            </ng-select>
+                        </div>
+
+                        <div class="col-lg-3 col-xl-3 col-12" *ngIf="selectedDateFilter === 'range'">
+                            <label class="m-0">From Date</label>
+                            <input type="date" class="form-control mt-1" [(ngModel)]="fromDate" [max]="today"
+                                (ngModelChange)="onRangeDateChange()">
+                        </div>
+
+                        <div class="col-lg-2 col-xl-2 col-12" *ngIf="selectedDateFilter === 'range'">
+                            <label class="m-0">To Date</label>
+                            <input type="date" class="form-control mt-1" [(ngModel)]="toDate" [min]="fromDate"
+                                [max]="today" (ngModelChange)="onRangeDateChange()">
+                        </div>
+                    </div>
+
+                    <app-not-data *ngIf="!bom_list?.length && page_loading" [message]="'No Sales Sheet found'"
+                        [route]="'form'" [button]="'Add new Sales Sheet'"></app-not-data>
+
+                    <div *ngIf="bom_list?.length">
+                        <table class="table table-hover table-striped table-bordered rounded-top text-center">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th class="text-center">S.No</th>
+                                    <th class="text-center">Create Time</th>
+                                    <th class="text-center">Unique Code</th>
+                                    <th class="text-center">Product Name</th>
+                                    <th class="text-center">Product Code</th>
+                                    <th class="text-center">Location</th>
+                                    <th class="text-center">Batch</th>
+                                    <th class="text-center">Rate INR</th>
+                                    <th class="text-center">Rate in USD</th>
+                                    <th class="text-center">User</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of bom_list; let index = index" class="align-middle details-row">
+                                    <td class="text-center">{{ index + pagination_data?.pagingCounter }}</td>
+                                    <td class="text-start">{{ data?.createdAt | date:'dd-MM-yy h:mm a' }}</td>
+                                    <td class="text-start">{{ data?.uniqueID }}</td>
+                                    <td class="text-start">{{ data?.productname }}</td>
+                                    <td class="text-start">{{ data?.productcode }}</td>
+                                    <td class="text-center">{{ data?.locCd }}</td>
+                                    <td class="text-end">{{ data?.detailValues?.batch }}</td>
+                                    <td class="text-end">₹{{ data?.medopharm?.rupee }}</td>
+                                    <td class="text-end">${{ data?.medopharm?.doller }}</td>
+                                    <td class="text-center">{{ data?.user?.name }}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm"
+                                            routerLink="form/{{data._id}}">
+                                            <fa-icon [icon]="faEdit"></fa-icon>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm"
+                                            routerLink="view/{{data._id}}">
+                                            <fa-icon [icon]="faEye"></fa-icon>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <app-pagination [data]="pagination_data"></app-pagination>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>

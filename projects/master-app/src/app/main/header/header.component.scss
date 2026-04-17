@@ -1,25 +1,28 @@
 /* ────────────────────────────────────────────────────────────────
-   MedQuantas Header — Teal Pharma Theme
+   MedQuantas Header — Pharma Teal Theme
    ──────────────────────────────────────────────────────────────── */
 
+$hdr-teal:    #00a896;
+$hdr-dark:    #0b5e6e;
+$hdr-border:  #cde4e9;
+$hdr-bg-alt:  #f0f6f8;
+
 nav.navbar {
-  background: rgba(255, 255, 255, 0.95) !important;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid #e2e8f0;
+  background: #ffffff !important;
+  border-bottom: 1px solid $hdr-border;
   padding: 0 1.5rem;
-  height: 68px;
-  box-shadow: 0 4px 12px rgba(13, 53, 71, 0.05);
+  height: 64px;
+  box-shadow: 0 2px 12px rgba(11, 94, 110, 0.07);
 }
 
 .icon-black {
-  color: #64748b;
-  font-size: 1.15rem;
+  color: #5a8a96;
+  font-size: 1.1rem;
   transition: all 0.2s ease;
 
-  &:hover { 
-    color: #00b4c8;
-    transform: scale(1.1);
+  &:hover {
+    color: $hdr-teal;
+    transform: scale(1.08);
   }
 }
 
@@ -32,70 +35,72 @@ nav.navbar {
   transition: background 0.2s ease;
 
   &:hover {
-    background: rgba(0, 180, 200, 0.06);
+    background: rgba(0, 168, 150, 0.07);
   }
 }
 
 .top-container {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 4px 12px;
-  border-radius: 12px;
-  transition: background 0.2s ease;
+  gap: 10px;
+  padding: 5px 14px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
 
   &:hover {
-    background: #f1f5f9;
+    background: $hdr-bg-alt;
+    border-color: $hdr-border;
   }
 }
 
 .name {
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   font-weight: 700;
-  color: #0f172a;
+  color: $hdr-dark;
   margin: 0;
 }
 
 .mail {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  color: #64748b;
+  color: #6a8e98;
   margin: 0;
   text-transform: uppercase;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
 }
 
 .profile-image {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px; /* Modern square-ish profile */
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
   object-fit: cover;
-  border: 2px solid white;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border: 2px solid $hdr-border;
+  box-shadow: 0 2px 6px rgba(11, 94, 110, 0.12);
 }
 
 .dropdown-toggle::after { display: none !important; }
 
 .dropdown-menu {
-  border: none !important;
-  border-radius: 16px !important;
-  box-shadow: 0 12px 32px rgba(13, 47, 63, 0.15) !important;
-  padding: 10px !important;
-  min-width: 200px;
-  margin-top: 10px !important;
+  border: 1px solid $hdr-border !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 30px rgba(11, 94, 110, 0.12) !important;
+  padding: 8px !important;
+  min-width: 190px;
+  margin-top: 8px !important;
+  background: #ffffff;
 
   .dropdown-item {
-    border-radius: 10px;
-    font-size: 0.88rem;
+    border-radius: 8px;
+    font-size: 0.87rem;
     font-weight: 600;
-    color: #334155;
-    padding: 10px 16px;
-    transition: all 0.2s ease;
+    color: #2c5f6a;
+    padding: 9px 14px;
+    transition: all 0.18s ease;
 
     &:hover {
-      background: #f0f9fa;
-      color: #00b4c8;
-      transform: translateX(4px);
+      background: #e8f7f5;
+      color: $hdr-teal;
     }
   }
 }

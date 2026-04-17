@@ -50,10 +50,10 @@
 
 .content {
   margin-left: 70px;
-  background-color: #f4f7fe !important;
+  background-color: #f0f6f8 !important;  /* pharma clinical bg */
   min-height: 100vh;
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  
+
   &.sidebarExpanded {
     margin-left: 275px;
   }
@@ -91,7 +91,7 @@
 
 .welcome-header-bg {
   height: 200px;
-  background: linear-gradient(135deg, #1a2e4f 0%, #4318ff 100%);
+  background: linear-gradient(135deg, #083f4d 0%, #00a896 100%);
   position: relative;
   overflow: hidden;
   display: flex;
@@ -227,7 +227,7 @@
 }
 
 .user-highlight {
-  color: #4318ff;
+  color: #00a896;
   font-weight: 700;
 }
 
@@ -281,11 +281,11 @@
 
 .btn-get-started {
   width: 100%;
-  background: #4318ff;
+  background: #00a896;
   color: white;
   border: none;
   padding: 16px 20px;
-  border-radius: 15px;
+  border-radius: 12px;
   font-weight: 700;
   font-size: 16px;
   display: flex;
@@ -294,12 +294,12 @@
   gap: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 10px 20px rgba(67, 24, 255, 0.2);
+  box-shadow: 0 10px 20px rgba(0, 168, 150, 0.25);
 
   &:hover {
-    background: #3311cc;
+    background: #0b5e6e;
     transform: scale(1.02);
-    box-shadow: 0 15px 25px rgba(67, 24, 255, 0.3);
+    box-shadow: 0 15px 25px rgba(11, 94, 110, 0.3);
 
     .btn-arrow {
       transform: translateX(5px);

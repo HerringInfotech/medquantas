@@ -4,21 +4,39 @@
 @import "~bootstrap/scss/bootstrap";
 @import "../../../node_modules/quill/dist/quill.snow.css";
 
-// MedQuantas Design System
+// MedQuantas Pharma Design System
 :root {
-  --mq-primary: #0a2540;
-  --mq-accent: #635bff;
-  --mq-accent2: #00c6a2;
-  --mq-bg: #f7f9fc;
-  --mq-text: #1a1f36;
-  --mq-muted: #6b7c93;
-  --mq-border: #eef0f5;
-  --mq-card-shadow: 0 4px 24px rgba(10,37,64,0.08);
-  --mq-radius: 16px;
+  /* Core Pharma Brand Colors */
+  --mq-primary:       #0b5e6e;   /* deep teal — pharma trust */
+  --mq-primary-dark:  #083f4d;
+  --mq-accent:        #00a896;   /* medical green-teal */
+  --mq-accent-light:  #e0f7f5;
+  --mq-accent2:       #17c3b2;
+  --mq-danger:        #e63946;
+  --mq-warning:       #f4a261;
+  --mq-success:       #2a9d8f;
 
-  --vz-vertical-menu-item-color: rgba(255,255,255,0.6);
+  /* Backgrounds */
+  --mq-bg:            #f0f6f8;   /* light clinical bg */
+  --mq-bg-alt:        #e8f4f6;
+  --mq-white:         #ffffff;
+
+  /* Text */
+  --mq-text:          #0d2e38;
+  --mq-text-sub:      #4a6a74;
+  --mq-muted:         #7a9ba5;
+
+  /* UI */
+  --mq-border:        #cde4e9;
+  --mq-card-shadow:   0 2px 16px rgba(11,94,110,0.08);
+  --mq-card-shadow-hover: 0 6px 28px rgba(11,94,110,0.14);
+  --mq-radius:        14px;
+  --mq-radius-sm:     8px;
+
+  /* Legacy compat */
+  --vz-vertical-menu-item-color: rgba(255,255,255,0.65);
   --vz-vertical-menu-item-hover-color: #ffffff;
-  --vz-vertical-menu-item-active-color: #635bff;
+  --vz-vertical-menu-item-active-color: #17c3b2;
   --vz-border-width: 0px !important;
 }
 
@@ -102,9 +120,9 @@ input[type="number"] {
 
 .page-link.active,
 .active > .page-link {
-  background-color: var(--mq-accent);
-  color: #fff;
-  border-color: var(--mq-accent);
+  background-color: var(--mq-accent) !important;
+  color: #fff !important;
+  border-color: var(--mq-accent) !important;
 }
 
 // #6d77f1
@@ -131,8 +149,9 @@ svg.fa-eye-slash path {
 }
 
 body {
-  // background-color: var(--vz-topbar-user-bg);
-  background-color: #f6f9ff;
+  background-color: var(--mq-bg) !important;
+  color: var(--mq-text);
+  font-family: 'Inter', 'Segoe UI', sans-serif;
 }
 
 .table td button.btn.btn-outline-light.text-dark.border {
@@ -141,7 +160,7 @@ body {
 }
 
 .page-content {
-  background-color: #f3f3f9;
+  background-color: var(--mq-bg);
 }
 
 .form-control:disabled {
@@ -177,7 +196,7 @@ body {
 }
 
 .navbar-menu {
-  background: #405189;
+  background: #0b5e6e;
 }
 
 .last-update {
@@ -185,7 +204,7 @@ body {
 }
 
 .update-date {
-  color: #6d5bd0;
+  color: #00a896;
   font-weight: bold;
 }
 
@@ -217,13 +236,12 @@ body {
 }
 
 .text-blue-dark {
-  color: #1b3f7f;
+  color: #0b5e6e;
 }
 
 .bg-primary-blue {
-  // background-color: #393185 !important;
-  background-color: #0dcaf0 !important;
-  color: inherit;
+  background-color: #00a896 !important;
+  color: #fff;
 }
 
 svg.fa-search {
@@ -233,6 +251,7 @@ svg.fa-search {
 .btn.btn-primary {
   background-color: var(--mq-accent) !important;
   border-color: var(--mq-accent) !important;
+  color: #fff !important;
 }
 
 .bg-primary-red {
@@ -653,160 +672,213 @@ button.bg-primary-red {
 }
 
 
-/* /* ==========================================================================
-   UNIFIED PREMIUM MODULE STYLING (SAFE VERSION)
+/* ==========================================================================
+   MEDQUANTAS — UNIFIED PHARMA MODULE STYLING
    ========================================================================== */
 
-:root {
-  --primary-brand: #635bff;
-  --bg-main: #f7f9fc;
-  --white: #ffffff;
-  --card-radius: 20px;
-  --card-shadow: 0px 18px 40px rgba(112, 144, 176, 0.12);
-  --text-primary: #1b2559;
-  --text-secondary: #a3aed1;
-  --border-light: #e6edf9;
-}
+/* Shared card/page variables (alias to root) */
+$pharma-teal:    #00a896;
+$pharma-dark:    #0b5e6e;
+$pharma-bg:      #f0f6f8;
+$pharma-white:   #ffffff;
+$pharma-border:  #cde4e9;
+$pharma-shadow:  0 2px 16px rgba(11, 94, 110, 0.08);
+$pharma-text:    #0d2e38;
+$pharma-sub:     #4a6a74;
+$pharma-muted:   #7a9ba5;
+$pharma-radius:  14px;
 
 body {
-    background-color: var(--bg-main) !important;
+  background-color: $pharma-bg !important;
 }
 
+/* ── Page wrapper ── */
 .custom-page {
-    background-color: transparent !important;
-    padding: 24px 30px !important;
+  background-color: transparent !important;
+  padding: 28px 32px !important;
 }
 
-/* 2. Unified Header Section */
+/* ── Page header card ── */
+.custom-page .bg-white.p-3.border-top.border-start.border-end.rounded.shadow-sm.mb-3,
 .custom-page .bg-white.p-3.border-all.rounded.shadow-sm.mb-3,
 .custom-page .table-header,
 .custom-page .page-title-box,
-.custom-page .mb-0.p-3.px-0 { /* Added itemtype-master pattern */
-    background: var(--white) !important;
-    border: none !important;
-    border-radius: 16px !important;
-    box-shadow: var(--card-shadow) !important;
-    padding: 20px 25px !important;
-    margin-bottom: 24px !important;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    
-    h5 {
-        font-weight: 800 !important;
-        font-size: 22px !important;
-        color: var(--text-primary) !important;
-        margin-bottom: 0 !important;
-    }
+.custom-page .mb-0.p-3.px-0 {
+  background: $pharma-white !important;
+  border: 1px solid $pharma-border !important;
+  border-radius: $pharma-radius !important;
+  box-shadow: $pharma-shadow !important;
+  padding: 18px 24px !important;
+  margin-bottom: 20px !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  h5 {
+    font-weight: 700 !important;
+    font-size: 20px !important;
+    color: $pharma-dark !important;
+    margin-bottom: 0 !important;
+    letter-spacing: -0.3px;
+  }
 }
 
-/* 3. Unified Content Card */
+/* ── Content card ── */
 .custom-page .bg-white.rounded-6px.p-3.shadow-sm,
+.custom-page .bg-white.rounded-6px.table-responsive-sm.p-3.shadow-sm,
 .custom-page .card,
 .custom-page .details_outer,
 .custom-page .custom-height {
-    background: var(--white) !important;
-    border-radius: 20px !important;
-    border: none !important;
-    box-shadow: var(--card-shadow) !important;
-    padding: 25px !important;
-    margin-top: 0 !important;
-    margin-bottom: 30px !important;
+  background: $pharma-white !important;
+  border-radius: $pharma-radius !important;
+  border: 1px solid $pharma-border !important;
+  box-shadow: $pharma-shadow !important;
+  padding: 24px !important;
+  margin-top: 0 !important;
+  margin-bottom: 24px !important;
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 6px 28px rgba(11, 94, 110, 0.12) !important;
+  }
 }
 
-/* 4. Action Buttons (Fix Icon Visibility) */
-.custom-page .custom-button, 
-.custom-page .btn-primary {
-    height: 44px !important;
-    padding: 0 20px !important;
-    border-radius: 12px !important;
-    font-weight: 700 !important;
-    text-transform: uppercase !important;
-    background: var(--primary-brand) !important;
-    color: white !important;
-    border: none !important;
-    box-shadow: 0px 4px 10px rgba(67, 24, 255, 0.2) !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-    
-    fa-icon {
-        color: white !important;
-    }
+/* ── Primary Action Button ── */
+.custom-page .custom-button,
+.custom-button {
+  height: 42px !important;
+  padding: 0 22px !important;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em;
+  background: $pharma-teal !important;
+  color: $pharma-white !important;
+  border: none !important;
+  box-shadow: 0 3px 10px rgba(0, 168, 150, 0.3) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  transition: all 0.2s ease !important;
+
+  fa-icon { color: $pharma-white !important; }
+
+  &:hover {
+    background: $pharma-dark !important;
+    box-shadow: 0 5px 16px rgba(11, 94, 110, 0.35) !important;
+    transform: translateY(-1px) !important;
+    color: $pharma-white !important;
+  }
 }
 
-/* 5. Table Premium Styling */
+/* ── Search / Filter area ── */
+.custom-page .input-group .form-control {
+  border-color: $pharma-border;
+  border-radius: 8px 0 0 8px !important;
+  font-size: 13px;
+  color: $pharma-text;
+  background: #f7fbfc;
+
+  &:focus {
+    border-color: $pharma-teal !important;
+    background: $pharma-white;
+  }
+}
+
+.custom-page .input-group-text {
+  border-color: $pharma-border;
+  background: $pharma-white;
+  color: $pharma-muted;
+}
+
+/* ── Table Premium Styling ── */
 .custom-page .table {
-    --bs-table-bg: transparent;
-    border-collapse: separate !important;
-    border-spacing: 0 !important;
-    
-    thead th {
-        color: var(--text-secondary) !important;
-        font-weight: 700 !important;
-        text-transform: uppercase !important;
-        font-size: 11px !important;
-        letter-spacing: 0.1em !important;
-        background-color: #f8fafd !important;
-        border-bottom: 1px solid var(--border-light) !important;
-        padding: 15px !important;
-    }
-    
-    tbody tr td {
-        padding: 18px 15px !important;
-        border-bottom: 1px solid var(--border-light) !important;
-        color: var(--text-primary) !important;
-        vertical-align: middle;
-        font-size: 14px !important;
-        background-color: transparent !important;
-    }
-}
+  --bs-table-bg: transparent;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
 
-/* Table Action Buttons */
-.btn-outline-secondary, .btn-outline-light {
-    border: none !important;
-    background: transparent !important;
-    padding: 8px !important;
-    transition: all 0.2s ease;
-    
-    fa-icon {
-        font-size: 16px;
-    }
-    
-    &[routerLink*="form"] fa-icon, &.fa-edit fa-icon { color: #4318ff !important; }
-    &[routerLink*="view"] fa-icon, &.fa-eye fa-icon { color: #00d1b2 !important; }
-    &.fa-trash-alt fa-icon, &.btn-outline-danger fa-icon { color: #ff4d4f !important; }
-
-    &:hover {
-        background: var(--bg-main) !important;
-        border-radius: 10px !important;
-    }
-}
-
-
-/* Status Badges */
-.status-badge {
-    padding: 6px 14px !important;
-    border-radius: 8px !important;
+  thead th {
+    color: $pharma-sub !important;
     font-weight: 700 !important;
-    font-size: 11px !important;
     text-transform: uppercase !important;
-    border: none !important;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    
-    &:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 11px !important;
+    letter-spacing: 0.09em !important;
+    background-color: #eaf5f7 !important;
+    border-bottom: 2px solid $pharma-border !important;
+    padding: 14px 16px !important;
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    transition: background 0.15s ease;
+
+    td {
+      padding: 14px 16px !important;
+      border-bottom: 1px solid #e8f2f4 !important;
+      color: $pharma-text !important;
+      vertical-align: middle;
+      font-size: 13.5px !important;
+      background-color: transparent !important;
     }
+
+    &:hover td {
+      background-color: #f4fbfc !important;
+    }
+
+    &:last-child td {
+      border-bottom: none !important;
+    }
+  }
+}
+
+/* ── Table Action Icon Buttons ── */
+.custom-page .btn-outline-secondary,
+.custom-page .btn-outline-light {
+  border: none !important;
+  background: transparent !important;
+  padding: 6px 8px !important;
+  border-radius: 8px !important;
+  transition: all 0.18s ease;
+
+  fa-icon { font-size: 15px; }
+
+  &:hover { background: #eaf5f7 !important; }
+}
+
+/* Edit icon — teal */
+.custom-page .btn-outline-secondary[routerLink] fa-icon { color: $pharma-teal !important; }
+/* Delete icon — red */
+.custom-page .btn-outline-secondary:not([routerLink]) fa-icon { color: #e63946 !important; }
+
+/* ── Status Badges ── */
+.status-badge {
+  padding: 5px 12px !important;
+  border-radius: 20px !important;
+  font-weight: 700 !important;
+  font-size: 11px !important;
+  text-transform: uppercase !important;
+  border: none !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .status-active {
-    background-color: #e6fcf5 !important;
-    color: #4318ff !important;
+  background-color: #d4f5f0 !important;
+  color: $pharma-dark !important;
 }
 
 .status-inactive {
-    background-color: #fff1f0 !important;
-    color: #ff4d4f !important;
+  background-color: #fde8ea !important;
+  color: #c0392b !important;
+}
+
+/* ── Section label ── */
+.custom-page label {
+  font-size: 12px;
+  font-weight: 600;
+  color: $pharma-sub;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
 }

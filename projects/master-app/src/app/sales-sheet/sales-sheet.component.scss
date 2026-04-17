@@ -1,114 +1,115 @@
-.page-title-box {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 24px;
-  padding: 10px 0;
+/* ────────────────────────────────────────────────────────────────
+   MedQuantas Sales Sheet — Pharma Teal Theme
+   ──────────────────────────────────────────────────────────────── */
 
-  h4 {
+// Local Colors (matching user edits)
+$pharma-teal: #00a896;
+$pharma-dark: #0b5e6e;
+$pharma-border: #e2eef1;
+$pharma-bg-soft: #f8fafb;
+
+.page-header {
+  .title-section h4 {
+    color: $pharma-dark;
     font-weight: 800;
-    color: #0d3547;
-    letter-spacing: -0.02em;
-    font-size: 22px;
+    letter-spacing: -0.01em;
   }
+}
+
+.main-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid $pharma-border;
+  overflow: hidden;
 }
 
 .search-glass {
   background: white !important;
   border-radius: 10px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid $pharma-border;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(13, 53, 71, 0.03);
   transition: all 0.2s ease;
 
   &:focus-within {
-    border-color: var(--primary-brand);
-    box-shadow: 0 4px 12px rgba(0, 180, 200, 0.1);
+    border-color: $pharma-teal;
+    box-shadow: 0 0 0 4px rgba(0, 168, 150, 0.1);
   }
 
   .form-control {
-    background: transparent !important;
     border: none !important;
     box-shadow: none !important;
-    height: 48px;
-    font-weight: 500;
-    color: #0d3547;
+    height: 44px;
     font-size: 14px;
-
-    &::placeholder {
-      color: #94a3b8;
-    }
+    color: $pharma-dark;
+    
+    &::placeholder { color: #94a3b8; }
   }
 
   .btn-link {
-    color: #94a3b8;
-    text-decoration: none;
-    font-size: 16px;
-    
-    &:hover {
-      color: var(--primary-brand);
-    }
+    color: #64748b;
+    &:hover { color: $pharma-teal; }
   }
 }
 
 .table {
-  background: rgba(255, 255, 255, 0.7) !important;
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  overflow: hidden;
-  border: none !important;
-
   thead th {
-    background: var(--primary-brand) !important;
-    color: white !important;
+    background: $pharma-bg-soft !important;
+    color: #475569 !important;
+    font-weight: 700 !important;
     text-transform: uppercase;
     font-size: 11px;
     letter-spacing: 0.05em;
-    font-weight: 700;
     padding: 16px 20px !important;
-    border: none !important;
+    border-bottom: 2px solid $pharma-border !important;
   }
 
   tbody tr {
-    background: rgba(255, 255, 255, 0.5) !important;
-    transition: all 0.2s ease;
-
-    &:hover {
-      background: rgba(255, 255, 255, 1) !important;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
-
+    transition: all 0.15s ease;
+    
     td {
       padding: 18px 20px !important;
-      border-bottom: 1px solid #f1f5f9 !important;
+      border-bottom: 1px solid $pharma-border !important;
       vertical-align: middle;
-      font-size: 14px;
-      color: #334155;
+    }
+
+    &:hover {
+      background: rgba(0, 168, 150, 0.03) !important;
+      transform: scale(1.002);
     }
   }
 }
 
 .status-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 14px;
-  border-radius: 20px;
+  padding: 6px 12px;
+  border-radius: 6px;
   font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  
+  letter-spacing: 0.02em;
+
   &.status-approved {
-    background: rgba(16, 185, 129, 0.1);
-    color: #10b981;
+    background: #e1f5f3;
+    color: #00877a;
   }
-  
+
   &.status-created {
-    background: rgba(0, 180, 200, 0.1);
-    color: var(--primary-brand);
+    background: #f1f5f9;
+    color: #475569;
   }
 }
 
+.text-primary-dark { color: $pharma-dark !important; }
+.fw-800 { font-weight: 800; }
+.fw-700 { font-weight: 700; }
 .fw-600 { font-weight: 600; }
 .cursor-pointer { cursor: pointer; }
+
+/* Custom NG-Select integration */
+::ng-select .ng-select-container {
+  border-radius: 10px !important;
+  border: 1px solid $pharma-border !important;
+  min-height: 44px;
+  
+  &:hover { border-color: $pharma-teal !important; }
+}
