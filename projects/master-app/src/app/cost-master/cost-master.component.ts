@@ -157,8 +157,8 @@ export class CostMasterComponent implements OnInit {
           item.productcode || '',
           item.locCd || '',
           item.detailValues?.batch || '',
-          `₹ ${item?.medopharm?.rupee}` || '',
-          `$ ${item?.medopharm?.doller}` || '',
+          `₹ ${item?.medquantas?.rupee}` || '',
+          `$ ${item?.medquantas?.doller}` || '',
           this.formatDateWithoutTimeZone(item.createdAt) || ''
         ]);
 

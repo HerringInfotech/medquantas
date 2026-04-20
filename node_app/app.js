@@ -21,25 +21,9 @@ const migrationRoutes = require('./app/routes/migration');
 
 mongoose.set('strictQuery', true);
 // mongoose.connect(env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect('mongodb://localhost:27017/medopharm', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://mongo_admin:StrongPass123@localhost:27017/medquantas?authSource=admin', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(async () => {
         console.log('MongoDB connected successfully');
-
-        // --- Password Expiry Policy Migration ---
-        // Backfill passwordChangedAt for existing users using their createdAt date
-        // try {
-        //     const User = require('./app/models/user');
-        //     // We use an aggregation pipeline in updateMany to set passwordChangedAt = createdAt
-        //     const result = await User.updateMany(
-        //         { passwordChangedAt: { $exists: false } },
-        //         [{ $set: { passwordChangedAt: { $ifNull: ["$createdAt", "$$NOW"] } } }]
-        //     );
-        //     if (result.modifiedCount > 0) {
-        //         console.log(`[Migration] Successfully backfilled ${result.modifiedCount} users with passwordChangedAt.`);
-        //     }
-        // } catch (migErr) {
-        //     console.error('[Migration Error] Failed to backfill passwordChangedAt:', migErr);
-        // }
     })
     .catch((error) => {
         console.error('MongoDB connection error:', error);

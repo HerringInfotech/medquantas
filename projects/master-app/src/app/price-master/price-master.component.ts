@@ -313,7 +313,7 @@ export class PriceMasterComponent implements OnInit {
         'Conversion Rate',
         'GRN Rate in INR',
         'GRN Date',
-        'Medopharm Price in INR',
+        'Medquantas Price in INR',
         'GST %'
       ]);
 

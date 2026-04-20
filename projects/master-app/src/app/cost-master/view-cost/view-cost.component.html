@@ -137,7 +137,7 @@
                 Convert Rate:
               </div>
               <div class="col-12 col-md-3 text-start">
-                {{ sheetData?.medopharm?.convertrate }}
+                {{ sheetData?.medquantas?.convertrate }}
               </div>
             </div>
           </div>
@@ -866,7 +866,7 @@
               </tbody>
             </table>
 
-            <h5 class="table-heading">Medopharm Cost</h5>
+            <h5 class="table-heading">Medquantas Cost</h5>
             <table class="table text-nowra align-middle mt-2 text-center">
               <tbody>
                 <tr>
@@ -892,22 +892,22 @@
                     Minimum Batch size (In Lakh)
                   </td>
                 </tr>
-                <tr *ngIf="medopharm">
+                <tr *ngIf="medquantas">
                   <td scope="col" class="text-center">
-                    {{ medopharm?.name }}
+                    {{ medquantas?.name }}
                   </td>
                   <td scope="col" class="text-center">
-                    {{ medopharm?.packtype }}
+                    {{ medquantas?.packtype }}
                   </td>
-                  <td scope="col" class="text-center">{{ medopharm?.api }}</td>
+                  <td scope="col" class="text-center">{{ medquantas?.api }}</td>
                   <td scope="col" class="text-center">
-                    ₹{{ medopharm?.rupee }}
-                  </td>
-                  <td scope="col" class="text-center">
-                    ${{ medopharm?.doller }}
+                    ₹{{ medquantas?.rupee }}
                   </td>
                   <td scope="col" class="text-center">
-                    {{ medopharm?.convertrate }}
+                    ${{ medquantas?.doller }}
+                  </td>
+                  <td scope="col" class="text-center">
+                    {{ medquantas?.convertrate }}
                   </td>
                   <td scope="col" class="text-center">
                     {{ sheetData?.detailValues?.batch }}
@@ -978,7 +978,7 @@
             </tr>
             <tr *ngIf="detailValues">
               <td class="font-weight-bold" colspan="3" style="background-color: #f8f9fa;">Convert Rate:</td>
-              <td colspan="6" class="text-start">{{ sheetData?.medopharm?.convertrate }}</td>
+              <td colspan="6" class="text-start">{{ sheetData?.medquantas?.convertrate }}</td>
               <td colspan="3" style="background-color: #f8f9fa;"></td>
               <td colspan="3" class="text-start"></td>
             </tr>
@@ -1025,7 +1025,7 @@
         </tbody>
       </table>
 
-      <table class="table text-nowra align-middle mt-2 text-center" id="medopharam-cost-table" style="display: none">
+      <table class="table text-nowra align-middle mt-2 text-center" id="medquantas-cost-  table" style="display: none">
         <thead>
           <tr>
             <th scope="col" colspan="1" class="font-weight-bold" style="background-color: #a9d18e">
@@ -1052,22 +1052,22 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngIf="medopharm">
+          <tr *ngIf="medquantas">
             <td scope="col" colspan="1" class="text-start">
-              {{ medopharm?.name }}
+              {{ medquantas?.name }}
             </td>
             <td scope="col" colspan="2" class="text-start">
-              {{ medopharm?.packtype }}
+              {{ medquantas?.packtype }}
             </td>
-            <td scope="col" colspan="2" class="text-start">{{ medopharm?.api }}</td>
+            <td scope="col" colspan="2" class="text-start">{{ medquantas?.api }}</td>
             <td scope="col" colspan="2" class="text-start">
-              ₹{{ medopharm?.rupee }}
-            </td>
-            <td scope="col" colspan="2" class="text-start">
-              ${{ medopharm?.doller }}
+              ₹{{ medquantas?.rupee }}
             </td>
             <td scope="col" colspan="2" class="text-start">
-              {{ medopharm?.convertrate }}
+              ${{ medquantas?.doller }}
+            </td>
+            <td scope="col" colspan="2" class="text-start">
+              {{ medquantas?.convertrate }}
             </td>
             <td scope="col" colspan="2" class="text-center">-</td>
           </tr>

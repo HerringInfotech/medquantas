@@ -1,1 +1,0 @@
-{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"medopharam.pricemasters"}],"uuid":"1ac01a3c765a48ac88987ae4ce65e6d1"}

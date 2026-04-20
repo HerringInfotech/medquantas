@@ -282,7 +282,7 @@ export class ViewCostComponent implements OnInit {
       renderHtmlTableToExcel('packing-table', 'Packaging Components Analysis', 'FF166534');
       renderHtmlTableToExcel('total-material-table', 'Consolidated Material Valuation', 'FF581C87');
       renderHtmlTableToExcel('systematic-cost-table', 'Standard System Costing', COLORS.navy);
-      renderHtmlTableToExcel('medopharam-cost-table', 'Medopharm Internal Valuation', 'FF1E1B4B');
+      renderHtmlTableToExcel('medquantas-cost-table', 'Medopharm Internal Valuation', 'FF1E1B4B');
 
       ws.columns = [
         { width: 45 }, // 1. S.No & Name (Combined)
@@ -384,7 +384,7 @@ export class ViewCostComponent implements OnInit {
           y += 10;
 
           let tableToParse = table as any;
-          if (elementId === 'systematic-cost-table' || elementId === 'medopharam-cost-table') {
+          if (elementId === 'systematic-cost-table' || elementId === 'medquantas-cost-table') {
             tableToParse = table.cloneNode(true);
             const cells = tableToParse.querySelectorAll('th, td');
             for (let i = 0; i < cells.length; i++) {
@@ -438,7 +438,7 @@ export class ViewCostComponent implements OnInit {
 
       renderHtmlTable('total-material-table', 'Material Cost Summary', '#6B21A8');
       renderHtmlTable('systematic-cost-table', 'Systematic Cost', '#0369A1');
-      renderHtmlTable('medopharam-cost-table', 'Medopharm Cost', '#166534');
+      renderHtmlTable('medquantas-cost-table', 'Medopharm Cost', '#166534');
 
       // 4. FOOTER & PAGE NUMBERS
       const totalPages = (doc as any).internal.getNumberOfPages();

@@ -1169,7 +1169,7 @@ async function fetchCostSheetSummary() {
   return sheets.map((sheet) => {
     const dv = sheet.detailValues || {};
     const pct = sheet.percentage || {};
-    const medo = sheet.medopharm || {};
+    const medo = sheet.medquantas || {};
     return {
       fgCode: sheet.productcode || sheet.code || '',
       fgName: sheet.productname || sheet.name || '',
@@ -1506,10 +1506,10 @@ async function sendDailyReportEmail() {
     const emailRecipients = recipients.length
       ? recipients
       : [
-        'dinesh.hegde@medopharm.co.in',
-        'aradhana.ganesh@medopharm.co.in',
-        'kishore@medopharm.co.in',
-        'lalithakarnad@medopharm.co.in',
+        'dinesh.hegde@medquantas.co.in',
+        'aradhana.ganesh@medquantas.co.in',
+        'kishore@medquantas.co.in',
+        'lalithakarnad@medquantas.co.in',
       ];
 
     const bomUpdateData = await fetchBomUpdateReport();
@@ -1605,7 +1605,7 @@ cron.schedule('* * * * *', async () => {
 
 async function backupDatabase() {
   try {
-    const DB_NAME = 'medopharm';
+    const DB_NAME = 'medquantas';
     const HOST = '127.0.0.1';
     const PORT = '27017';
     const BACKUP_DIR = process.env.BACKUP_DIR || 'C:/project/backup';
@@ -1633,9 +1633,9 @@ async function backupDatabase() {
         const setting = await Setting.findOne().sort({ createdAt: -1 }).lean();
         const recipients = Array.isArray(setting?.backup_emails) && setting.backup_emails.length
           ? setting.backup_emails
-          : ['dhinesh.rajendran@medopharm.com', 'itms@medopharm.com', 'usman.kadher@medopharm.com'];
+          : ['dhinesh.rajendran@medquantas.com', 'itms@medquantas.com', 'usman.kadher@medquantas.com'];
 
-        const logoPath = path.join(process.cwd(), 'media', 'assets', 'logo', 'medopharm.png');
+        const logoPath = path.join(process.cwd(), 'media', 'assets', 'logo', 'medquantas.png');
         const emailBody = `
                     <h3>Database Backup Successful</h3>
                     <p><b>Database:</b> ${DB_NAME}</p>

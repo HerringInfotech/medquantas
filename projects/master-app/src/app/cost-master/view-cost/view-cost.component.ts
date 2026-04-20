@@ -71,7 +71,7 @@ export class ViewCostComponent implements OnInit {
   user;
   setting_data: any;
 
-  medopharm;
+  medquantas;
   system;
   detailValues: any = {};
   constructor(
@@ -282,7 +282,7 @@ export class ViewCostComponent implements OnInit {
       renderHtmlTableToExcel('packing-table', 'Packaging Components Analysis', 'FF166534');
       renderHtmlTableToExcel('total-material-table', 'Consolidated Material Valuation', 'FF581C87');
       renderHtmlTableToExcel('systematic-cost-table', 'Standard System Costing', COLORS.navy);
-      renderHtmlTableToExcel('medopharam-cost-table', 'Medopharm Internal Valuation', 'FF1E1B4B');
+      renderHtmlTableToExcel('medquantas-cost-table', 'Medquantas Internal Valuation', 'FF1E1B4B');
 
       ws.columns = [
         { width: 45 }, // 1. S.No & Name (Combined)
@@ -384,7 +384,7 @@ export class ViewCostComponent implements OnInit {
           y += 10;
 
           let tableToParse = table as any;
-          if (elementId === 'systematic-cost-table' || elementId === 'medopharam-cost-table') {
+          if (elementId === 'systematic-cost-table' || elementId === 'medquantas-cost-table') {
             tableToParse = table.cloneNode(true);
             const cells = tableToParse.querySelectorAll('th, td');
             for (let i = 0; i < cells.length; i++) {
@@ -438,7 +438,7 @@ export class ViewCostComponent implements OnInit {
 
       renderHtmlTable('total-material-table', 'Material Cost Summary', '#6B21A8');
       renderHtmlTable('systematic-cost-table', 'Systematic Cost', '#0369A1');
-      renderHtmlTable('medopharam-cost-table', 'Medopharm Cost', '#166534');
+      renderHtmlTable('medquantas-cost-table', 'Medquantas Cost', '#166534');
 
       // 4. FOOTER & PAGE NUMBERS
       const totalPages = (doc as any).internal.getNumberOfPages();
@@ -584,7 +584,7 @@ export class ViewCostComponent implements OnInit {
         this.detailValues = this.sheetData?.detailValues;
         this.percentage = this.sheetData?.percentage;
         this.system = this.sheetData?.system;
-        this.medopharm = this.sheetData?.medopharm;
+        this.medquantas = this.sheetData?.medquantas;
         this.page_loader = true;
         this.ref.detectChanges();
       }
@@ -782,12 +782,12 @@ export class ViewCostComponent implements OnInit {
       (this.finalstage['packtype'] = this.packstage.find(
         (data) => data.isSelect
       )?.stageName),
-      (this.medopharm['api'] = this.totalRaws[0]?.rate),
-      (this.medopharm['name'] = this.rawstage[0]?.fgName),
-      this.medopharm['rupee'] = parseFloat(this.percentage['factorycost']).toFixed(2);
-    this.medopharm['doller'] = (parseFloat(this.percentage['factorycost']) * this.convertrate).toFixed(2);
-    this.medopharm['convertrate'] = this.convertrate;
-    (this.medopharm['packtype'] = this.packstage.find(
+      (this.medquantas['api'] = this.totalRaws[0]?.rate),
+      (this.medquantas['name'] = this.rawstage[0]?.fgName),
+      this.medquantas['rupee'] = parseFloat(this.percentage['factorycost']).toFixed(2);
+    this.medquantas['doller'] = (parseFloat(this.percentage['factorycost']) * this.convertrate).toFixed(2);
+    this.medquantas['convertrate'] = this.convertrate;
+    (this.medquantas['packtype'] = this.packstage.find(
       (data) => data.isSelect
     )?.stageName),
 
@@ -956,20 +956,20 @@ export class ViewCostComponent implements OnInit {
   }
 
   changePrice() {
-    this.medopharm = this.medopharm || {};
+    this.medquantas = this.medquantas || {};
 
-    this.medopharm['api'] = this.totalRaws?.[0]?.rate || '0.00';
-    this.medopharm['rupee'] = parseFloat(
+    this.medquantas['api'] = this.totalRaws?.[0]?.rate || '0.00';
+    this.medquantas['rupee'] = parseFloat(
       parseFloat(this.percentage['factorycost']).toFixed(2)
     );
-    this.medopharm['convertrate'] = this.convertrate;
+    this.medquantas['convertrate'] = this.convertrate;
 
-    this.medopharm['name'] = this.formValues['name'];
-    this.medopharm['packtype'] = this.selectPack[0]?.name;
-    this.medopharm['doller'] = parseFloat(
+    this.medquantas['name'] = this.formValues['name'];
+    this.medquantas['packtype'] = this.selectPack[0]?.name;
+    this.medquantas['doller'] = parseFloat(
       (parseFloat(this.percentage['factorycost']) / this.convertrate).toFixed(2)
     );
-    this.medopharm['batchsize'] = parseFloat(this.formValues['batch']) / 100000;
+    this.medquantas['batchsize'] = parseFloat(this.formValues['batch']) / 100000;
   }
 
   calculatePrice() {

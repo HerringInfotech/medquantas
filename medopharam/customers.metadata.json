@@ -1,1 +1,0 @@
-{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"medopharam.customers"}],"uuid":"553750fb696a4b9bbf1d3ff6ce01481b"}

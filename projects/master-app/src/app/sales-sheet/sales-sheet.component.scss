@@ -1,115 +1,128 @@
-/* ────────────────────────────────────────────────────────────────
-   MedQuantas Sales Sheet — Pharma Teal Theme
-   ──────────────────────────────────────────────────────────────── */
+/* ==========================================================================
+   COST MASTER STYLES - TEAL PHARMA
+   ========================================================================== */
 
-// Local Colors (matching user edits)
-$pharma-teal: #00a896;
-$pharma-dark: #0b5e6e;
-$pharma-border: #e2eef1;
-$pharma-bg-soft: #f8fafb;
+.custom-page {
+  padding: 1.5rem !important;
+  background-color: transparent !important;
+}
 
-.page-header {
-  .title-section h4 {
-    color: $pharma-dark;
+.header-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.75rem;
+  box-shadow: var(--card-shadow);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  h5 {
     font-weight: 800;
-    letter-spacing: -0.01em;
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    margin: 0;
+    letter-spacing: -0.02em;
   }
 }
 
-.main-card {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
-  border-radius: 16px;
-  border: 1px solid $pharma-border;
-  overflow: hidden;
+.filter-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 1.5rem 1.75rem;
+  box-shadow: var(--card-shadow);
+  margin-bottom: 1rem;
 }
 
-.search-glass {
-  background: white !important;
-  border-radius: 10px;
-  border: 1px solid $pharma-border;
-  overflow: hidden;
-  transition: all 0.2s ease;
+.filter-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+  display: block;
+}
 
-  &:focus-within {
-    border-color: $pharma-teal;
-    box-shadow: 0 0 0 4px rgba(0, 168, 150, 0.1);
-  }
+.search-input-group {
+  position: relative;
 
   .form-control {
-    border: none !important;
-    box-shadow: none !important;
-    height: 44px;
-    font-size: 14px;
-    color: $pharma-dark;
-    
-    &::placeholder { color: #94a3b8; }
+    padding-right: 2.5rem !important;
+    height: 40px;
+    background: #f8fafc !important;
+    border: 1.5px solid #e2e8f0 !important;
+    font-size: 0.85rem;
+
+    &:focus {
+      background: #fff !important;
+      border-color: var(--primary-brand) !important;
+      box-shadow: 0 0 0 4px rgba(0, 168, 150, 0.1) !important;
+    }
   }
 
-  .btn-link {
-    color: #64748b;
-    &:hover { color: $pharma-teal; }
+  .search-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 0.9rem;
   }
+}
+
+.table-container {
+  background: white;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
 }
 
 .table {
+  margin: 0;
+
   thead th {
-    background: $pharma-bg-soft !important;
-    color: #475569 !important;
+    background: #f8fafc !important;
+    color: var(--text-secondary) !important;
     font-weight: 700 !important;
-    text-transform: uppercase;
-    font-size: 11px;
-    letter-spacing: 0.05em;
-    padding: 16px 20px !important;
-    border-bottom: 2px solid $pharma-border !important;
+    font-size: 0.7rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    padding: 1rem 1.5rem !important;
+    border-bottom: 2px solid #edf2f7 !important;
+    text-align: center;
   }
 
-  tbody tr {
-    transition: all 0.15s ease;
-    
-    td {
-      padding: 18px 20px !important;
-      border-bottom: 1px solid $pharma-border !important;
-      vertical-align: middle;
-    }
-
-    &:hover {
-      background: rgba(0, 168, 150, 0.03) !important;
-      transform: scale(1.002);
-    }
+  tbody td {
+    padding: 1rem 1.5rem !important;
+    border-bottom: 1px solid #edf2f7 !important;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 0.85rem;
   }
 }
 
-.status-badge {
-  padding: 6px 12px;
+.name-column {
+  text-align: left !important;
+  font-weight: 600;
+  max-width: 400px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-primary);
+}
+
+.code-column {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+
+.location-badge {
+  background: #edf2f7;
+  color: #4a5568;
+  padding: 0.3rem 0.6rem;
   border-radius: 6px;
-  font-size: 11px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-
-  &.status-approved {
-    background: #e1f5f3;
-    color: #00877a;
-  }
-
-  &.status-created {
-    background: #f1f5f9;
-    color: #475569;
-  }
-}
-
-.text-primary-dark { color: $pharma-dark !important; }
-.fw-800 { font-weight: 800; }
-.fw-700 { font-weight: 700; }
-.fw-600 { font-weight: 600; }
-.cursor-pointer { cursor: pointer; }
-
-/* Custom NG-Select integration */
-::ng-select .ng-select-container {
-  border-radius: 10px !important;
-  border: 1px solid $pharma-border !important;
-  min-height: 44px;
-  
-  &:hover { border-color: $pharma-teal !important; }
+  font-weight: 700;
+  font-size: 0.75rem;
 }

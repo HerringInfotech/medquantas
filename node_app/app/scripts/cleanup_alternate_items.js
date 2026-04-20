@@ -41,7 +41,7 @@ async function cleanup() {
     const alternateSet = new Set(alternateItemCodes);
 
     // 2. Connect to MongoDB
-    await mongoose.connect('mongodb://localhost:27017/medopharm', { useNewUrlParser: true, useUnifiedTopology: true });
+    await mongoose.connect('mongodb://localhost:27017/medquantas', { useNewUrlParser: true, useUnifiedTopology: true });
     console.log("Connected to MongoDB");
 
     // 3. Cleanup BomMaster
@@ -76,12 +76,12 @@ async function cleanup() {
       }
 
       if (modified) {
-        await BomMaster.updateOne({ _id: bom._id }, { 
-          $set: { 
-            bomraw: bom.bomraw, 
-            rawstage: bom.rawstage, 
-            packstage: bom.packstage 
-          } 
+        await BomMaster.updateOne({ _id: bom._id }, {
+          $set: {
+            bomraw: bom.bomraw,
+            rawstage: bom.rawstage,
+            packstage: bom.packstage
+          }
         });
         bomsUpdated++;
         affectedBoms.push({ code: bom.code, locCd: bom.locCd });
@@ -110,13 +110,13 @@ async function cleanup() {
       sheet.system_pack = filterArray(sheet.system_pack);
 
       if (modified) {
-        await Costsheet.updateOne({ _id: sheet._id }, { 
-          $set: { 
+        await Costsheet.updateOne({ _id: sheet._id }, {
+          $set: {
             medo_raw: sheet.medo_raw,
             medo_pack: sheet.medo_pack,
             system_raw: sheet.system_raw,
             system_pack: sheet.system_pack
-          } 
+          }
         });
         costsheetsUpdated++;
       }

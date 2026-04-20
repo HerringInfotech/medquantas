@@ -51,7 +51,7 @@ export class CostFormComponent implements OnInit {
   totalcost;
   percentage;
   system: any = {};
-  medopharm: any = {};
+  medquantas: any = {};
   faArrowLeft = faArrowLeft;
   faDollarSign = faDollarSign;
   faFileAlt = faFileAlt
@@ -126,7 +126,7 @@ export class CostFormComponent implements OnInit {
   ) {
     this.currencyService.fetchConversionFactor();
   }
-  // medopharm
+  // medquantas
 
   async ngOnInit() {
     const factor = await this.currencyService.fetchConversionFactor();
@@ -306,7 +306,7 @@ export class CostFormComponent implements OnInit {
 
 
         this.system = this.sheetData?.system
-        this.medopharm = this.sheetData?.medopharm
+        this.medquantas = this.sheetData?.medquantas
         this.convertrate = this.system['convertrate'];
 
         this.percentage = this.sheetData?.percentage
@@ -335,7 +335,7 @@ export class CostFormComponent implements OnInit {
 
     this.finalValues['percentage'] = this.percentage;
     this.finalValues['system'] = this.system;
-    this.finalValues['medopharm'] = this.medopharm;
+    this.finalValues['medquantas'] = this.medquantas;
     const payload = {
       ...this.finalValues,
       user: this.user,
@@ -502,9 +502,9 @@ export class CostFormComponent implements OnInit {
     this.sheetValues['productcode'] = e.fgCode
     this.sheetValues['packID'] = e.packID
     this.system['packtype'] = e.stageName
-    this.medopharm['packtype'] = e.stageName
+    this.medquantas['packtype'] = e.stageName
     this.system['name'] = e.fgName;
-    this.medopharm['name'] = e.fgName;
+    this.medquantas['name'] = e.fgName;
     const selectPack = (e.ingredients || []).map((item: any) => {
       const normalizedItem = { ...item };
       normalizedItem.requestQty = Number(item.requestQty || item.RequestQty || item.ReqQty || 0);
@@ -567,7 +567,7 @@ export class CostFormComponent implements OnInit {
           const latestRates = res.data.rate as Array<{ code: string, rate: any, gst: any, grnRate: any }>;
           const rateMap = new Map(latestRates.map(item => [item.code, item]));
 
-          // medopharm pack
+          // medquantas pack
           this.medo_pack = this.selectPackstage.map((item: any) => {
             const matched: any = rateMap.get(item.code);
             return this.applySubtypePercentage({
@@ -611,7 +611,7 @@ export class CostFormComponent implements OnInit {
         if (res.status) {
           const latestRates = res.data.rate as Array<{ code: string, rate: any, gst: any, grnRate: any }>;
           const rateMap = new Map(latestRates.map(item => [item.code, item]));
-          // medopharm raw material
+          // medquantas raw material
           this.medo_raw = this.rawstage.map((item: any) => {
             const matched: any = rateMap.get(item.code);
             return this.applySubtypePercentage({
@@ -798,11 +798,11 @@ export class CostFormComponent implements OnInit {
   }
 
   changePrice() {
-    this.medopharm['api'] = this.medo_raw?.[0]?.rate || '0.00';
-    this.medopharm['rupee'] = parseFloat(parseFloat(this.percentage['factorycost']).toFixed(2));
-    this.medopharm['convertrate'] = this.convertrate;
-    this.medopharm['doller'] = parseFloat((parseFloat(this.percentage['factorycost']) / this.convertrate).toFixed(2));
-    this.medopharm['batchsize'] = parseFloat(this.detailValues['batch']) / 100000;
+    this.medquantas['api'] = this.medo_raw?.[0]?.rate || '0.00';
+    this.medquantas['rupee'] = parseFloat(parseFloat(this.percentage['factorycost']).toFixed(2));
+    this.medquantas['convertrate'] = this.convertrate;
+    this.medquantas['doller'] = parseFloat((parseFloat(this.percentage['factorycost']) / this.convertrate).toFixed(2));
+    this.medquantas['batchsize'] = parseFloat(this.detailValues['batch']) / 100000;
   }
 
   // raw and pack total

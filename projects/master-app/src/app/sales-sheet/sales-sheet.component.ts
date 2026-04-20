@@ -7,6 +7,7 @@ import {
   faEye,
   faPlus,
   faSearch,
+  faSpinner,
 } from '@fortawesome/free-solid-svg-icons';
 import { CommonService } from '../shared/api/common.service';
 import { PermissionService } from '../shared/permission/permission.service';
@@ -23,6 +24,7 @@ export class SalesSheetComponent implements OnInit {
   bom_list;
   faSearch = faSearch;
   faPlus = faPlus;
+  faSpinner = faSpinner;
   faCheckCircle = faCheckCircle;
   faFileExcel = faFileExcel;
   faEdit = faEdit;
@@ -170,8 +172,8 @@ export class SalesSheetComponent implements OnInit {
           item.productcode || '',
           item.locCd || '',
           item.detailValues?.batch || '',
-          `₹ ${item?.medopharm?.rupee}` || '',
-          `$ ${item?.medopharm?.doller}` || '',
+          `₹ ${item?.medquantas?.rupee}` || '',
+          `$ ${item?.medquantas?.doller}` || '',
           this.formatDateWithoutTimeZone(item.createdAt) || ''
         ]);
 

@@ -9,11 +9,11 @@ const getEmailSignature = () => `
 <table border="0" cellpadding="0" cellspacing="0" style="margin-top: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
     <tr>
         <td style="padding-right: 20px; vertical-align: middle;">
-            <img src="cid:logo" alt="Medopharm Logo" style="height: 80px; width: auto; display: block;">
+            <img src="cid:logo" alt="Medquantas Logo" style="height: 80px; width: auto; display: block;">
         </td>
         <td style="border-left: 2px solid #0c763c; padding-left: 20px; vertical-align: middle;">
             <p style="margin: 0; font-weight: bold; font-size: 16px; color: #1a2e4f;">Costing Department</p>
-            <p style="margin: 4px 0 0 0; font-weight: 500; font-size: 14px; color: #64748b;">Medopharm</p>
+            <p style="margin: 4px 0 0 0; font-weight: 500; font-size: 14px; color: #64748b;">Medquantas</p>
         </td>
     </tr>
 </table>
@@ -42,8 +42,8 @@ exports.sendMail = async (req, res, next) => {
 
         // setup email data with unicode symbols
         const logoAttachment = {
-            filename: 'medopharm.png',
-            path: path.join(__dirname, '../../media/assets/logo/medopharm.png'),
+            filename: 'medquantas.png',
+            path: path.join(__dirname, '../../media/assets/logo/medquantas.png'),
             cid: 'logo'
         };
 
@@ -87,13 +87,13 @@ exports.sendRawMail = async ({ to, subject, html, attachments }) => {
         });
 
         const logoAttachment = {
-            filename: 'medopharm.png',
-            path: path.join(__dirname, '../../media/assets/logo/medopharm.png'),
+            filename: 'medquantas.png',
+            path: path.join(__dirname, '../../media/assets/logo/medquantas.png'),
             cid: 'logo'
         };
 
         const info = await transporter.sendMail({
-            from: `"Medopharm Costing" <${mailEmail}>`,
+            from: `"Medquantas Costing" <${mailEmail}>`,
             to,
             subject,
             html,

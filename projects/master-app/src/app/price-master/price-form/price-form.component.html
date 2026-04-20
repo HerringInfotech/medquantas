@@ -78,7 +78,7 @@
 
                 <div class="form-group col-lg-6 col-md-6 mb-2">
                   <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Previous Medopharm Rate</mat-label>
+                    <mat-label>Previous Medquantas Rate</mat-label>
                     <input matInput name="prevrate" type="number" required [(ngModel)]="formValues['prevrate']" readonly
                       class="readonly-input" [placeholder]="currencyService.isActive ? 'USD' : 'INR'" />
                     <span matSuffix>{{
@@ -105,7 +105,7 @@
 
                 <div class="form-group col-lg-6 col-md-6">
                   <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>Medopharm Rate</mat-label>
+                    <mat-label>Medquantas Rate</mat-label>
 
                     <input matInput type="number" step="0.01" name="rate" required #rate="ngModel"
                       (focus)="clearZero('rate')" [ngModel]="
@@ -124,7 +124,7 @@
         rate.invalid &&
         (rate.dirty || rate.touched || formData.submitted)
       ">
-                      Medopharm Rate is required.
+                      Medquantas Rate is required.
                     </mat-error>
                   </mat-form-field>
                 </div>

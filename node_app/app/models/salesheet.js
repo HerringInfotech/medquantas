@@ -18,7 +18,7 @@ const SalesheetSchema = new mongoose.Schema({
     detailValues: Object,
     percentage: Object,
     system: Object,
-    medopharm: Object,
+    medquantas: Object,
     status: String,
     revision: String,
     code: String,

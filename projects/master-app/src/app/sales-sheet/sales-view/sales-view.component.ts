@@ -56,7 +56,7 @@ export class SalesViewComponent implements OnInit {
   user;
   setting_data: any;
 
-  medopharm;
+  medquantas;
   system;
   detailValues: any = {};
 
@@ -248,14 +248,14 @@ export class SalesViewComponent implements OnInit {
       // RUN SEQUENCE (Conditional based on role)
       if (this.roleName?.toLowerCase() === 'sale') {
         renderHtmlTableToExcel('sale-summary-section');
-        renderHtmlTableToExcel('medopharam-cost-table', 'Medopharm Internal Valuation', 'FF1E1B4B');
+        renderHtmlTableToExcel('medquantas-cost-table', 'Medquantas Internal Valuation', 'FF1E1B4B');
       } else {
         renderHtmlTableToExcel('costsheet-details-excel');
         renderHtmlTableToExcel('api-table', 'Material Procurement & API Analysis', COLORS.navy);
         renderHtmlTableToExcel('packing-table', 'Packaging Components Analysis', 'FF166534');
         renderHtmlTableToExcel('total-material-table', 'Consolidated Material Valuation', 'FF581C87');
         renderHtmlTableToExcel('systematic-cost-table', 'Standard System Costing', COLORS.navy);
-        renderHtmlTableToExcel('medopharam-cost-table', 'Medopharm Internal Valuation', 'FF1E1B4B');
+        renderHtmlTableToExcel('medquantas-cost-table', 'Medquantas Internal Valuation', 'FF1E1B4B');
       }
 
       // Add Remarks if exist
@@ -370,7 +370,7 @@ export class SalesViewComponent implements OnInit {
           y += 10;
 
           let tableToParse = table as any;
-          if (elementId === 'systematic-cost-table' || elementId === 'medopharam-cost-table' || elementId === 'sale-summary-section') {
+          if (elementId === 'systematic-cost-table' || elementId === 'medquantas-cost-table' || elementId === 'sale-summary-section') {
             tableToParse = table.cloneNode(true);
             const cells = tableToParse.querySelectorAll('th, td');
             for (let i = 0; i < cells.length; i++) {
@@ -414,7 +414,7 @@ export class SalesViewComponent implements OnInit {
       // TABLE SEQUENCE (Conditional based on role)
       if (this.roleName?.toLowerCase() === 'sale') {
         renderHtmlTable('sale-summary-section', 'Product Summary', COLORS.primary);
-        renderHtmlTable('medopharam-cost-table', 'Medopharm Cost', '#166534');
+        renderHtmlTable('medquantas-cost-table', 'Medquantas Cost', '#166534');
       } else {
         renderHtmlTable('costsheet-details-excel', 'Product Overview', COLORS.primary);
 
@@ -428,7 +428,7 @@ export class SalesViewComponent implements OnInit {
 
         renderHtmlTable('total-material-table', 'Material Cost Summary', '#6B21A8');
         renderHtmlTable('systematic-cost-table', 'Systematic Cost', '#0369A1');
-        renderHtmlTable('medopharam-cost-table', 'Medopharm Cost', '#166534');
+        renderHtmlTable('medquantas-cost-table', 'Medquantas Cost', '#166534');
       }
 
       if (this.sheetData?.remarks) {
@@ -557,7 +557,7 @@ export class SalesViewComponent implements OnInit {
         this.detailValues = this.sheetData?.detailValues;
         this.percentage = this.sheetData?.percentage;
         this.system = this.sheetData?.system;
-        this.medopharm = this.sheetData?.medopharm;
+        this.medquantas = this.sheetData?.medquantas;
         this.page_loader = true;
         this.ref.detectChanges();
       }

@@ -139,10 +139,10 @@ exports.forgotpassword = async (req, res, next) => {
 exports.change_password = async (req, res, next) => {
     const requests = req.bodyParams;
     const isAdmin = requests.admin || 2;
-    
+
     // Password Strength Policy: Upper, Lower, Numeric, Special
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    
+
     const newPassword = requests.newPassword || requests.password;
 
     if (isAdmin != 1) { // Strength check for regular users
@@ -210,7 +210,7 @@ exports.sign_up = async (req, res, next) => {
         const welcomeEmailHtml = `
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 15px; color: #333; max-width: 600px; margin: 0 auto; line-height: 1.6; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
             <div style="background-color: #1a2e4f; padding: 25px; text-align: center;">
-                <img src="cid:logo" alt="Medopharm Logo" style="height: 80px; width: auto;">
+                <img src="cid:logo" alt="Medquantas Logo" style="height: 80px; width: auto;">
             </div>
             <div style="padding: 40px; background-color: #ffffff;">
                 <p style="margin-top: 0; font-size: 17px;">Dear <strong>${user.name}</strong>,</p>
@@ -477,7 +477,7 @@ exports.update_user = async (req, res, next) => {
                 const welcomeEmailHtml = `
                 <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 15px; color: #333; max-width: 600px; margin: 0 auto; line-height: 1.6; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
                     <div style="background-color: #1a2e4f; padding: 25px; text-align: center;">
-                        <img src="cid:logo" alt="Medopharm Logo" style="height: 80px; width: auto;">
+                        <img src="cid:logo" alt="Medquantas Logo" style="height: 80px; width: auto;">
                     </div>
                     <div style="padding: 40px; background-color: #ffffff;">
                         <p style="margin-top: 0; font-size: 17px;">Dear <strong>${newUser.name}</strong>,</p>
@@ -627,7 +627,7 @@ exports.send_mail = async (req, res, next) => {
             requestorName: requests.user || 'Requestor',
         };
 
-        const item = sheet.medopharm;
+        const item = sheet.Medquantas;
         const rowsHtml = `
       <tr>
         <td style="text-align:center;">${item?.name || '-'}</td>
@@ -734,7 +734,7 @@ exports.send_costsheet = async (req, res, next) => {
             requestorName: user.name || 'Requestor',
         };
 
-        const item = sheet.medopharm;
+        const item = sheet.Medquantas;
         const dateStr = sheet.createdAt ? moment(sheet.createdAt).format('DD/MM/YYYY') : moment().format('DD/MM/YYYY');
         const costSheetStr = `${sheet.code} & ${dateStr}`;
 
@@ -799,7 +799,7 @@ exports.send_costsheet = async (req, res, next) => {
 };
 
 
-// const DB_NAME = 'medopharm';
+// const DB_NAME = 'Medquantas';
 // const HOST = '127.0.0.1';
 // const PORT = '27017';
 // const BACKUP_DIR = process.env.BACKUP_DIR

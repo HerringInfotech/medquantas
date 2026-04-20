@@ -1,4 +1,4 @@
-// medopharam
+
 
 exports.get_excel_item_header = (data) => {
     var static_header = {
@@ -129,7 +129,7 @@ exports.get_rate_header = (data) => {
     var static_header = {
         'Item Name': 'name',
         'Item Code': 'code',
-        'Medopharm Price in INR': 'rate',
+        'Medquantas Price in INR': 'rate',
         'GST %': 'gst',
     }
     return static_header[data] || data;

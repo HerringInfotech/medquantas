@@ -1,1 +1,0 @@
-{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"medopharam.packtypes"}],"uuid":"6a5a761a3c22476ca4fd59b2ef66d226"}

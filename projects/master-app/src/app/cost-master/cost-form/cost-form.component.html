@@ -284,7 +284,7 @@
                     GRN Rate ({{ isActive ? "$" : "₹" }})
                   </th>
                   <th scope="col" class="custom-color bg-gradient text-white text-end">
-                    Medopharm Rate ({{ isActive ? "$" : "₹" }})
+                    Medquantas Rate ({{ isActive ? "$" : "₹" }})
                   </th>
                   <th scope="col" class="custom-color bg-gradient text-white text-end">
                     GST%
@@ -486,7 +486,8 @@
                   <th scope="col" class="custom-color bg-gradient text-white text-end">UOM</th>
                   <th scope="col" class="custom-color bg-gradient text-white text-end">GRN Rate ({{ isActive ? "$" : "₹"
                     }})</th>
-                  <th scope="col" class="custom-color bg-gradient text-white text-end">Medopharm Rate ({{ isActive ? "$"
+                  <th scope="col" class="custom-color bg-gradient text-white text-end">Medquantas Rate ({{ isActive ?
+                    "$"
                     : "₹" }})</th>
                   <th scope="col" class="custom-color bg-gradient text-white text-end">GST%</th>
                   <th scope="col" class="custom-color bg-gradient text-white text-end">EXCISE ({{ isActive ? "$" : "₹"
@@ -935,7 +936,7 @@
               </tbody>
             </table>
 
-            <h5 class="table-heading">Medopharm Cost</h5>
+            <h5 class="table-heading">Medquantas Cost</h5>
             <table class="table text-nowra align-middle mt-2 text-center">
               <tbody>
                 <tr>
@@ -961,21 +962,21 @@
                     Minimum Batch size (In Lakh)
                   </td>
                 </tr>
-                <tr *ngIf="medopharm">
-                  <td scope="col" class="text-center">{{ medopharm?.name }}</td>
+                <tr *ngIf="medquantas">
+                  <td scope="col" class="text-center">{{ medquantas?.name }}</td>
                   <td scope="col" class="text-center">
-                    {{ medopharm?.packtype }}
+                    {{ medquantas?.packtype }}
                   </td>
-                  <td scope="col" class="text-center">{{ medopharm?.api || 0.00 }}</td>
-                  <td scope="col" class="text-center">₹{{ medopharm?.rupee || 0.00}}</td>
+                  <td scope="col" class="text-center">{{ medquantas?.api || 0.00 }}</td>
+                  <td scope="col" class="text-center">₹{{ medquantas?.rupee || 0.00}}</td>
                   <td scope="col" class="text-center">
-                    ${{ medopharm?.doller || 0.00 }}
-                  </td>
-                  <td scope="col" class="text-center">
-                    {{ medopharm?.convertrate }}
+                    ${{ medquantas?.doller || 0.00 }}
                   </td>
                   <td scope="col" class="text-center">
-                    {{ medopharm?.batchsize }}
+                    {{ medquantas?.convertrate }}
+                  </td>
+                  <td scope="col" class="text-center">
+                    {{ medquantas?.batchsize }}
                   </td>
                 </tr>
               </tbody>

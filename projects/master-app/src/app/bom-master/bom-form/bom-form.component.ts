@@ -44,7 +44,6 @@ export class BomFormComponent implements OnInit {
   remarkObj = [];
   isremark: boolean = false;
   isEditMode: boolean = false;
-  // medopharam
   status_loader: boolean = false;
   faArrowLeft = faArrowLeft;
   faTrashAlt = faTrashAlt;
@@ -263,7 +262,7 @@ export class BomFormComponent implements OnInit {
 
     this.productcode = e;
     const selected = this.bom_list.packstage.find(x => x.fgCode === e);
-    
+
     this.packstage = (selected?.ingredients || []).filter(i => i.typeCode !== 'IM');
     this.formValues = { ...(selected?.bomDetail ?? {}), name: this.bom_list.name, code: this.bom_list.code, locCd: this.bom_list.locCd };
   }

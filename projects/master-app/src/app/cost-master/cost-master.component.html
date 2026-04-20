@@ -72,14 +72,15 @@
               <td class="name-column text-start" [title]="data?.productname">{{ data?.productname }}</td>
               <td class="code-column text-start">{{ data?.productcode }}</td>
               <td class="text-end">{{ data?.detailValues?.batch | number }}</td>
-              <td class="text-end fw-bold">₹{{ data?.medopharm?.rupee | number : "1.0-3" }}</td>
-              <td class="text-end fw-bold text-success">${{ data?.medopharm?.doller | number : "1.0-3" }}</td>
+              <td class="text-end fw-bold">₹{{ data?.medquantas?.rupee | number : "1.0-3" }}</td>
+              <td class="text-end fw-bold text-success">${{ data?.medquantas?.doller | number : "1.0-3" }}</td>
               <td>
                 <button type="button" class="action-btn edit-btn" *ngIf="hasPermission('CostSheet.Update')"
                   routerLink="form/{{data._id}}" title="Edit Cost Sheet">
                   <fa-icon [icon]="faEdit"></fa-icon>
                 </button>
-                <button type="button" class="action-btn view-btn" routerLink="view/{{data._id}}" title="View Cost Sheet">
+                <button type="button" class="action-btn view-btn" routerLink="view/{{data._id}}"
+                  title="View Cost Sheet">
                   <fa-icon [icon]="faEye"></fa-icon>
                 </button>
               </td>

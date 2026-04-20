@@ -145,7 +145,7 @@ export class SalesFormComponent implements OnInit {
     this.onselectSheet = true;
     const rate = parseFloat(this.convertrate) || 1;
     this.selectSheet.system = this.selectSheet.system || {};
-    this.selectSheet.medopharm = this.selectSheet.medopharm || {};
+    this.selectSheet.medquantas = this.selectSheet.medquantas || {};
     this.selectSheet.percentage = this.selectSheet.percentage || {};
 
     const systemFactory = parseFloat(this.selectSheet.percentage.system_factorycost) || 0;
@@ -153,8 +153,8 @@ export class SalesFormComponent implements OnInit {
     this.selectSheet.system.convertrate = rate;
 
     const medFactory = parseFloat(this.selectSheet.percentage.factorycost) || 0;
-    this.selectSheet.medopharm.doller = parseFloat((medFactory / rate).toFixed(2));
-    this.selectSheet.medopharm.convertrate = rate;
+    this.selectSheet.medquantas.doller = parseFloat((medFactory / rate).toFixed(2));
+    this.selectSheet.medquantas.convertrate = rate;
   }
 
 
@@ -287,11 +287,11 @@ export class SalesFormComponent implements OnInit {
     // 4. Calculate Percentage object
     this.calculateOverallPercentage();
 
-    // 5. Update main Medopharm/System displays
+    // 5. Update main medquantas/System displays
     const rate = parseFloat(this.convertrate) || 1;
-    this.selectSheet.medopharm.rupee = Number(parseFloat(this.percentage.factorycost).toFixed(3));
-    this.selectSheet.medopharm.doller = Number((this.selectSheet.medopharm.rupee / rate).toFixed(3));
-    this.selectSheet.medopharm.api = this.rawstage?.[0]?.rate || '0.00';
+    this.selectSheet.medquantas.rupee = Number(parseFloat(this.percentage.factorycost).toFixed(3));
+    this.selectSheet.medquantas.doller = Number((this.selectSheet.medquantas.rupee / rate).toFixed(3));
+    this.selectSheet.medquantas.api = this.rawstage?.[0]?.rate || '0.00';
 
     if (this.selectSheet.system) {
       this.selectSheet.system.rupee = Number(parseFloat(this.percentage.system_factorycost).toFixed(3));

@@ -591,7 +591,7 @@ exports.update_cost_Sheet = async function (code, locCd) {
             sheet.system_pack = await updateSystemPackPrice(pack, detailValues)
             sheet.percentage = await calculatePercentage(sheet.medo_raw, sheet.medo_pack, detailValues, sheet.system_pack, sheet.system_raw)
             sheet.system = await systemPrice(sheet, convertrate, pack);
-            sheet.medopharm = await medopharmPrice(sheet, convertrate, pack);
+            sheet.medquantas = await MedquantasPrice(sheet, convertrate, pack);
             const costQuery = locCd
                 ? { productcode: pack.fgCode, locCd: locCd }
                 : { productcode: pack.fgCode };
@@ -932,16 +932,16 @@ async function systemPrice(sheet, convertrate, pack) {
     return system
 }
 
-async function medopharmPrice(sheet, convertrate, pack) {
-    const medopharm = {}
-    medopharm['packtype'] = pack.stageName
-    medopharm['name'] = pack.fgName
-    medopharm['api'] = sheet.medo_raw?.[0]?.rate || '0.00';
-    medopharm['rupee'] = Number(parseFloat(sheet.percentage['factorycost']).toFixed(3));
-    medopharm['convertrate'] = convertrate;
-    medopharm['doller'] = Number((parseFloat(sheet.percentage['factorycost']) / convertrate).toFixed(3));
-    medopharm['batchsize'] = parseFloat(sheet.detailValues['batch']) / 100000;
-    return medopharm
+async function MedquantasPrice(sheet, convertrate, pack) {
+    const medquantas = {}
+    medquantas['packtype'] = pack.stageName
+    medquantas['name'] = pack.fgName
+    medquantas['api'] = sheet.medo_raw?.[0]?.rate || '0.00';
+    medquantas['rupee'] = Number(parseFloat(sheet.percentage['factorycost']).toFixed(3));
+    medquantas['convertrate'] = convertrate;
+    medquantas['doller'] = Number((parseFloat(sheet.percentage['factorycost']) / convertrate).toFixed(3));
+    medquantas['batchsize'] = parseFloat(sheet.detailValues['batch']) / 100000;
+    return medquantas
 }
 
 // gst *****************************************************
@@ -1100,7 +1100,7 @@ exports.update_gst_data = async (data) => {
 
                         const systemFactoryCost = Number(sheet.percentage?.system_factorycost) || 0;
                         sheet.system.rupee = Number(systemFactoryCost.toFixed(3));
-                        sheet.system.doller = Number((sheet.system.rupee / Number(sheet.medopharm.convertrate || 1)).toFixed(3));
+                        sheet.system.doller = Number((sheet.system.rupee / Number(sheet.medquantas.convertrate || 1)).toFixed(3));
                         sheet.system.api = sheet.system_raw?.[0]?.rate || '0.00';
                         sheet.markModified("system");
                         await sheet.save();
@@ -1471,19 +1471,19 @@ exports.update_sheet_item = async (bom) => {
             );
 
             sheet.system.rupee = Number((+sheet.percentage.system_factorycost).toFixed(3));
-            sheet.system.doller = Number((sheet.system.rupee / sheet.medopharm.convertrate).toFixed(3));
+            sheet.system.doller = Number((sheet.system.rupee / sheet.medquantas.convertrate).toFixed(3));
             sheet.system.api = sheet.system_raw?.[0]?.rate || '0.00';
 
-            sheet.medopharm.rupee = Number((+sheet.percentage.factorycost).toFixed(3));
-            sheet.medopharm.doller = Number((sheet.medopharm.rupee / sheet.medopharm.convertrate).toFixed(3));
-            sheet.medopharm.api = sheet.medo_raw?.[0]?.rate || '0.00';
+            sheet.medquantas.rupee = Number((+sheet.percentage.factorycost).toFixed(3));
+            sheet.medquantas.doller = Number((sheet.medquantas.rupee / sheet.medquantas.convertrate).toFixed(3));
+            sheet.medquantas.api = sheet.medo_raw?.[0]?.rate || '0.00';
 
             sheet.markModified('medo_raw');
             sheet.markModified('system_raw');
             sheet.markModified('medo_pack');
             sheet.markModified('system_pack');
             sheet.markModified('system');
-            sheet.markModified('medopharm');
+            sheet.markModified('medquantas');
             sheet.markModified('detailValues');
             await sheet.save();
         }
@@ -1555,15 +1555,15 @@ exports.update_sheet_price = async (rate) => {
             );
 
             sheet.system.rupee = Number((+sheet.percentage.system_factorycost).toFixed(3));
-            sheet.system.doller = Number((sheet.system.rupee / sheet.medopharm.convertrate).toFixed(3));
+            sheet.system.doller = Number((sheet.system.rupee / sheet.medquantas.convertrate).toFixed(3));
             sheet.system.api = sheet.system_raw?.[0]?.rate || '0.00';
 
-            sheet.medopharm.rupee = Number((+sheet.percentage.factorycost).toFixed(3));
-            sheet.medopharm.doller = Number((sheet.medopharm.rupee / sheet.medopharm.convertrate).toFixed(3));
-            sheet.medopharm.api = sheet.medo_raw?.[0]?.rate || '0.00';
+            sheet.medquantas.rupee = Number((+sheet.percentage.factorycost).toFixed(3));
+            sheet.medquantas.doller = Number((sheet.medquantas.rupee / sheet.medquantas.convertrate).toFixed(3));
+            sheet.medquantas.api = sheet.medo_raw?.[0]?.rate || '0.00';
 
             sheet.markModified("system");
-            sheet.markModified("medopharm");
+            sheet.markModified("medquantas");
 
             await sheet.save();
         }
@@ -1580,10 +1580,10 @@ exports.update_sheet_factor = async (factor) => {
         for (const sheet of sheets) {
             sheet.system.doller = Number((sheet.system.rupee / factor.inrToUsd).toFixed(3));
             sheet.system.convertrate = factor.inrToUsd || '0.000';
-            sheet.medopharm.doller = Number((sheet.medopharm.rupee / factor.inrToUsd).toFixed(3));
-            sheet.medopharm.convertrate = factor.inrToUsd || '0.00';
+            sheet.medquantas.doller = Number((sheet.medquantas.rupee / factor.inrToUsd).toFixed(3));
+            sheet.medquantas.convertrate = factor.inrToUsd || '0.00';
             sheet.markModified("system");
-            sheet.markModified("medopharm");
+            sheet.markModified("medquantas");
             await sheet.save();
         }
     } catch (error) {

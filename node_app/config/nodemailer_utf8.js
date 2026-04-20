@@ -23,8 +23,8 @@ exports.sendMail = async (req, res, next) => {
 
         // setup email data with unicode symbols
         const logoAttachment = {
-            filename: 'medopharm.png',
-            path: path.join(__dirname, '../../media/assets/logo/medopharm.png'),
+            filename: 'medquantas.png',
+            path: path.join(__dirname, '../../media/assets/logo/medquantas.png'),
             cid: 'logo'
         };
 
@@ -92,7 +92,7 @@ exports.sendRawMail = async ({ to, subject, html, attachments }) => {
             }
         });
         const info = await transporter.sendMail({
-            from: `"Medopharm Costing" <${mailEmail}>`,
+            from: `"Medquantas Costing" <${mailEmail}>`,
             to,
             subject,
             html,

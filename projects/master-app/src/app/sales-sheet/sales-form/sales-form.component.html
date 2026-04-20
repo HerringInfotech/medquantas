@@ -72,7 +72,7 @@
                         </div>
                     </div>
                     <div class="shadow-sm p-3 bg-white rounded mt-2" *ngIf="onselectSheet">
-                        <h5 class="mb-3 text-primary border-bottom pb-2">Medopharm Cost Overview</h5>
+                        <h5 class="mb-3 text-primary border-bottom pb-2">Medquantas Cost Overview</h5>
                         <div class="table-responsive">
                             <table class="table table-bordered align-middle text-center mb-0">
                                 <thead class="custom-color bg-gradient">
@@ -90,12 +90,12 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="fw-medium">{{ selectSheet?.medopharm?.name || '-' }}</td>
-                                        <td class="fw-medium">{{ selectSheet?.medopharm?.packtype || '-' }}</td>
-                                        <td class="fw-medium">{{ selectSheet?.medopharm?.api || 0.00 }}</td>
-                                        <td class="fw-medium">₹{{ selectSheet?.medopharm?.rupee || 0.00 }}</td>
-                                        <td class="fw-medium">${{ selectSheet?.medopharm?.doller || 0.00 }}</td>
-                                        <td class="fw-medium">{{ selectSheet?.medopharm?.convertrate || '-' }}
+                                        <td class="fw-medium">{{ selectSheet?.medquantas?.name || '-' }}</td>
+                                        <td class="fw-medium">{{ selectSheet?.medquantas?.packtype || '-' }}</td>
+                                        <td class="fw-medium">{{ selectSheet?.medquantas?.api || 0.00 }}</td>
+                                        <td class="fw-medium">₹{{ selectSheet?.medquantas?.rupee || 0.00 }}</td>
+                                        <td class="fw-medium">${{ selectSheet?.medquantas?.doller || 0.00 }}</td>
+                                        <td class="fw-medium">{{ selectSheet?.medquantas?.convertrate || '-' }}
                                         </td>
                                         <td class="fw-medium">
                                             <input *ngIf="isEditMode" type="number"
@@ -1064,7 +1064,7 @@
 
                     <div class="shadow-sm p-3 bg-white rounded mt-2">
                         <div class="table-responsive">
-                            <h5 class="mb-3 text-primary border-bottom pb-2">Medopharm Cost Overview</h5>
+                            <h5 class="mb-3 text-primary border-bottom pb-2">Medquantas Cost Overview</h5>
                             <table class="table table-bordered align-middle mb-0 text-center">
                                 <thead class="custom-color bg-gradient">
                                     <tr>
@@ -1079,12 +1079,12 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="fw-medium">{{ selectSheet?.medopharm?.name || '-' }}</td>
-                                        <td class="fw-medium">{{ selectSheet?.medopharm?.packtype || '-' }}</td>
-                                        <td class="fw-medium">{{ selectSheet?.medopharm?.api || 0.00 }}</td>
-                                        <td class="fw-medium">₹{{ selectSheet?.medopharm?.rupee || 0.00}}</td>
-                                        <td class="fw-medium">${{ selectSheet?.medopharm?.doller || 0.00 }}</td>
-                                        <td class="fw-medium">{{ selectSheet?.medopharm?.convertrate || '-' }}</td>
+                                        <td class="fw-medium">{{ selectSheet?.medquantas?.name || '-' }}</td>
+                                        <td class="fw-medium">{{ selectSheet?.medquantas?.packtype || '-' }}</td>
+                                        <td class="fw-medium">{{ selectSheet?.medquantas?.api || 0.00 }}</td>
+                                        <td class="fw-medium">₹{{ selectSheet?.medquantas?.rupee || 0.00}}</td>
+                                        <td class="fw-medium">${{ selectSheet?.medquantas?.doller || 0.00 }}</td>
+                                        <td class="fw-medium">{{ selectSheet?.medquantas?.convertrate || '-' }}</td>
                                         <td class="fw-medium">{{ selectSheet?.detailValues?.batch | number:'1.0-0'
                                             }}</td>
                                     </tr>

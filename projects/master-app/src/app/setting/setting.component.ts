@@ -74,9 +74,9 @@ export class SettingComponent implements OnInit {
           this.setting_data.backup_emails = this.setting_data?.backup_emails || [];
           if (this.setting_data.backup_emails.length === 0) {
             this.setting_data.backup_emails = [
-              'dhinesh.rajendran@medopharm.com',
-              'itms@medopharm.com',
-              'usman.kadher@medopharm.com'
+              'dhinesh.rajendran@medquantas.com',
+              'itms@medquantas.com',
+              'usman.kadher@medquantas.com'
             ];
           }
         }
