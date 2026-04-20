@@ -21,7 +21,7 @@ const migrationRoutes = require('./app/routes/migration');
 
 mongoose.set('strictQuery', true);
 // mongoose.connect(env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect('mongodb://mongo_admin:StrongPass123@localhost:27017/medquantas?authSource=admin', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://localhost:27017/medquantas', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(async () => {
         console.log('MongoDB connected successfully');
     })
