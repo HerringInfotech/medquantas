@@ -2,7 +2,7 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AuthService } from '../../shared/auth/auth.service';
 import { FormBuilder, NgForm, Validators } from '@angular/forms';
-import { faEye, faEyeSlash, faEnvelope, faLock, faKey, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash, faEnvelope, faLock, faKey, faCheckCircle, faPrescriptionBottleAlt } from '@fortawesome/free-solid-svg-icons';
 import { ApiService } from '../../shared/api/api.service';
 import { CommonService } from '../../shared/api/common.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
   faLock = faLock
   faKey = faKey
   faCheckCircle = faCheckCircle
+  faPrescriptionBottleAlt = faPrescriptionBottleAlt
   btn_loading = false;
   password_type = "password";
   formValues: Object = {
@@ -41,6 +42,7 @@ export class LoginComponent implements OnInit {
   confirmPassVisible = false;
   passComplexityError = false;
   passMismatchError = false;
+  currentYear: number = new Date().getFullYear();
 
 
   ngOnInit(): void {

@@ -1,63 +1,69 @@
 <div class="container-fluid custom-page">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="mt-3">
-                <div class="mx-auto custom-height">
-                    <div class="row justify-content-center mt-2">
-                        <div class="col-lg-12">
-                            <div class="p-3 px-0">
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <h5 class="mb-0">UOM Master</h5>
-                                    <div>
-                                        <button type="button" class="custom-button border-0"
-                                            *ngIf="hasPermission('UOM.Create')" routerLink="form"
-                                            tooltip="ADD a new UOM"><fa-icon [icon]="faPlus" class="me-1"></fa-icon> ADD</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white rounded-6px table-responsive-sm p-3 shadow-sm">
-                                <app-not-data *ngIf="!measurement_list?.length" [message]="'No UOM found'"
-                                    [route]="'form'" [button]="'Add new UOM'"></app-not-data>
-                                <table
-                                    class="table border table-hover table-striped table-responsive-lg text-center rounded-top"
-                                    *ngIf="measurement_list?.length">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col" class="bg-blue custom-select text-start" tableColumn>
-                                                Name<fa-icon class="mx-1" (click)="toggleSort('name')"
-                                                    [icon]="getSortIcon('name')"></fa-icon></th>
-                                            <th scope="col" class="bg-blue custom-select text-start">
-                                                Abbreviation<fa-icon class="mx-1" (click)="toggleSort('abbr')"
-                                                    [icon]="getSortIcon('abbr')"></fa-icon></th>
-                                            <th scope="col" class="bg-blue">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let data of measurement_list; let index = index"
-                                            class="details-row">
-                                            <td title="name" class="left-align">{{ data?.name }}</td>
-                                            <td title="abbr" class="left-align">{{ data?.abbreviation }}</td>
-                                            <td title="Action" class="text-center">
-                                                <button type="button" class="btn btn-outline-secondary btn-sm mr-1"
-                                                    *ngIf="hasPermission('UOM.Update')" routerLink="form/{{data._id}}">
-                                                    <fa-icon [icon]="faEdit"></fa-icon>
-                                                </button>
-                                                <button type="button" class="btn btn-outline-secondary btn-sm mr-1"
-                                                    [disabled]="!data.is_deleted" *ngIf="hasPermission('UOM.Delete')"
-                                                    (click)="confirm_delete(data)">
-                                                    <fa-icon [icon]="faTrashAlt"></fa-icon>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <app-pagination [data]="pagination_data"></app-pagination>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <!-- Header Section -->
+  <div class="header-card">
+    <h5>UOM Master</h5>
+    <div *ngIf="hasPermission('UOM.Create')">
+      <button type="button" class="custom-button" routerLink="form">
+        <fa-icon [icon]="faPlus"></fa-icon>
+        <span>ADD</span>
+      </button>
     </div>
+  </div>
+
+  <div class="bg-white rounded-6px p-3 shadow-sm">
+    <!-- Filter Section -->
+    <div class="filter-card">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <label class="filter-label">Search by UOM</label>
+          <div class="search-input-group">
+            <input type="text" class="form-control" (keyup)="get_unit(1)" placeholder="Search UOM..."
+              [(ngModel)]="search" />
+            <fa-icon class="search-icon" [icon]="faSearch"></fa-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table Section -->
+    <div class="table-container">
+      <app-not-data *ngIf="!measurement_list?.length" [message]="'No UOM found'" [route]="'form'" [button]="'Add new UOM'">
+      </app-not-data>
+
+      <div *ngIf="measurement_list?.length">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th width="80">S.No</th>
+              <th class="text-start">Name</th>
+              <th width="120">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of measurement_list; let index = index">
+              <td>
+                <span class="fw-bold text-secondary">{{ index + 1 }}</span>
+              </td>
+              <td class="name-column text-start">{{ data?.name }}</td>
+              <td>
+                <button type="button" class="action-btn edit-btn" *ngIf="hasPermission('UOM.Update')"
+                  routerLink="form/{{data._id}}" title="Edit UOM">
+                  <fa-icon [icon]="faEdit"></fa-icon>
+                </button>
+                <button type="button" class="action-btn delete-btn" [disabled]="!data.is_deleted"
+                  *ngIf="hasPermission('UOM.Delete')" (click)="confirm_delete(data)" title="Delete UOM">
+                  <fa-icon [icon]="faTrashAlt"></fa-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="mt-4 d-flex justify-content-end" *ngIf="measurement_list?.length">
+      <app-pagination [data]="pagination_data"></app-pagination>
+    </div>
+  </div>
 </div>

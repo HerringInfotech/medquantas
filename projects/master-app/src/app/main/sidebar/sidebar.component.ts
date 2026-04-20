@@ -226,18 +226,18 @@ export class SidebarComponent implements OnInit {
       title: 'Cost Sheet',
       permission: 'CostSheet.List',
     },
-    // {
-    //   path: '/sales',
-    //   icon: faChartLine,
-    //   title: 'Sales Sheet',
-    //   permission: 'SaleSheet.List',
-    // },
     {
-      path: '/type',
-      title: 'Type Master',
-      icon: faLayerGroup,
-      permission: 'ItemTypeMaster.List',
+      path: '/sales',
+      icon: faChartLine,
+      title: 'Sales Sheet',
+      permission: 'SaleSheet.List',
     },
+    // {
+    //   path: '/type',
+    //   title: 'Type Master',
+    //   icon: faLayerGroup,
+    //   permission: 'ItemTypeMaster.List',
+    // },
     {
       path: '/migration',
       title: 'Data Migration',

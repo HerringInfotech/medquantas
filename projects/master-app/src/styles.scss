@@ -33,11 +33,55 @@
   --mq-radius:        14px;
   --mq-radius-sm:     8px;
 
+  /* Design Token Aliases (for components) */
+  --primary-brand:    var(--mq-accent);
+  --primary-dark:     var(--mq-primary);
+  --bg-card:          var(--mq-white);
+  --bg-page:          var(--mq-bg);
+  --text-primary:     var(--mq-text);
+  --text-secondary:   var(--mq-text-sub);
+  --text-muted:       var(--mq-muted);
+  --radius-md:        var(--mq-radius);
+  --radius-sm:        var(--mq-radius-sm);
+  --card-shadow:      var(--mq-card-shadow);
+  --card-shadow-hover: var(--mq-card-shadow-hover);
+  --danger:           var(--mq-danger);
+
   /* Legacy compat */
   --vz-vertical-menu-item-color: rgba(255,255,255,0.65);
   --vz-vertical-menu-item-hover-color: #ffffff;
   --vz-vertical-menu-item-active-color: #17c3b2;
   --vz-border-width: 0px !important;
+}
+
+/* Global Component Classes */
+.header-card {
+  background: var(--bg-card) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 1.25rem 1.75rem !important;
+  box-shadow: var(--card-shadow) !important;
+  margin-bottom: 1.5rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  border: 1px solid var(--mq-border) !important;
+}
+
+.filter-card {
+  background: var(--bg-card) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 1.5rem 1.75rem !important;
+  box-shadow: var(--card-shadow) !important;
+  margin-bottom: 1.5rem !important;
+  border: 1px solid var(--mq-border) !important;
+}
+
+.table-container {
+  background: var(--bg-card) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--card-shadow) !important;
+  border: 1px solid var(--mq-border) !important;
+  overflow: hidden !important;
 }
 
 .left-align {
@@ -695,7 +739,7 @@ body {
 /* ── Page wrapper ── */
 .custom-page {
   background-color: transparent !important;
-  padding: 28px 32px !important;
+  padding: 16px 20px !important;
 }
 
 /* ── Page header card ── */
@@ -708,15 +752,15 @@ body {
   border: 1px solid $pharma-border !important;
   border-radius: $pharma-radius !important;
   box-shadow: $pharma-shadow !important;
-  padding: 18px 24px !important;
-  margin-bottom: 20px !important;
+  padding: 12px 20px !important;
+  margin-bottom: 16px !important;
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   h5 {
     font-weight: 700 !important;
-    font-size: 20px !important;
+    font-size: 18px !important;
     color: $pharma-dark !important;
     margin-bottom: 0 !important;
     letter-spacing: -0.3px;
@@ -733,9 +777,9 @@ body {
   border-radius: $pharma-radius !important;
   border: 1px solid $pharma-border !important;
   box-shadow: $pharma-shadow !important;
-  padding: 24px !important;
+  padding: 20px !important;
   margin-top: 0 !important;
-  margin-bottom: 24px !important;
+  margin-bottom: 20px !important;
   transition: box-shadow 0.2s ease;
 
   &:hover {
@@ -802,11 +846,11 @@ body {
     color: $pharma-sub !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
-    font-size: 11px !important;
-    letter-spacing: 0.09em !important;
-    background-color: #eaf5f7 !important;
+    font-size: 10px !important; /* Smaller header font */
+    letter-spacing: 0.05em !important;
+    background-color: #f7fbfa !important;
     border-bottom: 2px solid $pharma-border !important;
-    padding: 14px 16px !important;
+    padding: 10px 8px !important; /* Condense padding */
     white-space: nowrap;
   }
 
@@ -814,11 +858,11 @@ body {
     transition: background 0.15s ease;
 
     td {
-      padding: 14px 16px !important;
+      padding: 10px 8px !important; /* Condense padding */
       border-bottom: 1px solid #e8f2f4 !important;
       color: $pharma-text !important;
       vertical-align: middle;
-      font-size: 13.5px !important;
+      font-size: 13px !important; /* Slightly smaller row font */
       background-color: transparent !important;
     }
 
@@ -881,4 +925,111 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 6px;
+}
+
+/* ── Prevent wrapping for Action Buttons ── */
+.action-col, 
+td:last-child, 
+th:last-child {
+  white-space: nowrap !important;
+  text-align: center !important;
+  min-width: 90px !important;
+}
+
+/* ── Prevent Page Scroll ── */
+.custom-page {
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+}
+
+.table-responsive {
+  border-radius: var(--radius-md) !important;
+  scrollbar-width: thin;
+  scrollbar-color: var(--mq-border) transparent;
+  
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+}
+
+/* ── Ensure all pages have unique but consistent pharma identity ── */
+.custom-page {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.table-container {
+  border-radius: var(--radius-md) !important;
+  overflow: hidden !important;
+  border: 1px solid var(--mq-border) !important;
+  background: var(--mq-white) !important;
+}
+
+/* ── Definitive Global Action Buttons (Teal Pharma) ── */
+.action-btn {
+  width: 30px !important;
+  height: 30px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 8px !important;
+  border: none !important; /* Force remove any borders */
+  margin: 0 3px !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  font-size: 13px !important;
+  cursor: pointer !important;
+  background: rgba(11, 94, 110, 0.05) !important; /* Default subtle teal tint */
+  box-shadow: none !important;
+
+  /* Standard color icons */
+  fa-icon { transition: transform 0.2s ease; }
+  
+  &:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(11, 94, 110, 0.12) !important;
+    
+    fa-icon { transform: scale(1.1); }
+  }
+
+  /* Specific Button Tints */
+  &.edit-btn {
+    background: rgba(0, 168, 150, 0.1) !important;
+    color: var(--mq-accent) !important;
+    fa-icon { color: var(--mq-accent) !important; }
+    &:hover { background: var(--mq-accent) !important; color: white !important; fa-icon { color: white !important; } }
+  }
+
+  &.view-btn {
+    background: rgba(59, 130, 246, 0.1) !important;
+    color: #3b82f6 !important;
+    fa-icon { color: #3b82f6 !important; }
+    &:hover { background: #3b82f6 !important; color: white !important; fa-icon { color: white !important; } }
+  }
+
+  &.delete-btn {
+    background: rgba(230, 57, 70, 0.1) !important;
+    color: var(--mq-danger) !important;
+    fa-icon { color: var(--mq-danger) !important; }
+    &:hover { background: var(--mq-danger) !important; color: white !important; fa-icon { color: white !important; } }
+  }
+
+  &.log-btn {
+    background: rgba(11, 94, 110, 0.1) !important;
+    color: var(--mq-primary) !important;
+    fa-icon { color: var(--mq-primary) !important; }
+    &:hover { background: var(--mq-primary) !important; color: white !important; fa-icon { color: white !important; } }
+  }
+
+  &:disabled {
+    opacity: 0.4 !important;
+    cursor: not-allowed !important;
+    background: #f1f5f9 !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
 }

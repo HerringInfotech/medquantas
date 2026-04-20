@@ -5,6 +5,7 @@ import { PermissionService } from '../shared/permission/permission.service';
 import {
   faEdit,
   faPlus,
+  faSearch,
   faSort,
   faSortUp,
   faTrashAlt,
@@ -25,16 +26,25 @@ export class ConversionFactorMasterComponent implements OnInit {
   faTrashAlt = faTrashAlt;
   faEdit = faEdit;
   faPlus = faPlus;
+  faSearch = faSearch;
   faSortUp = faSortUp;
   faSort = faSort;
+  search = '';
   isActive: boolean = false;
   private isActiveSub: Subscription;
 
   constructor(
     private api: ApiService,
     private permission: PermissionService,
-    public currencyService: CurrencyService
-  ) {}
+    public currencyService: CurrencyService,
+    private common: CommonService
+  ) {
+    this.common.delete_detail.subscribe(value => {
+      if (value.page == 'conversionFactor') {
+        this.delete(value.id);
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.getConversionFactors();
@@ -65,5 +75,19 @@ export class ConversionFactorMasterComponent implements OnInit {
 
   hasPermission(permissionName: string): boolean {
     return this.permission.hasPermission(permissionName);
+  }
+
+  delete(id) {
+    let params = { id: id }
+    this.api.post('delete_conversion_factor', params).subscribe((response) => {
+      this.getConversionFactors();
+      this.common.alert({ msg: response.message, type: (response.status) ? 'success' : 'danger' });
+    })
+  }
+
+  confirm_delete(data) {
+    data.page = "conversionFactor";
+    data.message = "Are you sure to delete this Conversion Factor?";
+    this.common.set_delete_confirmation_data(data);
   }
 }

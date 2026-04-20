@@ -1,35 +1,134 @@
-td[title='name'] {
-    max-width: 100px;
-    overflow-x: scroll;
-    text-wrap: nowrap;
+/* ==========================================================================
+   CUSTOMER MASTER STYLES - TEAL PHARMA
+   ========================================================================== */
+
+.custom-page {
+    padding: 1.5rem !important;
+    background-color: transparent !important;
 }
 
-td[title='address'] {
-    max-width: 100px;
-    overflow-x: scroll;
-    // text-wrap: nowrap;
-    white-space: nowrap;
+.header-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    padding: 1.25rem 1.75rem;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h5 {
+        font-weight: 800;
+        font-size: 1.25rem;
+        color: var(--text-primary);
+        margin: 0;
+        letter-spacing: -0.02em;
+    }
+}
+
+.filter-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    padding: 1.5rem 1.75rem;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 1rem;
+}
+
+.filter-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+    margin-bottom: 0.4rem;
+    display: block;
+}
+
+.search-input-group {
+    position: relative;
+
+    .form-control {
+        padding-right: 2.5rem !important;
+        height: 40px;
+        background: #f8fafc !important;
+        border: 1.5px solid #e2e8f0 !important;
+        font-size: 0.85rem;
+
+        &:focus {
+            background: #fff !important;
+            border-color: var(--primary-brand) !important;
+            box-shadow: 0 0 0 4px rgba(0, 168, 150, 0.1) !important;
+        }
+    }
+
+    .search-icon {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+}
+
+.table-container {
+    background: white;
+    border-radius: var(--radius-md);
     overflow: hidden;
-    text-overflow: ellipsis;
+    box-shadow: var(--card-shadow);
 }
 
-td[title="name"]::-webkit-scrollbar {
-    height: 5px;
+.table {
+    margin: 0;
+
+    thead th {
+        background: #f8fafc !important;
+        color: var(--text-secondary) !important;
+        font-weight: 700 !important;
+        font-size: 0.7rem !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.05em !important;
+        padding: 1rem 1.5rem !important;
+        border-bottom: 2px solid #edf2f7 !important;
+        text-align: center;
+    }
+
+    tbody td {
+        padding: 1rem 1.5rem !important;
+        border-bottom: 1px solid #edf2f7 !important;
+        vertical-align: middle;
+        text-align: center;
+        font-size: 0.85rem;
+    }
 }
 
-td[title="name"]::-webkit-scrollbar-track {
-    background: #f1f1f1;
+.name-column {
+    text-align: left !important;
+    font-weight: 600;
 }
 
-td[title="name"]::-webkit-scrollbar-thumb {
-    background: #ccc;
-}
+.action-btn {
+    width: 32px;
+    height: 32px;
+    padding: 0 !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px !important;
+    border: 1.5px solid transparent !important;
+    margin: 0 3px;
+    transition: all 0.2s ease;
+    font-size: 0.85rem;
 
-td[title="name"]::-webkit-scrollbar-thumb:hover {
-    background: #ccc;
-}
+    &.edit-btn {
+        background: rgba(0, 168, 150, 0.1) !important;
+        color: var(--primary-brand) !important;
+        &:hover { background: var(--primary-brand) !important; color: white !important; }
+    }
 
-:host ::ng-deep .bg-blue {
-    background-color: transparent;
-    color: inherit;
+    &.delete-btn {
+        background: rgba(239, 68, 68, 0.1) !important;
+        color: var(--danger) !important;
+        &:hover { background: var(--danger) !important; color: white !important; }
+    }
 }

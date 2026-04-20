@@ -49,13 +49,13 @@
 }
 
 .content {
-  margin-left: 70px;
+  margin-left: 68px;
   background-color: #f0f6f8 !important;  /* pharma clinical bg */
   min-height: 100vh;
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 
   &.sidebarExpanded {
-    margin-left: 275px;
+    margin-left: 240px;
   }
 }
 
@@ -63,14 +63,15 @@
   position: fixed;
   top: 0;
   right: 0;
-  width: calc(100% - 70px);
+  width: calc(100% - 68px);
   z-index: 999;
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   
   .sidebarExpanded & {
-    width: calc(100% - 275px);
+    width: calc(100% - 240px);
   }
 }
+
 
 /* Welcome Modal Premium Styling */
 :host ::ng-deep .welcome-modal-premium {

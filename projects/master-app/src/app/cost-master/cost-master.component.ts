@@ -33,7 +33,7 @@ export class CostMasterComponent implements OnInit {
   faEllipsisV = faEllipsisV;
   faEye = faEye;
   pagination_data;
-  page_loading: Boolean = false;
+  page_loading: Boolean = true;
   btn_loading: Boolean = false;
   selectedbom = '';
   search = '';
@@ -102,7 +102,7 @@ export class CostMasterComponent implements OnInit {
 
   get_sheet(page) {
     // this.spinner.show();
-    this.page_loading = false;
+    this.page_loading = true;
     let params = {
       pagination: 'true',
       page: page,
@@ -116,7 +116,7 @@ export class CostMasterComponent implements OnInit {
     };
     this.api.post('get_sheet', params).subscribe((response) => {
       // this.spinner.hide();
-      this.page_loading = true;
+      this.page_loading = false;
       if (response.status) {
         this.bom_list = response.data?.sheets.docs;
         this.pagination_data = response.data.sheets;

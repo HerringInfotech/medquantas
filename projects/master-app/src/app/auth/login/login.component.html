@@ -10,6 +10,10 @@
       <p class="mq-brand-tagline">Intelligent Costing &amp; Inventory Platform</p>
 
       <div class="mq-features">
+        <div class="mq-features-header">
+          <fa-icon [icon]="faPrescriptionBottleAlt" class="mq-pharmacy-icon"></fa-icon>
+          <span>Pharmaceutical Standards</span>
+        </div>
         <div class="mq-feature-item">
           <span class="mq-feature-dot"></span>
           <span>Real-time BOM &amp; Cost Management</span>
@@ -28,6 +32,15 @@
       <div class="circle c1"></div>
       <div class="circle c2"></div>
       <div class="circle c3"></div>
+      <!-- Pharmacy Animations -->
+      <div class="mq-pill p1"></div>
+      <div class="mq-pill p2"></div>
+      <div class="mq-pill p3"></div>
+      <div class="mq-pill p4"></div>
+      <!-- Biotech Particles -->
+      <div class="mq-atom" style="top: 20%; left: 40%; animation-delay: 0s;"></div>
+      <div class="mq-atom" style="top: 70%; left: 10%; animation-delay: 2s;"></div>
+      <div class="mq-atom" style="top: 40%; right: 20%; animation-delay: 4s;"></div>
     </div>
   </div>
 
@@ -104,7 +117,7 @@
       </div>
 
       <div class="mq-form-footer">
-        &copy; 2025 MedQuantas. All rights reserved.
+        &copy; {{ currentYear }} MedQuantas. All rights reserved.
       </div>
 
     </div>

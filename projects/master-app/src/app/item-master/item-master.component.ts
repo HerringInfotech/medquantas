@@ -31,7 +31,7 @@ import { ViewChild, ElementRef } from '@angular/core';
 export class ItemMasterComponent implements OnInit {
   @ViewChild('fileInput') fileInput: ElementRef;
   page = 1;
-  page_loading: Boolean = false;
+  page_loading: Boolean = true;
   btn_loading: Boolean = false;
   item;
   pagination_data;

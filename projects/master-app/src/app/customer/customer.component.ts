@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../shared/api/api.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CommonService } from '../shared/api/common.service';
-import { faEdit, faSearch, faSort, faSortUp, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faPlus, faSearch, faSort, faSortUp, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { PermissionService } from '../shared/permission/permission.service';
 import * as ExcelJS from 'exceljs/dist/exceljs.min.js';
 
@@ -14,6 +14,7 @@ import * as ExcelJS from 'exceljs/dist/exceljs.min.js';
 })
 export class CustomerComponent implements OnInit {
   faTrashAlt = faTrashAlt;
+  faPlus = faPlus;
   faEdit = faEdit;
   customer;
   page_loading: Boolean = false;

@@ -26,7 +26,7 @@ export class BomMasterComponent implements OnInit {
   faClipboard = faClipboard;
   faCheckCircle = faCheckCircle;
   pagination_data;
-  page_loading: Boolean = false;
+  page_loading: Boolean = true;
   btn_loading: Boolean = false;
   locations = [];
   selectedbom = '';
@@ -88,7 +88,7 @@ export class BomMasterComponent implements OnInit {
 
   get_bom(page) {
     // this.spinner.show();
-    this.page_loading = false;
+    this.page_loading = true;
     let params = {
       pagination: "true",
       page: page,
@@ -101,7 +101,7 @@ export class BomMasterComponent implements OnInit {
     }
     this.api.post('get_bom', params).subscribe((response) => {
       // this.spinner.hide();
-      this.page_loading = true;
+      this.page_loading = false;
       this.bom_list = response.data.boms.docs
       this.pagination_data = response.data.boms;
       this.common.set_pagination_data(this.pagination_data, 'bommaster');

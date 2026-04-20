@@ -16,7 +16,9 @@ const routes: Routes = [
       { path: 'item', canActivate: [AuthGuard], data: { permission: 'ItemMaster.List' }, loadChildren: () => import('../item-master/item-master.module').then(m => m.ItemMasterModule) },
       { path: 'price', canActivate: [AuthGuard], data: { permission: 'Pricemaster.List' }, loadChildren: () => import('../price-master/price-master.module').then(m => m.PriceMasterModule) },
       { path: 'pack', canActivate: [AuthGuard], data: { permission: 'Packmaster.List' }, loadChildren: () => import('../pack-master/pack-master.module').then(m => m.PackMasterModule) },
-      { path: 'type', canActivate: [AuthGuard], data: { permission: 'ItemTypeMaster.List' }, loadChildren: () => import('../type-master/type-master.module').then(m => m.TypeMasterModule) },
+      { path: 'sales', canActivate: [AuthGuard], data: { permission: 'SaleSheet.List' }, loadChildren: () => import('../sales-sheet/sales-sheet.module').then(m => m.SalesSheetModule) },
+
+      // { path: 'type', canActivate: [AuthGuard], data: { permission: 'ItemTypeMaster.List' }, loadChildren: () => import('../type-master/type-master.module').then(m => m.TypeMasterModule) },
       { path: 'stage', canActivate: [AuthGuard], data: { permission: 'StageMaster.List' }, loadChildren: () => import('../stage-master/stage-master.module').then(m => m.StageMasterModule) },
       { path: 'logs', canActivate: [AuthGuard], data: { permission: 'ActivityLogs.List' }, loadChildren: () => import('../activity-logs/activity-log.module').then(m => m.ActivityLogModule) },
       { path: 'conversionfactor', canActivate: [AuthGuard], data: { permission: 'ConversionFactorMaster.List' }, loadChildren: () => import('../conversion-factor-master/conversion-factor-master.module').then(m => m.ConversionFactorModule) },
