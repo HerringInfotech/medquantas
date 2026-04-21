@@ -10,10 +10,10 @@ class migrationService {
       return this.mysqlConnection;
     }
     this.mysqlConnection = mysql.createConnection({
-      host: '10.1.101.22',
+      host: '187.127.142.52',
       port: 3306,
-      user: 'readonlyuser',
-      password: 'MPL@#$2023',
+      user: 'root',
+      password: 'Zyx098abc',
       database: 'perp2012'
     });
 
