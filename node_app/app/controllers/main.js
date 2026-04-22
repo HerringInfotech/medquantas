@@ -1631,9 +1631,7 @@ async function backupDatabase() {
 
         // Send Email Notification
         const setting = await Setting.findOne().sort({ createdAt: -1 }).lean();
-        const recipients = Array.isArray(setting?.backup_emails) && setting.backup_emails.length
-          ? setting.backup_emails
-          : ['dhinesh.rajendran@medquantas.com', 'itms@medquantas.com', 'usman.kadher@medquantas.com'];
+        const recipients = setting.backup_emails
 
         const logoPath = path.join(process.cwd(), 'media', 'assets', 'logo', 'medquantas.png');
         const emailBody = `

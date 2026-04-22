@@ -108,8 +108,7 @@ exports.forgotpassword = async (req, res, next) => {
         return res.apiResponse(false, "Email does not exist")
     }
     else {
-        // var token = crypto.randomBytes(3).toString('hex');
-        var token = "123456";
+        var token = crypto.randomBytes(3).toString('hex');
         var mail_data = {}
         mail_data.user_name = user.name;
         mail_data.site_name = commonHelper.siteName();

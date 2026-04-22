@@ -72,13 +72,6 @@ export class SettingComponent implements OnInit {
           this.setting_data.alert_emails = this.setting_data?.alert_emails || [];
           this.backup_time = this.setting_data?.backup_time || '00:00';
           this.setting_data.backup_emails = this.setting_data?.backup_emails || [];
-          if (this.setting_data.backup_emails.length === 0) {
-            this.setting_data.backup_emails = [
-              'dhinesh.rajendran@medquantas.com',
-              'itms@medquantas.com',
-              'usman.kadher@medquantas.com'
-            ];
-          }
         }
         this.daily_report_recipients = (this.setting_data?.alert_emails || []).join(', ');
         this.formValues = {
