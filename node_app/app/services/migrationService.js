@@ -9,21 +9,21 @@ class migrationService {
     if (this.mysqlConnection && this.mysqlConnection.state === "authenticated") {
       return this.mysqlConnection;
     }
-    this.mysqlConnection = mysql.createConnection({
-      host: '127.0.0.1',
-      port: 3306,
-      user: 'root',
-      password: 'Zyx098abc',
-      database: 'perp2012'
-    });
-
     // this.mysqlConnection = mysql.createConnection({
     //   host: '127.0.0.1',
     //   port: 3306,
     //   user: 'root',
-    //   password: '',
+    //   password: 'Zyx098abc',
     //   database: 'perp2012'
     // });
+
+    this.mysqlConnection = mysql.createConnection({
+      host: '127.0.0.1',
+      port: 3306,
+      user: 'root',
+      password: '',
+      database: 'perp2012'
+    });
 
     return new Promise((resolve, reject) => {
       this.mysqlConnection.connect((err) => {
@@ -75,7 +75,7 @@ class migrationService {
       let whereConditions = [];
       let queryParams = [];
 
-      if (fromDate) {
+      if (fromDate && false) {
         whereConditions.push(`(ItemCrtDt >= ? OR MstUpdDtTm >= ?)`);
         queryParams.push(fromDate, fromDate);
       }
@@ -163,7 +163,7 @@ class migrationService {
     return new Promise((resolve, reject) => {
       let whereClause = `WHERE g.TxTpCd = 'GRN'`;
       let queryParams = [];
-      if (fromDate) {
+      if (fromDate && false) {
         whereClause += ` AND g.rdbts >= ?`;
         queryParams = [fromDate];
       }
@@ -218,7 +218,7 @@ class migrationService {
       let queryParams = [];
 
 
-      if (fromDate) {
+      if (fromDate && false) {
         whereClause = `AND bd.rdbts >= ?`;
         queryParams = [fromDate];
       }
