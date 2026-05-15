@@ -13,7 +13,7 @@
 
       <button type="button" class="custom-button py-2" routerLink="form" title="Generate New Cost Sheet">
         <fa-icon [icon]="faPlus"></fa-icon>
-        <span class="d-none d-sm-inline">GENERATE COST SHEET</span>
+        <span class="d-none d-sm-inline">ADD</span>
       </button>
     </div>
   </div>
@@ -123,7 +123,7 @@
                 <span class="location-badge">{{ data?.locCd }}</span>
               </td>
               <td class="text-end text-muted small">{{ data?.detailValues?.batch | number }}</td>
-              <td class="text-end fw-bold">₹{{ data?.medquantas?.rupee | number : "1.0-3" }}</td>
+              <td class="text-end fw-bold" style="background-color: #fff3cd; color: #856404;">₹{{ data?.medquantas?.rupee | number : "1.0-3" }}</td>
               <td class="text-end fw-bold text-success d-none d-sm-table-cell">${{ data?.medquantas?.doller | number :
                 "1.0-3" }}</td>
               <td>

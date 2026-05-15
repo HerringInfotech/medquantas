@@ -572,16 +572,26 @@
                   <th scope="col" class="custom-color bg-gradient text-white text-start excel">
                     QTY
                   </th>
+                  <th scope="col" class="custom-color bg-gradient text-white text-end excel"></th>
+                  <th scope="col" class="custom-color bg-gradient text-white text-end excel"></th>
+                  <th scope="col" class="custom-color bg-gradient text-white text-end excel"></th>
+                  <th scope="col" class="custom-color bg-gradient text-white text-end excel"></th>
                   <th scope="col" class="custom-color bg-gradient text-white text-end excel">
-                    RATE 1000s
+                    TOTAL
                   </th>
                   <th scope="col" class="custom-color bg-gradient text-white text-end excel">
-                    RATE 10s
+                    VALUE
                   </th>
                   <th scope="col" class="custom-color bg-gradient text-white text-end excel">
-                    additional 100s upto 1000s
+                    MAT VAL
                   </th>
-                  <th scope="col" colspan="9" class="custom-color bg-gradient text-white text-end"></th>
+                  <th scope="col" class="custom-color bg-gradient text-white text-end excel">
+                    NET AMT
+                  </th>
+                  <th scope="col" class="custom-color bg-gradient text-white text-end excel">
+                    COST
+                  </th>
+                  <th scope="col" colspan="4" class="custom-color bg-gradient text-white text-end"></th>
                 </tr>
                 <tr>
                   <th scope="col" colspan="2" class="text-start">FOR MANUFACTURING</th>
@@ -850,7 +860,7 @@
                     {{ system?.packtype }}
                   </td>
                   <td scope="col" class="text-center">{{ system?.api }}</td>
-                  <td scope="col" class="text-center">
+                  <td scope="col" class="text-center fw-bold" style="background-color: #fff3cd; color: #856404;">
                     ₹{{ system?.rupee }}
                   </td>
                   <td scope="col" class="text-center">
@@ -900,7 +910,7 @@
                     {{ medquantas?.packtype }}
                   </td>
                   <td scope="col" class="text-center">{{ medquantas?.api }}</td>
-                  <td scope="col" class="text-center">
+                  <td scope="col" class="text-center fw-bold" style="background-color: #fff3cd; color: #856404;">
                     ₹{{ medquantas?.rupee }}
                   </td>
                   <td scope="col" class="text-center">
@@ -1017,7 +1027,7 @@
             <td scope="col" colspan="1">{{ system?.name }}</td>
             <td scope="col" colspan="2">{{ system?.packtype }}</td>
             <td scope="col" colspan="2">{{ system?.api }}</td>
-            <td scope="col" colspan="2">₹{{ system?.rupee }}</td>
+            <td scope="col" colspan="2" class="fw-bold" style="background-color: #fff3cd; color: #856404;">₹{{ system?.rupee }}</td>
             <td scope="col" colspan="2">${{ system?.doller }}</td>
             <td scope="col" colspan="2">{{ system?.convertrate }}</td>
             <td scope="col" colspan="2">{{ sheetData?.detailValues?.batch || '-' }}</td>
@@ -1060,7 +1070,7 @@
               {{ medquantas?.packtype }}
             </td>
             <td scope="col" colspan="2" class="text-start">{{ medquantas?.api }}</td>
-            <td scope="col" colspan="2" class="text-start">
+            <td scope="col" colspan="2" class="text-start fw-bold" style="background-color: #fff3cd; color: #856404;">
               ₹{{ medquantas?.rupee }}
             </td>
             <td scope="col" colspan="2" class="text-start">

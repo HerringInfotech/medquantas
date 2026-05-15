@@ -19,7 +19,7 @@
         <div class="bg-white rounded shadow-sm p-4 mt-2">
           <div class="col-lg-12 mx-auto">
             <div class="row">
-              <div class="form-group col-lg-3 col-md-3">
+              <div class="form-group col-lg-3 col-md-3" *ngIf="!sheetID">
                 <mat-label style="font-weight: bold">Unit / Location</mat-label>
                 <mat-form-field appearance="outline" class="w-100 mt-1">
                   <mat-label>Select Location</mat-label>
@@ -622,22 +622,25 @@
                   <th scope="col" class="custom-color bg-gradient text-white text-start">
                     QTY
                   </th>
+                  <th scope="col" class="custom-color bg-gradient text-white text-end"></th>
+                  <th scope="col" class="custom-color bg-gradient text-white text-end"></th>
+                  <th scope="col" class="custom-color bg-gradient text-white text-end"></th>
+                  <th scope="col" class="custom-color bg-gradient text-white text-end"></th>
                   <th scope="col" class="custom-color bg-gradient text-white text-end">
-                    RATE 1000s
+                    TOTAL
                   </th>
                   <th scope="col" class="custom-color bg-gradient text-white text-end">
-                    RATE 10s
+                    VALUE
                   </th>
                   <th scope="col" class="custom-color bg-gradient text-white text-end">
-                    additioal 100s upto 1000s
+                    MAT VAL
                   </th>
-                  <th scope="col" class="custom-color bg-gradient text-white text-end"></th>
-                  <th scope="col" class="custom-color bg-gradient text-white text-end"></th>
-                  <th scope="col" class="custom-color bg-gradient text-white text-end"></th>
-                  <th scope="col" class="custom-color bg-gradient text-white text-end"></th>
-                  <th scope="col" class="custom-color bg-gradient text-white text-end"></th>
-                  <th scope="col" class="custom-color bg-gradient text-white text-end"></th>
-                  <th scope="col" class="custom-color bg-gradient text-white text-end"></th>
+                  <th scope="col" class="custom-color bg-gradient text-white text-end">
+                    NET AMT
+                  </th>
+                  <th scope="col" class="custom-color bg-gradient text-white text-end">
+                    COST
+                  </th>
                 </tr>
                 <tr>
                   <th scope="col" class="text-end"></th>
@@ -922,7 +925,7 @@
                     {{ system?.packtype }}
                   </td>
                   <td scope="col" class="text-center">{{ system?.api || 0.00 }}</td>
-                  <td scope="col" class="text-center">₹{{ system?.rupee || 0.00 }}</td>
+                  <td scope="col" class="text-center fw-bold" style="background-color: #fff3cd; color: #856404;">₹{{ system?.rupee || 0.00 }}</td>
                   <td scope="col" class="text-center">
                     ${{ system?.doller || 0.00 }}
                   </td>
@@ -968,7 +971,7 @@
                     {{ medquantas?.packtype }}
                   </td>
                   <td scope="col" class="text-center">{{ medquantas?.api || 0.00 }}</td>
-                  <td scope="col" class="text-center">₹{{ medquantas?.rupee || 0.00}}</td>
+                  <td scope="col" class="text-center fw-bold" style="background-color: #fff3cd; color: #856404;">₹{{ medquantas?.rupee || 0.00}}</td>
                   <td scope="col" class="text-center">
                     ${{ medquantas?.doller || 0.00 }}
                   </td>

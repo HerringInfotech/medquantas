@@ -9,12 +9,8 @@
                     <div ngbDropdown placement="bottom-right">
                         <button type="button" class="btn rounded-0 outline-0 border-0" id="profile" ngbDropdownToggle>
                             <div class="top-container text-start">
-                                <div class="border-0" *ngIf="user && user?.image ">
-                                    <img class="profile-image rounded-circle  p-1" [src]="user.original_image" alt="">
-                                </div>
-                                <div *ngIf="!user?.image">
-                                    <img class="profile-image rounded-circle  p-1" src="/assets/images/profile.png"
-                                        alt="">
+                                <div>
+                                    <img class="profile-image rounded-circle p-1" src="assets/images/profile.png" alt="">
                                 </div>
                                 <div class="ms-1">
                                     <h5 class="name ">{{ user?.name}}</h5>

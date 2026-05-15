@@ -93,7 +93,7 @@
                                         <td class="fw-medium">{{ selectSheet?.medquantas?.name || '-' }}</td>
                                         <td class="fw-medium">{{ selectSheet?.medquantas?.packtype || '-' }}</td>
                                         <td class="fw-medium">{{ selectSheet?.medquantas?.api || 0.00 }}</td>
-                                        <td class="fw-medium">₹{{ selectSheet?.medquantas?.rupee || 0.00 }}</td>
+                                        <td class="fw-medium" style="background-color: #fff3cd; color: #856404;">₹{{ selectSheet?.medquantas?.rupee || 0.00 }}</td>
                                         <td class="fw-medium">${{ selectSheet?.medquantas?.doller || 0.00 }}</td>
                                         <td class="fw-medium">{{ selectSheet?.medquantas?.convertrate || '-' }}
                                         </td>
@@ -1082,7 +1082,7 @@
                                         <td class="fw-medium">{{ selectSheet?.medquantas?.name || '-' }}</td>
                                         <td class="fw-medium">{{ selectSheet?.medquantas?.packtype || '-' }}</td>
                                         <td class="fw-medium">{{ selectSheet?.medquantas?.api || 0.00 }}</td>
-                                        <td class="fw-medium">₹{{ selectSheet?.medquantas?.rupee || 0.00}}</td>
+                                        <td class="fw-medium" style="background-color: #fff3cd; color: #856404;">₹{{ selectSheet?.medquantas?.rupee || 0.00}}</td>
                                         <td class="fw-medium">${{ selectSheet?.medquantas?.doller || 0.00 }}</td>
                                         <td class="fw-medium">{{ selectSheet?.medquantas?.convertrate || '-' }}</td>
                                         <td class="fw-medium">{{ selectSheet?.detailValues?.batch | number:'1.0-0'
@@ -1123,7 +1123,7 @@
                                             {{ selectSheet?.system?.packtype }}
                                         </td>
                                         <td scope="col" class="text-center">{{ selectSheet?.system?.api || 0.00 }}</td>
-                                        <td scope="col" class="text-center">₹{{ selectSheet?.system?.rupee || 0.00 }}
+                                        <td scope="col" class="text-center fw-bold" style="background-color: #fff3cd; color: #856404;">₹{{ selectSheet?.system?.rupee || 0.00 }}
                                         </td>
                                         <td scope="col" class="text-center">
                                             ${{ selectSheet?.system?.doller || 0.00 }}

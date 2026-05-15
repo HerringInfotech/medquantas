@@ -42,10 +42,9 @@ export class UserActivityComponent implements OnInit {
   };
 
   modules = [
-    'All', 'Authentication', 'BOM', 'Cost Sheet', 'Sales Sheet',
-    'Item Master', 'FG Master', 'Price Master', 'Pack Master',
-    'Stage Master', 'UOM Master', 'Customer Master',
-    'Conversion Factor', 'Item Group', 'Item Type', 'User Management',
+    'All', 'BOM', 'Cost Sheet', 'Sales Sheet',
+    'Item Master', 'Price Master', 'Pack Master', 'Authentication',
+    'Conversion Factor', 'User Management',
     'Settings', 'Other'
   ];
 
