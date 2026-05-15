@@ -121,50 +121,12 @@ class migrationService {
     });
   }
 
-  // async fetchGrnDataFromMySQL(fromDate) {
-  //   return new Promise((resolve, reject) => {
-  //     let whereClause = '';
-  //     let queryParams = [];
-  //     if (false && fromDate) {
-  //       whereClause = `WHERE g.rdbts >= ?`;
-  //       queryParams = [fromDate];
-  //     }
-  //     const query = `
-  //     SELECT 
-  //       g.ItemCd AS code,
-  //       g.BsRt AS rate,
-  //       g.rdbts AS reb_date,
-  //       g.TrCurCd AS currency,
-  //       g.TrToPrRt AS conversion_factor,
-  //       h.IGRt AS gst
-  //     FROM grnitbt g
-  //     LEFT JOIN HSNMST h ON g.HSNSACCd = h.HSNSACCd
-  //     INNER JOIN (
-  //       SELECT ItemCd, MAX(rdbts) AS latest_rdbts
-  //       FROM grnitbt
-  //       GROUP BY ItemCd
-  //     ) sub ON g.ItemCd = sub.ItemCd AND g.rdbts = sub.latest_rdbts
-  //      ${whereClause}
-  //     ORDER BY g.ItemCd;
-  //   `;
-
-  //     this.mysqlConnection.query(query, queryParams, (error, results) => {
-  //       if (error) {
-  //         console.error('Error fetching GRN data from MySQL:', error);
-  //         return reject(error);
-  //       }
-  //       return resolve(results);
-  //     });
-  //   });
-  // }
-
-
   async fetchGrnDataFromMySQL(fromDate) {
     return new Promise((resolve, reject) => {
-      let whereClause = `WHERE g.TxTpCd = 'GRN'`;
+      let whereClause = '';
       let queryParams = [];
-      if (fromDate && false) {
-        whereClause += ` AND g.rdbts >= ?`;
+      if (false && fromDate) {
+        whereClause = `WHERE g.rdbts >= ?`;
         queryParams = [fromDate];
       }
       const query = `
@@ -174,19 +136,16 @@ class migrationService {
         g.rdbts AS reb_date,
         g.TrCurCd AS currency,
         g.TrToPrRt AS conversion_factor,
-        g.GrnId,
-        g.UnqKey,
         h.IGRt AS gst
       FROM grnitbt g
-      LEFT JOIN hsnmst h ON g.HSNSACCd = h.HSNSACCd
+      LEFT JOIN HSNMST h ON g.HSNSACCd = h.HSNSACCd
       INNER JOIN (
         SELECT ItemCd, MAX(rdbts) AS latest_rdbts
         FROM grnitbt
-        WHERE TxTpCd = 'GRN'
         GROUP BY ItemCd
       ) sub ON g.ItemCd = sub.ItemCd AND g.rdbts = sub.latest_rdbts
        ${whereClause}
-      ORDER BY g.ItemCd, g.rdbts DESC, g.GrnId DESC, g.UnqKey DESC;
+      ORDER BY g.ItemCd;
     `;
 
       this.mysqlConnection.query(query, queryParams, (error, results) => {
@@ -194,21 +153,63 @@ class migrationService {
           console.error('Error fetching GRN data from MySQL:', error);
           return reject(error);
         }
-
-        // JS Deduplication to pick absolute latest if timestamps are exactly tied
-        const uniqueResults = [];
-        const itemMap = new Set();
-        for (const row of results) {
-          if (!itemMap.has(row.code)) {
-            itemMap.add(row.code);
-            uniqueResults.push(row);
-          }
-        }
-
-        return resolve(uniqueResults);
+        return resolve(results);
       });
     });
   }
+
+
+  // async fetchGrnDataFromMySQL(fromDate) {
+  //   return new Promise((resolve, reject) => {
+  //     // let whereClause = `WHERE g.TxTpCd = 'GRN'`;
+  //     let whereClause = '';
+  //     let queryParams = [];
+  //     if (fromDate && false) {
+  //       whereClause += ` AND g.rdbts >= ?`;
+  //       queryParams = [fromDate];
+  //     }
+  //     const query = `
+  //     SELECT 
+  //       g.ItemCd AS code,
+  //       g.BsRt AS rate,
+  //       g.rdbts AS reb_date,
+  //       g.TrCurCd AS currency,
+  //       g.TrToPrRt AS conversion_factor,
+  //       g.GrnId,
+  //       g.UnqKey,
+  //       h.IGRt AS gst
+  //     FROM grnitbt g
+  //     LEFT JOIN hsnmst h ON g.HSNSACCd = h.HSNSACCd
+  //     INNER JOIN (
+  //       SELECT ItemCd, MAX(rdbts) AS latest_rdbts
+  //       FROM grnitbt
+  //       WHERE TxTpCd = 'GRN'
+  //       GROUP BY ItemCd
+  //     ) sub ON g.ItemCd = sub.ItemCd AND g.rdbts = sub.latest_rdbts
+  //      ${whereClause}
+  //     ORDER BY g.ItemCd, g.rdbts DESC, g.GrnId DESC, g.UnqKey DESC;
+  //   `;
+
+  //     this.mysqlConnection.query(query, queryParams, (error, results) => {
+  //       if (error) {
+  //         console.error('Error fetching GRN data from MySQL:', error);
+  //         return reject(error);
+  //       }
+
+  //       // JS Deduplication to pick absolute latest if timestamps are exactly tied
+  //       const uniqueResults = [];
+  //       const itemMap = new Set();
+  //       for (const row of results) {
+  //         if (!itemMap.has(row.code)) {
+  //           itemMap.add(row.code);
+  //           uniqueResults.push(row);
+  //         }
+  //       }
+
+  //       return resolve(uniqueResults);
+  //     });
+  //   });
+  // }
 
 
 

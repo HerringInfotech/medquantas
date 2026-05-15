@@ -206,43 +206,7 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div class="form-group col-lg-6 col-md-6">
-                  <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>GSIND</mat-label>
-                    <input matInput id="gsindInput" name="gsind" required placeholder="GSIND"
-                      [(ngModel)]="formValues['gsind']" #gsind="ngModel" [ngClass]="{
-                        'is-invalid':
-                          gsind.invalid &&
-                          (gsind.dirty || gsind.touched || formData.submitted)
-                      }" />
-                    <mat-error *ngIf="
-                        gsind.invalid &&
-                        (gsind.dirty || gsind.touched || formData.submitted)
-                      ">
-                      GSIND is required.
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-                <div class="form-group col-lg-6 col-md-6">
-                  <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>HSNSACCD</mat-label>
-                    <input matInput id="hsncodeInput" name="hsnCode" required placeholder="HSNSACCD"
-                      [(ngModel)]="formValues['hsnCode']" #hsncode="ngModel" [ngClass]="{
-                        'is-invalid':
-                          hsncode.invalid &&
-                          (hsncode.dirty ||
-                            hsncode.touched ||
-                            formData.submitted)
-                      }" />
-                    <mat-error *ngIf="
-                        hsncode.invalid &&
-                        (hsncode.dirty || hsncode.touched || formData.submitted)
-                      ">
-                      HSNSACSD is required.
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-
+  
                 <div class="form-group col-lg-6 col-md-6">
                   <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Percentage %</mat-label>
