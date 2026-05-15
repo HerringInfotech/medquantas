@@ -138,7 +138,7 @@ class migrationService {
         g.TrToPrRt AS conversion_factor,
         h.IGRt AS gst
       FROM grnitbt g
-      LEFT JOIN HSNMST h ON g.HSNSACCd = h.HSNSACCd
+      LEFT JOIN hsnmst h ON g.HSNSACCd = h.HSNSACCd
       INNER JOIN (
         SELECT ItemCd, MAX(rdbts) AS latest_rdbts
         FROM grnitbt
