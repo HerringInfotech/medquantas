@@ -28,15 +28,10 @@ exports.sendMail = async (req, res, next) => {
         mail_content += '</div><div style="width: 100%;background: #0c763c;height: 5px;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;"></div></div></div>';
 
         const transporter = nodemailer.createTransport({
-            host: 'smtp.office365.com',
-            port: 587,
-            secure: false, // Use TLS
+            service: 'gmail',
             auth: {
                 user: mailEmail,
                 pass: mailPass
-            },
-            tls: {
-                rejectUnauthorized: false
             }
         });
 
@@ -74,15 +69,10 @@ exports.sendMail = async (req, res, next) => {
 exports.sendRawMail = async ({ to, subject, html, attachments }) => {
     try {
         const transporter = nodemailer.createTransport({
-            host: 'smtp.office365.com',
-            port: 587,
-            secure: false, // Use TLS
+            service: 'gmail',
             auth: {
                 user: mailEmail,
                 pass: mailPass
-            },
-            tls: {
-                rejectUnauthorized: false
             }
         });
 
