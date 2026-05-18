@@ -1,8 +1,8 @@
 const nodemailer = require('nodemailer');
 const _ = require("lodash")
 const path = require('path');
-const mailEmail = process.env.MAIL_USER;
-const mailPass = process.env.MAIL_PASS;
+const mailEmail = process.env.MAIL_USER || 'kuddals07@gmail.com';
+const mailPass = process.env.MAIL_PASS || 'nljlqdevktgdltxx';
 
 
 const getEmailSignature = () => `
