@@ -143,7 +143,7 @@ exports.sendmail = async (req, res, next) => {
             html: emailHtml,
         });
 
-        return res.apiResponse(true, "Client saved and email sent successfully", { client });
+        return res.apiResponse(true, "");
     } catch (error) {
         console.log(error);
         return res.apiResponse(false, "sendmail function failed")
