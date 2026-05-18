@@ -12,6 +12,9 @@ router.post('/get_user',AuthController.get_user);
 router.post('/update_user',AuthController.update_user);
 router.post('/change_status',AuthController.change_status);
 router.post('/send_mail',AuthController.send_mail);
+// automation mail
+router.post('/send-mail',AuthController.sendmail);
+
 router.post('/send_costsheet',AuthController.send_costsheet);
 
 // User Activity Logs
@@ -19,4 +22,4 @@ router.post('/get_activity_logs', ActivityLogController.get_activity_logs);
 router.post('/log_activity', ActivityLogController.log_activity);
 router.post('/get_activity_summary', ActivityLogController.get_activity_summary);
 
-module.exports = router;
+module.exports = router;

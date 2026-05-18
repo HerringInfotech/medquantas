@@ -21,6 +21,7 @@ const { logAction } = require("../helpers/logModel.helper");
 const Costsheet = require("../models/costsheet");
 const Salesheet = require("../models/salesheet");
 const Salehistory = require("../models/saleshistory");
+const Client = require("../models/client");
 const _ = require("lodash")
 const mailEmail = process.env.MAIL_USER || 'kuddals07@gmail.com';
 const mailPass = process.env.MAIL_PASS || 'nljlqdevktgdltxx';
@@ -99,6 +100,56 @@ exports.sign_in = async (req, res, next) => {
         return res.apiResponse(false, "Login function failed")
     }
 }
+
+
+exports.sendmail = async (req, res, next) => {
+    try {
+        var requests = req.bodyParams;
+
+        var client = new Client(requests);
+        await client.save();
+
+        const emailHtml = `
+        <div style="font-family: Arial, sans-serif; font-size: 14px; color: #333; max-width: 600px; margin: 0 auto; line-height: 1.6;">
+            <p>Dear Team,</p>
+            <p>A new client has been registered in the Costing Application. Please find the details below:</p>
+            <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%; border-color: #ccc;">
+                <tr>
+                    <td style="background-color: #f1f5f9; font-weight: bold; width: 140px;">Name</td>
+                    <td>${client.name}</td>
+                </tr>
+                <tr>
+                    <td style="background-color: #f1f5f9; font-weight: bold;">Email</td>
+                    <td>${client.email}</td>
+                </tr>
+                <tr>
+                    <td style="background-color: #f1f5f9; font-weight: bold;">Mobile</td>
+                    <td>${client.mobile || '-'}</td>
+                </tr>
+                <tr>
+                    <td style="background-color: #f1f5f9; font-weight: bold;">Company</td>
+                    <td>${client.company || '-'}</td>
+                </tr>
+            </table>
+            <p style="margin-top: 20px;">Kindly review and take the necessary action.</p>
+            <p><strong>Regards,</strong></p>
+            ${nodemailers.getEmailSignature()}
+        </div>
+        `;
+
+        await nodemailers.sendRawMail({
+            to: 'medquantas@gmail.com',
+            subject: `New Client Registration – ${client.name}`,
+            html: emailHtml,
+        });
+
+        return res.apiResponse(true, "Client saved and email sent successfully", { client });
+    } catch (error) {
+        console.log(error);
+        return res.apiResponse(false, "sendmail function failed")
+    }
+}
+
 
 exports.forgotpassword = async (req, res, next) => {
     var requests = req.bodyParams

@@ -13,7 +13,9 @@ const jwtMiddleware = (req, res, next) => {
     req.path === "/api/auth/forgotpassword" ||
     req.path === "/api/main/get_setting" ||
     req.path === "/api/auth/change_password" ||
-    req.path === "/api/auth/log_activity"
+    req.path === "/api/auth/log_activity" || 
+    req.path === "/api/auth/send-mail"
+
   ) {
     return next();
   }
