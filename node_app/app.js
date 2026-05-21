@@ -13,6 +13,7 @@ const cwd = process.cwd();
 
 
 const authRoutes = require('./app/routes/auth');
+const erpSyncRoutes = require('./app/routes/erp_sync');
 const masterRoutes = require('./app/routes/master');
 const mainRoutes = require('./app/routes/main');
 const supplierRoutes = require('./app/routes/supplier');
@@ -109,6 +110,7 @@ app.use('/api/main', mainRoutes);
 app.use('/api/supplier', supplierRoutes);
 app.use('/api/bulk_update', bulkupdateRoutes);
 app.use('/api/migration', migrationRoutes);
+app.use('/api/erp', erpSyncRoutes);
 
 
 

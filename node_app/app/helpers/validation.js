@@ -14,7 +14,17 @@ const jwtMiddleware = (req, res, next) => {
     req.path === "/api/main/get_setting" ||
     req.path === "/api/auth/change_password" ||
     req.path === "/api/auth/log_activity" || 
-    req.path === "/api/auth/send-mail"
+    req.path === "/api/auth/send-mail" ||
+    req.path === "/api/erp/get_item_master" ||
+    req.path === "/api/erp/get_price_master" ||
+    req.path === "/api/erp/get_item_sync" ||
+    req.path === "/api/erp/get_price_sync" ||
+    req.path === "/api/erp/update_item_master" ||
+    req.path === "/api/erp/update_price_master" ||
+    req.path === "/api/erp/save_item_sync" ||
+    req.path === "/api/erp/save_price_sync" 
+
+    
 
   ) {
     return next();
