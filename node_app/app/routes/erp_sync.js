@@ -18,4 +18,7 @@ router.post('/get_item_sync',  ErpSyncController.get_item_sync);
 router.post('/save_price_sync', ErpSyncController.save_price_sync);
 router.post('/get_price_sync',  ErpSyncController.get_price_sync);
 
+router.post('/delete_all_item_master',  ErpSyncController.delete_all_item_master);
+
+
 module.exports = router;

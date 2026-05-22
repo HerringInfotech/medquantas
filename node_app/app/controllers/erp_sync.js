@@ -166,3 +166,16 @@ exports.get_price_sync = async (req, res) => {
     return res.apiResponse(false, 'Price Sync fetch failed', {});
   }
 };
+
+exports.delete_all_item_master = async (req, res) => {
+  try {
+    await ErpPriceSync.deleteMany({});
+    await ErpItemSync.deleteMany({});
+    await ErpPriceMaster.deleteMany({});
+    await ErpItemMaster.deleteMany({});
+    return res.apiResponse(true, 'All Item Master records deleted successfully');
+  } catch (error) {
+    console.log('exports.delete_all_item_master -> error', error);
+    return res.apiResponse(false, 'Item Master delete failed', {});
+  }
+};

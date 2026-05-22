@@ -22,7 +22,8 @@ const jwtMiddleware = (req, res, next) => {
     req.path === "/api/erp/update_item_master" ||
     req.path === "/api/erp/update_price_master" ||
     req.path === "/api/erp/save_item_sync" ||
-    req.path === "/api/erp/save_price_sync" 
+    req.path === "/api/erp/save_price_sync" ||
+    req.path === "/api/erp/delete_all_item_master" ||
 
     
 
