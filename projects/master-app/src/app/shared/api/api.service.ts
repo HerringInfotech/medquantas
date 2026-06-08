@@ -173,6 +173,9 @@ export class ApiService {
     log_activity: 'auth/log_activity',
     get_activity_summary: 'auth/get_activity_summary',
 
+    // AI Chat
+    ai_chat: 'ai/chat',
+
 
   };
   restUrl: String = '';

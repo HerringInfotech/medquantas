@@ -10,9 +10,11 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ResizableColumnDirective } from './api/size.directive';
 import { NumberDirective } from '../number.directive';
 import { LoaderComponent } from './loader/loader.component';
+import { AiChatComponent } from './ai-chat/ai-chat.component';
+import { AiFormatPipe } from './ai-chat/ai-format.pipe';
 
 @NgModule({
-  declarations: [PaginationComponent, NotDataComponent, ResizableColumnDirective, NumberDirective, LoaderComponent],
+  declarations: [PaginationComponent, NotDataComponent, ResizableColumnDirective, NumberDirective, LoaderComponent, AiChatComponent, AiFormatPipe],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -32,7 +34,9 @@ import { LoaderComponent } from './loader/loader.component';
     FormsModule,
     ResizableColumnDirective,
     LoaderComponent,
-    NumberDirective
+    NumberDirective,
+    AiChatComponent,
+    AiFormatPipe
   ],
   providers: [],
 })

@@ -7,6 +7,7 @@ import * as CanvasJSAngularChart from '../../assets/canvasjs.angular.component';
 import { FormsModule } from '@angular/forms';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { SharedModule } from '../shared/shared.module';
 var CanvasJSChart = CanvasJSAngularChart.CanvasJSChart;
 
 
@@ -19,7 +20,8 @@ var CanvasJSChart = CanvasJSAngularChart.CanvasJSChart;
     DashboardRoutingModule,
     FormsModule,
     NgxSpinnerModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    SharedModule
   ]
 })
 export class DashboardModule { }
