@@ -5,7 +5,12 @@ const BomMaster = require('../models/bom_master');
 const FgMaster = require('../models/fgmaster');
 const Customer = require('../models/customer');
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+let groq = null;
+function getGroq() {
+  if (!process.env.GROQ_API_KEY) throw new Error('GROQ_API_KEY is not set in .env');
+  if (!groq) groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+  return groq;
+}
 
 const SYSTEM_PROMPT = `You are an AI assistant for MedQuantas, a pharmaceutical cost sheet and inventory management system.
 You help users query and understand data about:
@@ -100,7 +105,7 @@ exports.chat = async (req, res) => {
       { role: 'user', content: message }
     ];
 
-    const completion = await groq.chat.completions.create({
+    const completion = await getGroq().chat.completions.create({
       model: 'llama-3.3-70b-versatile',
       messages,
       max_tokens: 1024,
