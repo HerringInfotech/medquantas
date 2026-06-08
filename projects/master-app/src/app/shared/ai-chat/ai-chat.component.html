@@ -1,0 +1,63 @@
+<!-- Floating chat button -->
+<div class="ai-chat-fab" (click)="toggleChat()" [class.active]="isOpen" title="AI Assistant">
+  <i class="fas fa-robot" *ngIf="!isOpen"></i>
+  <i class="fas fa-times" *ngIf="isOpen"></i>
+</div>
+
+<!-- Chat window -->
+<div class="ai-chat-window" [class.open]="isOpen">
+  <!-- Header -->
+  <div class="chat-header">
+    <div class="chat-header-info">
+      <div class="ai-avatar"><i class="fas fa-robot"></i></div>
+      <div>
+        <div class="chat-title">MedQuantas AI</div>
+        <div class="chat-subtitle">Powered by Groq · LLaMA 3</div>
+      </div>
+    </div>
+    <button class="btn-clear" (click)="clearChat()" title="Clear chat">
+      <i class="fas fa-trash-alt"></i>
+    </button>
+  </div>
+
+  <!-- Messages -->
+  <div class="chat-messages">
+    <div *ngFor="let msg of messages" class="message-row" [class.user-row]="msg.role === 'user'">
+      <div class="message-bubble" [class.user-bubble]="msg.role === 'user'" [class.ai-bubble]="msg.role === 'assistant'">
+        <div class="message-content" [innerHTML]="msg.content | aiFormat"></div>
+        <div class="message-time">{{ msg.timestamp | date:'h:mm a' }}</div>
+      </div>
+    </div>
+
+    <!-- Typing indicator -->
+    <div class="message-row" *ngIf="isLoading">
+      <div class="message-bubble ai-bubble typing-bubble">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      </div>
+    </div>
+
+    <div #messagesEnd></div>
+  </div>
+
+  <!-- Suggestions (shown only when few messages) -->
+  <div class="suggestions" *ngIf="messages.length <= 2 && !isLoading">
+    <button *ngFor="let s of suggestions" class="suggestion-chip" (click)="sendSuggestion(s)">
+      {{ s }}
+    </button>
+  </div>
+
+  <!-- Input -->
+  <div class="chat-input-area">
+    <textarea
+      class="chat-input"
+      [(ngModel)]="userInput"
+      (keydown)="onKeydown($event)"
+      placeholder="Ask about items, BOMs, prices..."
+      rows="1"
+      [disabled]="isLoading">
+    </textarea>
+    <button class="send-btn" (click)="sendMessage()" [disabled]="!userInput.trim() || isLoading">
+      <i class="fas fa-paper-plane"></i>
+    </button>
+  </div>
+</div>

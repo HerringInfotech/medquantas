@@ -19,6 +19,7 @@ const mainRoutes = require('./app/routes/main');
 const supplierRoutes = require('./app/routes/supplier');
 const bulkupdateRoutes = require('./app/routes/bulk_update');
 const migrationRoutes = require('./app/routes/migration');
+const aiRoutes = require('./app/routes/ai');
 
 mongoose.set('strictQuery', true);
 // mongoose.connect(env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -111,6 +112,7 @@ app.use('/api/supplier', supplierRoutes);
 app.use('/api/bulk_update', bulkupdateRoutes);
 app.use('/api/migration', migrationRoutes);
 app.use('/api/erp', erpSyncRoutes);
+app.use('/api/ai', aiRoutes);
 
 
 
