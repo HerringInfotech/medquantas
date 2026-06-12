@@ -57,7 +57,7 @@ const bomMasterSchema = new mongoose.Schema(
 
     is_deleted: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   schemaOptions

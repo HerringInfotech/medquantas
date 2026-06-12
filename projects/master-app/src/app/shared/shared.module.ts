@@ -12,9 +12,10 @@ import { NumberDirective } from '../number.directive';
 import { LoaderComponent } from './loader/loader.component';
 import { AiChatComponent } from './ai-chat/ai-chat.component';
 import { AiFormatPipe } from './ai-chat/ai-format.pipe';
+import { PriceAnomalyComponent } from './price-anomaly/price-anomaly.component';
 
 @NgModule({
-  declarations: [PaginationComponent, NotDataComponent, ResizableColumnDirective, NumberDirective, LoaderComponent, AiChatComponent, AiFormatPipe],
+  declarations: [PaginationComponent, NotDataComponent, ResizableColumnDirective, NumberDirective, LoaderComponent, AiChatComponent, AiFormatPipe, PriceAnomalyComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -36,7 +37,8 @@ import { AiFormatPipe } from './ai-chat/ai-format.pipe';
     LoaderComponent,
     NumberDirective,
     AiChatComponent,
-    AiFormatPipe
+    AiFormatPipe,
+    PriceAnomalyComponent
   ],
   providers: [],
 })

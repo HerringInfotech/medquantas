@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"medquantas.rolemanages"}],"uuid":"3b740a5502b54b478434e8c5e322db52"}

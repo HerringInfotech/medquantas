@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"medquantas.pricelogs"}],"uuid":"dbeb70a2fa2c40bb94a1b89f36f9fc09"}

@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"medquantas.pricechangelogs"},{"v":{"$numberInt":"2"},"key":{"code":{"$numberInt":"1"},"createdAt":{"$numberInt":"-1"}},"name":"code_1_createdAt_-1","ns":"medquantas.pricechangelogs","background":true}],"uuid":"6bf01fa882c04defbc8a68b9fb4ee120"}

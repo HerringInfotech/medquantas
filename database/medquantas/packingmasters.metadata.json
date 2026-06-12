@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"medquantas.packingmasters"}],"uuid":"b99542b83aca47dd98f5f70c6a70dd53"}

@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"medquantas.emaillogs"}],"uuid":"17da3c8a4ea844b888144a7df5dbc3e6"}

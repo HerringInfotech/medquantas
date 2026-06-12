@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"medquantas.erbrates"}],"uuid":"2fc44e9eaf8e4342847b83d6ba5372bc"}

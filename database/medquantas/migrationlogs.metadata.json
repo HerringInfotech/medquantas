@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"medquantas.migrationlogs"},{"v":{"$numberInt":"2"},"key":{"type":{"$numberInt":"1"},"lastRunAt":{"$numberInt":"-1"}},"name":"type_1_lastRunAt_-1","ns":"medquantas.migrationlogs","background":true}],"uuid":"44ed387886724d3582ee5e8279890c6d"}

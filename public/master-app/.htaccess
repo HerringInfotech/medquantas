@@ -1,0 +1,15 @@
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Don't rewrite API requests
+    RewriteCond %{REQUEST_URI} !^/api/
+
+    # If file or folder exists, serve it
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Otherwise redirect to index.html (Angular/SPA)
+    RewriteRule ^ index.html [L]
+</IfModule>
