@@ -1,3 +1,4 @@
+require('dotenv').config();
 const Groq = require('groq-sdk');
 const ItemMaster = require('../models/item_master');
 const PriceMaster = require('../models/price_master');
@@ -8,7 +9,6 @@ const Costsheet = require('../models/costsheet');
 const Salesheet = require('../models/salesheet');
 const User = require('../models/user');
 const ActivityLog = require('../models/ActivityLog');
-
 let groq = null;
 function getGroq() {
   if (!process.env.GROQ_API_KEY) throw new Error('GROQ_API_KEY is not set in .env');
