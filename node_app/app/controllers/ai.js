@@ -1,3 +1,4 @@
+require('dotenv').config();
 const Groq = require('groq-sdk');
 const ItemMaster = require('../models/item_master');
 const PriceMaster = require('../models/price_master');
