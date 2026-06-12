@@ -18,4 +18,8 @@ export class AiService {
     const historyPayload = history.map(h => ({ role: h.role, content: h.content }));
     return this.api.post('ai_chat', { message, history: historyPayload });
   }
+
+  getPriceAnomalies(threshold: number = 10): Observable<any> {
+    return this.api.get('ai_price_anomalies', { threshold });
+  }
 }

@@ -1,5 +1,6 @@
 const commonHelper = require('../helpers/commonHelper');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const User = require("../models/user");
 const Role = require("../models/role");
 const ActivityLog = require("../models/ActivityLog");
@@ -172,12 +173,12 @@ exports.forgotpassword = async (req, res, next) => {
             <p style="font-size: 16px;">New Password: <strong>${mail_data.new_password}</strong></p>
           </div>
         `;
-        nodemailers.sendMail({
-            'to': requests.email,
-            'slug': 'forgot_password',
-            'subject': 'Forgot Password',
-            'data': content,
-        });
+        // nodemailers.sendMail({
+        //     'to': requests.email,
+        //     'slug': 'forgot_password',
+        //     'subject': 'Forgot Password',
+        //     'data': content,
+        // });
         user.password = token;
         await user.save();
         return res.apiResponse(true, "Reset password link sent to your email", { token })

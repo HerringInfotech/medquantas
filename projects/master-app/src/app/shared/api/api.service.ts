@@ -175,6 +175,7 @@ export class ApiService {
 
     // AI Chat
     ai_chat: 'ai/chat',
+    ai_price_anomalies: 'ai/price-anomalies',
 
 
   };
@@ -197,6 +198,15 @@ export class ApiService {
     return this.http
       .post(url, { params }, getHttpOptions())
       .pipe(map(this.extractData));
+  }
+
+  get(urlKey, queryParams: Record<string, any> = {}): Observable<any> {
+    const url = this.getUrl(urlKey);
+    const params = Object.keys(queryParams).reduce((acc, k) => {
+      acc[k] = String(queryParams[k]);
+      return acc;
+    }, {} as Record<string, string>);
+    return this.http.get(url, { ...getHttpOptions(), params }).pipe(map(this.extractData));
   }
 
   upload(urlKey, formData, params): Observable<any> {
