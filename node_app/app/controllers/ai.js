@@ -11,6 +11,7 @@ const User = require('../models/user');
 const ActivityLog = require('../models/ActivityLog');
 let groq = null;
 function getGroq() {
+  console.log('ENV:', process.env.GROQ_API_KEY);
   if (!process.env.GROQ_API_KEY) throw new Error('GROQ_API_KEY is not set in .env');
   if (!groq) groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
   return groq;
