@@ -1,17 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { NgForm } from '@angular/forms';
 import { ApiService } from '../shared/api/api.service';
 import { CommonService } from '../shared/api/common.service';
 import { PermissionService } from '../shared/permission/permission.service';
-import {
-  faEdit,
-  faPlus,
-  faSearch,
-  faSort,
-  faSortUp,
-  faTrashAlt,
-} from '@fortawesome/free-solid-svg-icons';
-import { CurrencyService } from '../shared/currency.service';
-import { Subscription } from 'rxjs';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-conversion-factor-master',
@@ -20,74 +13,80 @@ import { Subscription } from 'rxjs';
 })
 export class ConversionFactorMasterComponent implements OnInit {
   page_loading = false;
-  conversionFactors = [];
-  pagination_data;
-  sort = '';
-  faTrashAlt = faTrashAlt;
-  faEdit = faEdit;
-  faPlus = faPlus;
-  faSearch = faSearch;
-  faSortUp = faSortUp;
-  faSort = faSort;
-  search = '';
-  isActive: boolean = false;
-  private isActiveSub: Subscription;
+  btn_loading = false;
+  rate_loading = false;
+
+  factor: { _id: string; name: string; inrToUsd: number; updatedAt: string } | null = null;
 
   constructor(
     private api: ApiService,
+    private http: HttpClient,
+    private common: CommonService,
     private permission: PermissionService,
-    public currencyService: CurrencyService,
-    private common: CommonService
-  ) {
-    this.common.delete_detail.subscribe(value => {
-      if (value.page == 'conversionFactor') {
-        this.delete(value.id);
+    private spinner: NgxSpinnerService
+  ) {}
+
+  ngOnInit(): void {
+    this.getConversionFactor();
+  }
+
+  getConversionFactor() {
+    this.page_loading = true;
+    this.api.post('get_conversion_factor', {}).subscribe((response) => {
+      this.page_loading = false;
+      const data = response?.data?.[0];
+      if (data) {
+        this.factor = {
+          _id: data._id,
+          name: data.name,
+          inrToUsd: data.inrToUsd,
+          updatedAt: data.updatedAt,
+        };
       }
     });
   }
 
-  ngOnInit(): void {
-    this.getConversionFactors();
+  fetchLiveRate() {
+    this.rate_loading = true;
+    this.http.get<any>('https://open.er-api.com/v6/latest/USD').subscribe({
+      next: (res) => {
+        const inrPerUsd = res?.rates?.INR;
+        if (inrPerUsd && this.factor) {
+          this.factor.inrToUsd = parseFloat(inrPerUsd.toFixed(2));
+          this.common.alert({ msg: `Live rate fetched: 1 USD = ₹${this.factor.inrToUsd}`, type: 'success' });
+        } else {
+          this.common.alert({ msg: 'Could not read rate from API response', type: 'danger' });
+        }
+      },
+      error: () => {
+        this.common.alert({ msg: 'Failed to fetch live rate. Check internet connection.', type: 'danger' });
+      },
+      complete: () => {
+        this.rate_loading = false;
+      }
+    });
   }
 
-  ngOnDestroy(): void {
-    this.isActiveSub?.unsubscribe();
-  }
-
-  toggleSort(column) {
-    this.sort = this.sort.startsWith(`${column}_asc`)
-      ? `${column}_desc`
-      : `${column}_asc`;
-    this.getConversionFactors();
-  }
-
-  getSortIcon(column) {
-    return this.sort.startsWith(`${column}_asc`) ? this.faSortUp : this.faSort;
-  }
-
-  getConversionFactors() {
-    this.page_loading = true;
-    this.api.post('get_conversion_factor', {}).subscribe((response) => {
-      this.page_loading = false;
-      this.conversionFactors = response?.data || [];
+  formSubmit(formData: NgForm) {
+    if (!formData.valid || !this.factor) return;
+    this.btn_loading = true;
+    this.api.post('update_conversion_factor', { id: this.factor._id, name: this.factor.name, inrToUsd: this.factor.inrToUsd }).subscribe({
+      next: (response) => {
+        this.common.alert({ msg: response.message, type: response.status ? 'success' : 'danger' });
+        if (response.status) {
+          this.getConversionFactor();
+        }
+      },
+      error: () => {
+        this.common.alert({ msg: 'Something went wrong', type: 'danger' });
+      },
+      complete: () => {
+        this.btn_loading = false;
+      }
     });
   }
 
   hasPermission(permissionName: string): boolean {
     return this.permission.hasPermission(permissionName);
-  }
-
-  delete(id) {
-    let params = { id: id }
-    this.api.post('delete_conversion_factor', params).subscribe((response) => {
-      this.getConversionFactors();
-      this.common.alert({ msg: response.message, type: (response.status) ? 'success' : 'danger' });
-    })
-  }
-
-  confirm_delete(data) {
-    data.page = "conversionFactor";
-    data.message = "Are you sure to delete this Conversion Factor?";
-    this.common.set_delete_confirmation_data(data);
   }
 }

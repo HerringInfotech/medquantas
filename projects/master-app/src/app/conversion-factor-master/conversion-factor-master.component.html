@@ -3,75 +3,52 @@
   <!-- Header Section -->
   <div class="header-card">
     <h5>Conversion Factor Master</h5>
-    <div *ngIf="hasPermission('ConversionFactorMaster.Create')">
-      <button type="button" class="custom-button" routerLink="form">
-        <fa-icon [icon]="faPlus"></fa-icon>
-        <span>ADD</span>
-      </button>
-    </div>
   </div>
 
-  <div class="bg-white rounded-6px p-3 shadow-sm">
-    <!-- Filter Section -->
-    <div class="filter-card">
-      <div class="row g-4">
-        <div class="col-lg-4">
-          <label class="filter-label">Search by Factor</label>
-          <div class="search-input-group">
-            <input type="text" class="form-control" (keyup)="getConversionFactors()" placeholder="Search conversion factor..."
-              [(ngModel)]="search" />
-            <fa-icon class="search-icon" [icon]="faSearch"></fa-icon>
+  <div class="bg-white rounded-6px p-4 shadow-sm" *ngIf="factor">
+    <form #formData="ngForm" (ngSubmit)="formSubmit(formData)">
+      <div class="row g-3 mb-3">
+
+        <!-- Factor Name (read-only) -->
+        <div class="col-md-3">
+          <label class="form-label">Factor Name</label>
+          <input class="form-control bg-light" [value]="factor.name" disabled />
+        </div>
+
+        <!-- 1 USD = INR -->
+        <div class="col-md-3">
+          <label class="form-label">1 USD = INR <span class="text-danger">*</span></label>
+          <input name="inrToUsd" type="number" step="0.01" min="0" class="form-control"
+            required [(ngModel)]="factor.inrToUsd" #inrToUsd="ngModel"
+            [ngClass]="{ 'is-invalid': inrToUsd.invalid && (inrToUsd.dirty || inrToUsd.touched || formData.submitted) }" />
+          <div *ngIf="inrToUsd.invalid && (inrToUsd.dirty || inrToUsd.touched || formData.submitted)"
+            class="invalid-feedback">
+            <span *ngIf="inrToUsd.errors?.required">Value is required.</span>
+            <span *ngIf="inrToUsd.errors?.min">Must be positive value.</span>
           </div>
         </div>
+
+        <!-- Updated Date & Time -->
+        <div class="col-md-3" *ngIf="factor.updatedAt">
+          <label class="form-label">Last Updated</label>
+          <input class="form-control bg-light" [value]="factor.updatedAt | date: 'dd-MMM-yyyy HH:mm:ss'" disabled />
+        </div>
+
       </div>
-    </div>
 
-    <!-- Table Section -->
-    <div class="table-container">
-      <app-not-data *ngIf="!conversionFactors?.length" [message]="'No Conversion Factor found'" [route]="'form'"
-        [button]="'Add new Conversion Factor'"></app-not-data>
+      <!-- Action Buttons -->
+      <div class="d-flex gap-2 mt-2">
+        <button type="button" class="btn custom-button" (click)="fetchLiveRate()" [disabled]="rate_loading">
+          <span *ngIf="!rate_loading"><i class="bi bi-cpu me-1"></i> AI Live Rate</span>
+          <span *ngIf="rate_loading"><span class="spinner-border spinner-border-sm me-1"></span> Fetching...</span>
+        </button>
 
-      <div *ngIf="conversionFactors?.length" class="table-responsive">
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th width="40">#</th>
-              <th class="text-start pointer" (click)="toggleSort('code')">
-                Code <fa-icon [icon]="getSortIcon('code')"></fa-icon>
-              </th>
-              <th class="text-start pointer" (click)="toggleSort('name')">
-                Name <fa-icon [icon]="getSortIcon('name')"></fa-icon>
-              </th>
-              <th width="100">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let data of conversionFactors; let index = index">
-              <td>
-                <span class="fw-bold text-secondary">{{ index + 1 }}</span>
-              </td>
-              <td class="code-column text-start">{{ data?.code }}</td>
-              <td class="name-column text-start">{{ data?.name }}</td>
-              <td>
-                <button type="button" class="action-btn edit-btn" *ngIf="hasPermission('ConversionFactorMaster.Update')"
-                  routerLink="form/{{data._id}}" title="Edit Factor">
-                  <fa-icon [icon]="faEdit"></fa-icon>
-                </button>
-                <button type="button" class="action-btn delete-btn" [disabled]="!data.is_deleted"
-                  *ngIf="hasPermission('ConversionFactorMaster.Delete')" (click)="confirm_delete(data)"
-                  title="Delete Factor">
-                  <fa-icon [icon]="faTrashAlt"></fa-icon>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <button type="submit" class="btn custom-button" [disabled]="btn_loading || formData.invalid">
+          <span *ngIf="!btn_loading">Update</span>
+          <span *ngIf="btn_loading"><span class="spinner-border spinner-border-sm me-1"></span> Saving...</span>
+        </button>
       </div>
-    </div>
 
-    <!-- Pagination -->
-    <div class="mt-4 d-flex justify-content-end" *ngIf="conversionFactors?.length">
-      <app-pagination [data]="pagination_data"></app-pagination>
-    </div>
+    </form>
   </div>
 </div>
