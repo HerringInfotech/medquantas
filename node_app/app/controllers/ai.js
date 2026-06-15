@@ -71,20 +71,108 @@ async function fetchContextData(message) {
       else context.push(`No items found${typeLabel}.`);
     }
 
-    if (msg.includes('price') || msg.includes('rate') || msg.includes('cost')) {
-      const prices = await PriceMaster.find({})
-        .select('code name rate grnRate currency gst')
+    if (msg.includes('price') || msg.includes('rate') || msg.includes('grn')) {
+      const stopWords = ['price', 'rate', 'grn', 'how', 'many', 'show', 'list', 'what', 'is', 'the', 'me', 'for', 'a', 'an', 'high', 'highest', 'top', 'get'];
+      const keywords = msg.split(/\s+/).filter(w => w.length > 2 && !stopWords.includes(w));
+      let priceFilter = {};
+      if (keywords.length > 0) {
+        priceFilter = { $or: keywords.flatMap(k => [{ name: { $regex: k, $options: 'i' } }, { code: { $regex: k, $options: 'i' } }]) };
+      }
+      const prices = await PriceMaster.find(priceFilter)
+        .select('code name rate grnRate stdrate currency gst')
         .sort({ rate: -1 })
-        .limit(20).lean();
-      if (prices.length) context.push(`Price master (sample, sorted by highest rate):\n${prices.map(p => `- ${p.code}: ${p.name} | Rate: ${p.rate} | GRN Rate: ${p.grnRate} | GST: ${p.gst}%`).join('\n')}`);
+        .limit(50).lean();
+      if (prices.length) context.push(`Price master (matched, ${prices.length} records, sorted by highest rate):\n${prices.map(p => `- Code: ${p.code} | Name: ${p.name} | Rate: ${p.rate} | GRN Rate: ${p.grnRate} | Std Rate: ${p.stdrate || ''} | GST: ${p.gst}% | Currency: ${p.currency || 'INR'}`).join('\n')}`);
     }
 
-    if (msg.includes('bom') || msg.includes('bill of material') || msg.includes('formula') || msg.includes('how many')) {
-      const boms = await BomMaster.find({})
-        .select('name code locCd status')
+    // Match BOM code pattern like 2FP001:BOP directly in message
+    const bomCodeMatch = msg.match(/[a-z0-9]+:[a-z0-9]+/i);
+    if (bomCodeMatch) {
+      const bomByCode = await BomMaster.findOne({ code: { $regex: bomCodeMatch[0], $options: 'i' } })
+        .select('name code locCd status batch costunit manufacture_qty manufacture_total manufacture_matval pack_qty pack_total pack_matval analytical_value punch_value freight percentage revision packstage rawstage bomraw')
+        .lean();
+      if (bomByCode) {
+        const b = bomByCode;
+        const rawItems = [];
+        if (Array.isArray(b.rawstage)) {
+          b.rawstage.forEach(stage => {
+            if (Array.isArray(stage.ingredients)) {
+              stage.ingredients.forEach(item => rawItems.push(`    * [${item.code}] ${item.name} | UOM: ${item.buyUnit} | Std Qty: ${item.standQty || item.originalStandQty} | Req Qty: ${item.requestQty || item.originalRequestQty}`));
+            }
+          });
+        }
+        const packItems = [];
+        if (Array.isArray(b.packstage)) {
+          b.packstage.forEach(stage => {
+            packItems.push(`  [${stage.stageName} | FG: ${stage.fgName} | FG Code: ${stage.fgCode}]`);
+            if (Array.isArray(stage.ingredients)) {
+              stage.ingredients.forEach(item => packItems.push(`    * [${item.code}] ${item.name} | UOM: ${item.buyUnit} | Std Qty: ${item.standQty || item.originalStandQty} | Req Qty: ${item.requestQty || item.originalRequestQty}`));
+            }
+          });
+        }
+        context.push(`BOM Full Detail for ${b.code}:
+Name: ${b.name} | Location: ${b.locCd} | Status: ${b.status} | Revision: ${b.revision || ''}
+Batch Size: ${b.batch || ''} | Cost Unit: ${b.costunit || ''}
+Manufacture Qty: ${b.manufacture_qty || ''} | Manufacture Total: ${b.manufacture_total || ''} | Manufacture Mat Val: ${b.manufacture_matval || ''}
+Pack Qty: ${b.pack_qty || ''} | Pack Total: ${b.pack_total || ''} | Pack Mat Val: ${b.pack_matval || ''}
+Analytical Value: ${b.analytical_value || ''} | Punch Value: ${b.punch_value || ''} | Freight: ${b.freight || ''} | Percentage: ${b.percentage || ''}
+Total Packs (packstage count): ${Array.isArray(b.packstage) ? b.packstage.length : 0}
+Raw Material Items (${rawItems.length}):
+${rawItems.join('\n') || '  none'}
+Pack Stage Items:
+${packItems.join('\n') || '  none'}`);
+      }
+    }
+
+    if (msg.includes('bom') || msg.includes('bill of material') || msg.includes('formula') || msg.includes('pack') || msg.includes('total pack') || msg.includes('packs') || msg.includes('batch') || msg.includes('manufacture') || msg.includes('ingredient')) {
+      // Try to find specific BOM by product name keywords in the message
+      const stopWords = ['bom', 'bill', 'of', 'material', 'formula', 'total', 'packs', 'pack', 'how', 'many', 'show', 'list', 'what', 'is', 'the', 'me', 'for', 'a', 'an', 'name', 'latest', 'last', 'and', 'get'];
+      const keywords = msg.split(/\s+/).filter(w => w.length > 2 && !stopWords.includes(w));
+      let bomFilter = {};
+      if (keywords.length > 0) {
+        bomFilter = { $or: keywords.map(k => ({ name: { $regex: k, $options: 'i' } })) };
+      }
+      const boms = await BomMaster.find(bomFilter)
+        .select('name code locCd status pack_qty pack_total manufacture_qty revision batch packstage rawstage bomraw')
         .sort({ createdAt: -1 })
-        .limit(20).lean();
-      if (boms.length) context.push(`BOM Master (sample, sorted newest first):\n${boms.map(b => `- ${b.code}: ${b.name} | Location: ${b.locCd || ''} | Status: ${b.status || ''}`).join('\n')}`);
+        .limit(10).lean();
+      if (boms.length) {
+        const bomDetails = boms.map(b => {
+          // rawstage: each stage has stageCode, stageName, fgName, fgCode, ingredients[]
+          const rawItems = [];
+          if (Array.isArray(b.rawstage)) {
+            b.rawstage.forEach(stage => {
+              if (Array.isArray(stage.ingredients)) {
+                stage.ingredients.forEach(item => rawItems.push(
+                  `    * [${item.code || ''}] ${item.name || ''} | Type: ${item.typeCode || ''} | UOM: ${item.buyUnit || ''} | Std Qty: ${item.standQty || item.originalStandQty || ''} | Req Qty: ${item.requestQty || item.originalRequestQty || ''}`
+                ));
+              }
+            });
+          }
+          // packstage: each stage has stageCode, stageName, fgName, fgCode, ingredients[]
+          const packItems = [];
+          if (Array.isArray(b.packstage)) {
+            b.packstage.forEach(stage => {
+              const stageLabel = `  [Pack Stage: ${stage.stageName || stage.stageCode || ''} | FG: ${stage.fgName || ''} | FG Code: ${stage.fgCode || ''}]`;
+              packItems.push(stageLabel);
+              if (Array.isArray(stage.ingredients)) {
+                stage.ingredients.forEach(item => packItems.push(
+                  `    * [${item.code || ''}] ${item.name || ''} | Type: ${item.typeCode || ''} | UOM: ${item.buyUnit || ''} | Std Qty: ${item.standQty || item.originalStandQty || ''} | Req Qty: ${item.requestQty || item.originalRequestQty || ''}`
+                ));
+              }
+            });
+          }
+          return `BOM: ${b.code} | Name: ${b.name} | Location: ${b.locCd || ''} | Status: ${b.status || ''} | Total Packs: ${Array.isArray(b.packstage) ? b.packstage.length : 0} | Pack Qty: ${b.pack_qty || 0} | Mfg Qty: ${b.manufacture_qty || 0} | Revision: ${b.revision || ''}
+  Raw Material Stage Items (${rawItems.length} items):
+${rawItems.length ? rawItems.join('\n') : '    * none'}
+  Packing Stage Items:
+${packItems.length ? packItems.join('\n') : '    * none'}`;
+        });
+        context.push(`BOM Master - Full Detail (${boms.length} matched):\n\n${bomDetails.join('\n\n')}`);
+      } else {
+        const fallback = await BomMaster.find({}).select('name code locCd status pack_qty packstage').sort({ createdAt: -1 }).limit(20).lean();
+        if (fallback.length) context.push(`BOM Master (latest 20):\n${fallback.map(b => `- Code: ${b.code} | Name: ${b.name} | Location: ${b.locCd || ''} | Packs: ${Array.isArray(b.packstage) ? b.packstage.length : 0} | Pack Qty: ${b.pack_qty || 0}`).join('\n')}`);
+      }
     }
 
     if (msg.includes('customer') || msg.includes('client')) {
@@ -94,20 +182,81 @@ async function fetchContextData(message) {
       if (customers.length) context.push(`Customers (sample):\n${customers.map(c => `- ${c.customer_code}: ${c.name} (${c.city || c.state || ''})`).join('\n')}`);
     }
 
-    if (msg.includes('cost sheet') || msg.includes('costsheet')) {
-      const sheets = await Costsheet.find({})
-        .select('code name productname productcode locCd status revision')
+    if (msg.includes('cost sheet') || msg.includes('costsheet') || msg.includes('cost')) {
+      // Highest/lowest rate INR or USD query across all cost sheets
+      if ((msg.includes('highest') || msg.includes('lowest') || msg.includes('top') || msg.includes('compare')) && (msg.includes('rate') || msg.includes('inr') || msg.includes('usd') || msg.includes('rupee') || msg.includes('dollar'))) {
+        const allSheets = await Costsheet.find({})
+          .select('code name productname productcode locCd status system medquantas')
+          .lean();
+        const sortField = msg.includes('usd') || msg.includes('dollar') ? 'doller' : 'rupee';
+        const sorted = allSheets
+          .filter(s => s.system && s.system[sortField] != null)
+          .sort((a, b) => msg.includes('lowest') ? (a.system[sortField] - b.system[sortField]) : (b.system[sortField] - a.system[sortField]));
+        const top = sorted.slice(0, 20);
+        if (top.length) context.push(`Cost Sheets sorted by ${msg.includes('lowest') ? 'lowest' : 'highest'} Rate ${sortField === 'doller' ? 'USD' : 'INR'} (${top.length} records):\n${top.map((s, i) => `${i + 1}. ${s.productname || s.name} | Code: ${s.code} | Location: ${s.locCd || ''} | Rate INR: ₹${s.system?.rupee ?? ''} | Rate USD: $${s.system?.doller ?? ''} | Pack Type: ${s.system?.packtype || ''} | Status: ${s.status || ''}`).join('\n')}`);
+      }
+
+      // Direct code match like 2FP001:BOP in message
+      const csCodeMatch = msg.match(/[a-z0-9]+:[a-z0-9]+/i);
+      const stopWords = ['cost', 'sheet', 'costsheet', 'total', 'how', 'many', 'show', 'list', 'what', 'is', 'the', 'me', 'for', 'a', 'an', 'latest', 'last', 'get', 'give'];
+      const keywords = msg.split(/\s+/).filter(w => w.length > 2 && !stopWords.includes(w));
+      let csFilter = {};
+      if (csCodeMatch) {
+        csFilter = { $or: [{ code: { $regex: csCodeMatch[0], $options: 'i' } }, { productcode: { $regex: csCodeMatch[0], $options: 'i' } }] };
+      } else if (keywords.length > 0) {
+        csFilter = { $or: keywords.flatMap(k => [{ name: { $regex: k, $options: 'i' } }, { productname: { $regex: k, $options: 'i' } }, { productcode: { $regex: k, $options: 'i' } }, { code: { $regex: k, $options: 'i' } }]) };
+      }
+      const sheets = await Costsheet.find(csFilter)
+        .select('code name productname productcode locCd status revision detailValues medo_raw medo_pack system medquantas percentage')
         .sort({ createdAt: -1 })
-        .limit(20).lean();
-      if (sheets.length) context.push(`Cost Sheets (sample, newest first):\n${sheets.map(s => `- ${s.code}: ${s.name || s.productname} | Location: ${s.locCd || ''} | Status: ${s.status || ''}`).join('\n')}`);
+        .limit(5).lean();
+      if (sheets.length) {
+        const details = sheets.map(s => {
+          const dv = s.detailValues || {};
+          const rawItems = (s.medo_raw || []).map(i => `    * [${i.code}] ${i.name} | Type: ${i.typeCode} | UOM: ${i.buyUnit} | Std Qty: ${i.standQty || i.originalStandQty} | Req Qty: ${i.requestQty || i.originalRequestQty} | GRN Rate: ${i.grnRate || 0} | Total: ${i.total || 0} | Cost: ${i.cost || 0}`);
+          const packItems = (s.medo_pack || []).map(i => `    * [${i.code}] ${i.name} | Type: ${i.typeCode} | UOM: ${i.buyUnit} | Std Qty: ${i.standQty || i.originalStandQty} | Req Qty: ${i.requestQty || i.originalRequestQty} | GRN Rate: ${i.grnRate || 0} | Total: ${i.total || 0} | Cost: ${i.cost || 0}`);
+          const sys = s.system || {};
+          const mq = s.medquantas || {};
+          return `Cost Sheet: ${s.code} | Product: ${s.productname || s.name} | Product Code: ${s.productcode || ''} | Location: ${s.locCd || ''} | Status: ${s.status || ''} | Revision: ${s.revision || ''}
+  Detail Values:
+    Batch Size: ${dv.batch || ''} | Cost Unit: ${dv.costunit || ''} | Yield%: ${dv.yield || ''} | Yield Value: ${dv.yieldvalue || ''}
+    Manufacture Qty: ${dv.manufacture_qty || ''} | Manufacture Total: ${dv.manufacture_total || ''} | Manufacture Mat Val: ${dv.manufacture_matval || ''}
+    Manufacture Value: ${dv.manufacture_value || ''} | Manufacture Net Amt: ${dv.manufacture_netamt || ''} | Manufacture Cost: ${dv.manufacture_cost || ''}
+    Pack Qty: ${dv.pack_qty || ''} | Pack Total: ${dv.pack_total || ''} | Pack Mat Val: ${dv.pack_matval || ''}
+    Pack Value: ${dv.pack_value || ''} | Pack Net Amt: ${dv.pack_netamt || ''} | Pack Cost: ${dv.pack_cost || ''}
+    Analytical Value: ${dv.analytical_value || ''} | Analytical Cost: ${dv.analytical_cost || ''}
+    Punch Value: ${dv.punch_value || ''} | Punch Cost: ${dv.punch_cost || ''}
+    Freight%: ${dv.freight || ''} | Percentage%: ${dv.percentage || ''}
+  Systematic Cost: Product: ${sys.name || ''} | Pack Type: ${sys.packtype || ''} | Rate INR: ₹${sys.rupee || ''} | Rate USD: $${sys.doller || ''} | Convert Rate: ${sys.convertrate || ''} | Batch Size (Lakh): ${sys.batchsize || ''} | API: ${sys.api || ''}
+  Medquantas Cost: Product: ${mq.name || ''} | Pack Type: ${mq.packtype || ''} | Rate INR: ₹${mq.rupee || ''} | Rate USD: $${mq.doller || ''} | Convert Rate: ${mq.convertrate || ''} | Batch Size (Lakh): ${mq.batchsize || ''} | API: ${mq.api || ''}
+  API / Raw Materials (${rawItems.length} items):
+${rawItems.join('\n') || '    none'}
+  Packing Materials (${packItems.length} items):
+${packItems.join('\n') || '    none'}`;
+        });
+        context.push(`Cost Sheet Full Detail (${sheets.length} matched):\n\n${details.join('\n\n')}`);
+      } else {
+        const fallback = await Costsheet.find({}).select('code name productname productcode locCd status revision').sort({ createdAt: -1 }).limit(20).lean();
+        if (fallback.length) context.push(`Cost Sheets (latest 20):\n${fallback.map(s => `- Code: ${s.code} | Product: ${s.productname || s.name} | Location: ${s.locCd || ''} | Status: ${s.status || ''}`).join('\n')}`);
+      }
     }
 
     if (msg.includes('sale sheet') || msg.includes('salesheet') || msg.includes('sales sheet')) {
-      const sheets = await Salesheet.find({})
+      const stopWords = ['sale', 'sales', 'sheet', 'salesheet', 'total', 'how', 'many', 'show', 'list', 'what', 'is', 'the', 'me', 'for', 'a', 'an', 'latest', 'last', 'get', 'give'];
+      const keywords = msg.split(/\s+/).filter(w => w.length > 2 && !stopWords.includes(w));
+      let ssFilter = {};
+      if (keywords.length > 0) {
+        ssFilter = { $or: keywords.flatMap(k => [{ name: { $regex: k, $options: 'i' } }, { productname: { $regex: k, $options: 'i' } }, { productcode: { $regex: k, $options: 'i' } }, { code: { $regex: k, $options: 'i' } }]) };
+      }
+      const sheets = await Salesheet.find(ssFilter)
         .select('code name productname productcode locCd status revision')
         .sort({ createdAt: -1 })
-        .limit(20).lean();
-      if (sheets.length) context.push(`Sale Sheets (sample, newest first):\n${sheets.map(s => `- ${s.code}: ${s.name || s.productname} | Location: ${s.locCd || ''} | Status: ${s.status || ''}`).join('\n')}`);
+        .limit(50).lean();
+      if (sheets.length) context.push(`Sale Sheets (matched, ${sheets.length} records):\n${sheets.map(s => `- Code: ${s.code} | Product: ${s.productname || s.name} | Product Code: ${s.productcode || ''} | Location: ${s.locCd || ''} | Status: ${s.status || ''} | Revision: ${s.revision || ''}`).join('\n')}`);
+      else {
+        const fallback = await Salesheet.find({}).select('code name productname productcode locCd status revision').sort({ createdAt: -1 }).limit(20).lean();
+        if (fallback.length) context.push(`Sale Sheets (latest 20):\n${fallback.map(s => `- Code: ${s.code} | Product: ${s.productname || s.name} | Location: ${s.locCd || ''} | Status: ${s.status || ''}`).join('\n')}`);
+      }
     }
 
     if (msg.includes('login') || msg.includes('last login') || msg.includes('activity') || msg.includes('log') || msg.includes('recent action')) {
